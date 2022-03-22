@@ -1,0 +1,6 @@
+atm-api/node_modules/
+atm-api/.env
+atm-engine/build/
+atm-engine/*.user
+atm-ui/build/
+atm-ui/*.user
