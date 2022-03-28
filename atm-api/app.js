@@ -6,6 +6,7 @@ const helmet = require("helmet");
 const cors = require("cors");
 
 const customerRouter = require("./routes/customer");
+const accountRouter = require("./routes/account");
 
 const app = express();
 
@@ -18,5 +19,6 @@ app.use(express.urlencoded({ extended: false }));
 // app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/customer", customerRouter);
+app.use("/account", accountRouter);
 
 module.exports = app;
