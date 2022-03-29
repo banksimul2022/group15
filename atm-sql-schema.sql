@@ -12,13 +12,16 @@ USE bankdb;
 CREATE TABLE bankdb.customer (
   customerId INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   firstName VARCHAR(45) NOT NULL,
-  lastName VARCHAR(45) NOT NULL
+  lastName VARCHAR(45) NOT NULL,
+  address VARCHAR(45) NOT NULL,
+  phone VARCHAR(45)
 ) ENGINE = InnoDB;
 
 -- Create the account table
 CREATE TABLE bankdb.account (
   accountId INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  credit INT NOT NULL
+  credit INT NOT NULL,
+  accountNumber VARCHAR(45) NOT NULL
 ) ENGINE = InnoDB;
 
 -- Create the card table
@@ -70,6 +73,10 @@ CREATE TABLE bankdb.transaction (
   transactionId INT NOT NULL AUTO_INCREMENT,
   accountId INT NOT NULL,
   timestamp DATE NOT NULL,
+  toAccount VARCHAR(45),
+  type ENUM('INSERT', 'TAKE') NOT NULL,
+  value INT NOT NULL,
+  cardNumber VARCHAR(16),
 
   PRIMARY KEY (transactionId, accountId),
 
@@ -78,8 +85,8 @@ CREATE TABLE bankdb.transaction (
     FOREIGN KEY (accountId)
     REFERENCES bankdb.account (accountId)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    ON UPDATE NO ACTION
+) ENGINE = InnoDB;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
