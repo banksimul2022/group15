@@ -1,0 +1,213 @@
+{
+	"info": {
+		"_postman_id": "3a14e44f-9288-4079-af3c-9e2b4212f56d",
+		"name": "BankSimul_Card",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "card.getAll",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "bankuser",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "bankpass",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/card",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"card"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "card.getById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/card/1",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"card",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "card.add",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "cardId",
+							"value": "0",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "customerId",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "accountId",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "cardNumber",
+							"value": "123555",
+							"type": "text"
+						},
+						{
+							"key": "locked",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "pin",
+							"value": "1234",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/card/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"card",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "card.delete",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "{{base_url}}/card/7",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"card",
+						"7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "card.update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "customerId",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "accountId",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "cardNumber",
+							"value": "123",
+							"type": "text"
+						},
+						{
+							"key": "locked",
+							"value": "0",
+							"type": "text"
+						},
+						{
+							"key": "pin",
+							"value": "1234",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/card/8",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"card",
+						"8"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic"
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "localhost:3000",
+			"type": "string"
+		}
+	]
+}
