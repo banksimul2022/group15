@@ -8,6 +8,8 @@ const cors = require("cors");
 const customerRouter = require("./routes/customer");
 const accountRouter = require("./routes/account");
 const transactionRouter = require("./routes/transaction");
+const customer_has_accountRouter = require("./routes/customer_has_account");
+
 
 const app = express();
 
@@ -22,5 +24,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/customer", customerRouter);
 app.use("/account", accountRouter);
 app.use("/transaction", transactionRouter);
+app.use("/customer_has_account", customer_has_accountRouter);
 
 module.exports = app;

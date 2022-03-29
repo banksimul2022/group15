@@ -16,7 +16,7 @@ router.get("/:id?", (req, res) => {
     if(req.params.id) {
         customer.getById(req.params.id, (error, result) => handleQueryResult(res, error, result));
     } else {
-        accoucustomernt.getAll((error, result) => handleQueryResult(res, error, result));
+        customer.getAll((error, result) => handleQueryResult(res, error, result));
     }
 });
 
