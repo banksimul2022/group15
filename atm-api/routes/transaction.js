@@ -1,63 +1,26 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const transaction = require('../models/transaction');
+const transaction = require("../models/transaction");
+const butil = require("../util");
 
-router.get('/:id?',
- function(request, response) {
-  if (request.params.id) {
-    transaction.getById(request.params.id, function(err, dbResult) {
-      if (err) {
-        response.json(err);
-      } else {
-        response.json(dbResult);
-      }
-    });
-  } else {
-    transaction.getAll(function(err, dbResult) {
-      if (err) {
-        response.json(err);
-      } else {
-        console.log(dbResult);
-        response.json(dbResult);
-      }
-    });
-  }
+router.get("/:id?", (req, res) => {
+    if (req.params.id) {
+        transaction.getById(req.params.id, (error, result) => butil.handleQueryResult(res, error, result));
+    } else {
+        transaction.getAll((error, result) => butil.handleQueryResult(res, error, result));
+    }
 });
 
-
-router.post('/', 
-function(request, response) {
-  transaction.add(request.body, function(err, dbResult) {
-    if (err) {
-      response.json(err);
-    } else {
-      response.json(request.body);
-    }
-  });
+router.post("/", (req, res) => {
+    transaction.add(req.body, (error, result) => butil.handleQueryResult(res, error, result));
 });
 
-
-router.delete('/:id', 
-function(request, response) {
-  transaction.delete(request.params.id, function(err, dbResult) {
-    if (err) {
-      response.json(err);
-    } else {
-      response.json(dbResult);
-    }
-  });
+router.delete("/:id", (req, res) => {
+    transaction.delete(req.params.id, (error, result) => butil.handleQueryResult(res, error, result));
 });
 
-
-router.put('/:id', 
-function(request, response) {
-  transaction.update(request.params.id, request.body, function(err, dbResult) {
-    if (err) {
-      response.json(err);
-    } else {
-      response.json(dbResult);
-    }
-  });
+router.put("/:id", (req, res) => {
+    transaction.update(req.params.id, req.body, (error, result) => butil.handleQueryResult(res, error, result));
 });
 
 module.exports = router;
