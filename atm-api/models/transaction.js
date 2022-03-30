@@ -9,8 +9,8 @@ module.exports = {
     },
     add: (transaction, callback) => {
         return db.query(
-            "INSERT INTO transaction (accountId, timestamp, toAccount, type, value, cardnumber) VALUES(?, ?, ?, ?, ?, ?)",
-            [ transaction.accountId, transaction.timestamp, transaction.toAccount, transaction.type, transaction.value, transaction.cardnumber ],
+            "INSERT INTO transaction (accountId, timestamp, toAccount, type, value, cardNumber) VALUES(?, ?, ?, ?, ?, ?)",
+            [ transaction.accountId, transaction.timestamp, transaction.toAccount, transaction.type, transaction.value, transaction.cardNumber ],
             callback
         );
     },
@@ -19,8 +19,8 @@ module.exports = {
     }, 
     update: (id, transaction, callback) => {
         return db.query(
-            "UPDATE transaction SET accountId=?, timestamp=?, toAccount=?, type=?, value=?, cardnumber=? WHERE transactionid=?",
-            [ transaction.accountId, transaction.timestamp, transaction.toAccount, transaction.type, transaction.value, transaction.cardnumber, id ],
+            "UPDATE transaction SET accountId=?, timestamp=?, toAccount=?, type=?, value=?, cardNumber=? WHERE transactionid=?",
+            [ transaction.accountId, transaction.timestamp, transaction.toAccount, transaction.type, transaction.value, transaction.cardNumber, id ],
             callback
         ); 
     } 
