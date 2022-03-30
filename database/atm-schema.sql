@@ -72,7 +72,7 @@ CREATE TABLE bankdb.customer_has_account (
 CREATE TABLE bankdb.transaction (
   transactionId INT NOT NULL AUTO_INCREMENT,
   accountId INT NOT NULL,
-  timestamp DATE NOT NULL,
+  timestamp DATETIME NOT NULL,
   toAccount VARCHAR(45),
   type ENUM('INSERT', 'TAKE') NOT NULL,
   value INT NOT NULL,
