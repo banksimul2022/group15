@@ -1,7 +1,7 @@
-QT -= gui
+QT += widgets
 
 TEMPLATE = lib
-DEFINES += ATMENGINE_LIBRARY
+DEFINES += PINUI_LIBRARY
 
 CONFIG += c++11
 
@@ -10,14 +10,19 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    atm-engine.cpp
+    pinui.cpp \
+    pinuiwidget.cpp
 
 HEADERS += \
-    atm-engine_global.h \
-    atm-engine.h
+    PinUI_global.h \
+    pinui.h \
+    pinuiwidget.h
 
 # Default rules for deployment.
 unix {
     target.path = /usr/lib
 }
 !isEmpty(target.path): INSTALLS += target
+
+FORMS += \
+    pinuiwidget.ui

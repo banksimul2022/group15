@@ -1,14 +1,19 @@
 # group15 - ATM Project
 
-## atm-sql-schema.sql
-SQL script to setup the database layout used by the ATM
+## database
+Contains SQL script for creating the bankdb database layout.  
+Also contains a script to add test data into the database.
+
+### The database layout
+![Database Layout](database/layout.png)
 
 ## atm-api
-NodeJS REST API backend for authentication/account management
+NodeJS REST API backend for authentication/account management.
 
-## atm-engine
-DLL/Shared library used for communication with the `atm-api`
+## atm-dll
+Contains DLL/Shared libraries used by `atm-ui` for different tasks.  
+Refer to `atm-dll/README.md` for information about each component.
 
 ## atm-ui
 Allows the user to widthdraw/view their balance  
-Uses the `atm-engine` shared library to fetch/update data in the SQL database
+Uses DLLs/Shared libraries in `atm-dll` to acomplish vital application specific functions.
