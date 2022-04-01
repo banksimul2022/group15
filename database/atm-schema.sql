@@ -20,8 +20,8 @@ CREATE TABLE bankdb.customer (
 -- Create the account table
 CREATE TABLE bankdb.account (
   accountId INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-  credit INT NOT NULL,
-  accountNumber VARCHAR(45) NOT NULL
+  balance DECIMAL(14,2) NOT NULL,
+  accountNumber VARCHAR(45) UNIQUE NOT NULL
 ) ENGINE = InnoDB;
 
 -- Create the card table
@@ -29,8 +29,9 @@ CREATE TABLE bankdb.card (
   cardId INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   customerId INT NOT NULL,
   accountId INT NOT NULL,
-  cardNumber INT NOT NULL,
+  cardNumber INT UNIQUE NOT NULL,
   locked TINYINT NOT NULL,
+  credit TINYINT NOT NULL,
   pin VARCHAR(255) NOT NULL,
 
   INDEX fk_card_customer1_idx (customerId ASC) VISIBLE,
@@ -73,10 +74,10 @@ CREATE TABLE bankdb.transaction (
   transactionId INT NOT NULL AUTO_INCREMENT,
   accountId INT NOT NULL,
   timestamp DATETIME NOT NULL,
-  toAccount VARCHAR(45),
-  type ENUM('INSERT', 'TAKE') NOT NULL,
-  value INT NOT NULL,
+  type ENUM('DEPOSIT', 'WITHDRAW') NOT NULL,
+  sum DECIMAL(14,2) NOT NULL,
   cardNumber VARCHAR(16),
+  toAccount VARCHAR(45),
 
   PRIMARY KEY (transactionId, accountId),
 

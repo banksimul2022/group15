@@ -8,12 +8,12 @@ module.exports = {
         return db.query("SELECT * FROM account", callback);
     },
     add: (account, callback) => {
-        return db.query("INSERT INTO account (credit, accountNumber) VALUES(?, ?)", [ account.credit, account.accountNumber ], callback);
+        return db.query("INSERT INTO account (balance, accountNumber) VALUES(?, ?)", [ account.balance, account.accountNumber ], callback);
     },
     delete: (id, callback) => {
         return db.query("DELETE FROM account WHERE accountId=?", [ id ], callback);
     },
     update: (id, account, callback) => {
-        return db.query("UPDATE account SET credit=?, accountNumber=? WHERE accountId=?", [ account.credit, account.accountNumber, id ], callback);
+        return db.query("UPDATE account SET balance=?, accountNumber=? WHERE accountId=?", [ account.balance, account.accountNumber, id ], callback);
     }
 };
