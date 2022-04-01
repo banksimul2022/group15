@@ -19,8 +19,8 @@ module.exports = {
     }, 
     update: (id, transaction, callback) => {
         return db.query(
-            "UPDATE transaction SET accountId=?, timestamp=?, toAccount=?, type=?, value=?, cardNumber=? WHERE transactionid=?",
-            [ transaction.accountId, transaction.timestamp, transaction.toAccount, transaction.type, transaction.value, transaction.cardNumber, id ],
+            "UPDATE transaction SET accountId=?, timestamp=?, toAccount=?, type=?, sum=?, cardNumber=? WHERE transactionid=?",
+            [ transaction.accountId, transaction.timestamp, transaction.toAccount, transaction.type, transaction.sum, transaction.cardNumber, id ],
             callback
         ); 
     } 

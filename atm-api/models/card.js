@@ -12,7 +12,7 @@ module.exports = {
     },
     add: (card, callback) => {
         bcrypt.hash(card.pin, saltRounds, (err, hash) => {
-            return db.query("INSERT INTO card (cardId, customerId, accountId, cardNumber, locked, pin) VALUES(?, ?, ?, ?, ?, ?)", [ card.cardId, card.customerId, card.accountId, card.cardNumber, card.locked, hash], callback);         
+            return db.query("INSERT INTO card (cardId, customerId, accountId, cardNumber, locked, credit, pin) VALUES(?, ?, ?, ?, ?, ?, ?)", [ card.cardId, card.customerId, card.accountId, card.cardNumber, card.locked, card.credit, hash ], callback);
         });
     },
     delete: (id, callback) => {
@@ -20,7 +20,7 @@ module.exports = {
     },
     update: (id, card, callback) => {
         bcrypt.hash(card.pin, saltRounds, (err, hash) => {
-            return db.query("UPDATE card SET customerId=?, accountId=?, cardNumber=?, locked=?, pin=? WHERE cardId=?", [ card.customerId, card.accountId, card.cardNumber, card.locked, hash, id ], callback);
+            return db.query("UPDATE card SET customerId=?, accountId=?, cardNumber=?, locked=?, credit=?, pin=? WHERE cardId=?", [ card.customerId, card.accountId, card.cardNumber, card.locked, card.credit, hash, id ], callback);
         });
     }
 };
