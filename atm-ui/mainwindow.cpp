@@ -4,9 +4,14 @@
 
 #include <QShortcut>
 
-MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), currentPage(nullptr), ui(new Ui::MainWindow) {
+MainWindow::MainWindow(QWidget *parent) :
+    QMainWindow(parent),
+    currentPage(nullptr),
+    ui(new Ui::MainWindow)
+{
     ui->setupUi(this);
     new QShortcut(QKeySequence(Qt::Key_F11), this, SLOT(fullscreenShortcut()));
+    this->baseTitle = this->windowTitle();
     this->setPage(new PageInsertCard);
 }
 
@@ -31,9 +36,11 @@ void MainWindow::setPage(QWidget *page) {
 
     if(!page) {
         this->currentPage = nullptr;
+        this->setWindowTitle(this->baseTitle);
         return;
     }
 
+    this->setWindowTitle(QString("%1 - %2").arg(this->baseTitle, page->windowTitle()));
     this->currentPage = page;
 
     QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);

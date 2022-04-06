@@ -22,5 +22,6 @@ class MainWindow : public QMainWindow {
 
         QWidget *currentPage;
         Ui::MainWindow *ui;
+        QString baseTitle;
 };
 #endif // MAINWINDOW_H
