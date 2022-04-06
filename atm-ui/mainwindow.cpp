@@ -1,11 +1,13 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "pageinsertcard.h"
 
 #include <QShortcut>
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), currentPage(nullptr), ui(new Ui::MainWindow) {
     ui->setupUi(this);
     new QShortcut(QKeySequence(Qt::Key_F11), this, SLOT(fullscreenShortcut()));
+    this->setPage(new PageInsertCard);
 }
 
 MainWindow::~MainWindow() {
