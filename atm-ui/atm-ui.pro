@@ -11,15 +11,18 @@ CONFIG += c++11
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    pageinsertcard.cpp
+    pageinsertcard.cpp \
+    pagemainaccountview.cpp
 
 HEADERS += \
     mainwindow.h \
-    pageinsertcard.h
+    pageinsertcard.h \
+    pagemainaccountview.h
 
 FORMS += \
     mainwindow.ui \
-    pageinsertcard.ui
+    pageinsertcard.ui \
+    pagemainaccountview.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
