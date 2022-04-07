@@ -15,6 +15,7 @@ SOURCES += \
     pageinsertcard.cpp \
     pagemainaccountview.cpp \
     pagetransactions.cpp \
+    pagewithdraw.cpp \
     userstatusbarwidget.cpp
 
 HEADERS += \
@@ -23,6 +24,7 @@ HEADERS += \
     pageinsertcard.h \
     pagemainaccountview.h \
     pagetransactions.h \
+    pagewithdraw.h \
     userstatusbarwidget.h
 
 FORMS += \
@@ -31,6 +33,7 @@ FORMS += \
     pageinsertcard.ui \
     pagemainaccountview.ui \
     pagetransactions.ui \
+    pagewithdraw.ui \
     userstatusbarwidget.ui
 
 # Default rules for deployment.
