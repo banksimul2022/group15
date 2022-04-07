@@ -1,12 +1,12 @@
-#include "pagedeposit.h"
-#include "ui_pagedeposit.h"
+#include "pagekeypad.h"
+#include "ui_pagekeypad.h"
 #include "userstatusbarwidget.h"
 
 #include <QDebug>
 
-PageDeposit::PageDeposit(QWidget *parent) :
+PageKeypad::PageKeypad(QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::PageDeposit)
+    ui(new Ui::PageKeypad)
 {
     ui->setupUi(this);
     this->barWidget = new UserStatusBarWidget;
@@ -22,17 +22,17 @@ PageDeposit::PageDeposit(QWidget *parent) :
     foreach(QPushButton *btn, gridButtons) {
         // Quick hack to exclude the "Ok" and "Cancel" buttons from having their clicked signals added
         if(btn->text().length() == 1) {
-            connect(btn, &QPushButton::clicked, this, &PageDeposit::onKeypadButtonPress);
+            connect(btn, &QPushButton::clicked, this, &PageKeypad::onKeypadButtonPress);
         }
     }
 }
 
-void PageDeposit::onKeypadButtonPress() {
+void PageKeypad::onKeypadButtonPress() {
     QPushButton* btn = qobject_cast<QPushButton*>(this->sender());
     qDebug() << btn->text();
     this->barWidget->resetTimeout();
 }
 
-PageDeposit::~PageDeposit() {
+PageKeypad::~PageKeypad() {
     delete ui;
 }

@@ -11,8 +11,8 @@ CONFIG += c++11
 SOURCES += \
     atmwindow.cpp \
     main.cpp \
-    pagedeposit.cpp \
     pageinsertcard.cpp \
+    pagekeypad.cpp \
     pagemainaccountview.cpp \
     pagetransactions.cpp \
     pagewithdraw.cpp \
@@ -20,8 +20,8 @@ SOURCES += \
 
 HEADERS += \
     atmwindow.h \
-    pagedeposit.h \
     pageinsertcard.h \
+    pagekeypad.h \
     pagemainaccountview.h \
     pagetransactions.h \
     pagewithdraw.h \
@@ -29,8 +29,8 @@ HEADERS += \
 
 FORMS += \
     atmwindow.ui \
-    pagedeposit.ui \
     pageinsertcard.ui \
+    pagekeypad.ui \
     pagemainaccountview.ui \
     pagetransactions.ui \
     pagewithdraw.ui \
