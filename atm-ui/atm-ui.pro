@@ -12,17 +12,20 @@ SOURCES += \
     main.cpp \
     mainwindow.cpp \
     pageinsertcard.cpp \
-    pagemainaccountview.cpp
+    pagemainaccountview.cpp \
+    userstatusbarwidget.cpp
 
 HEADERS += \
     mainwindow.h \
     pageinsertcard.h \
-    pagemainaccountview.h
+    pagemainaccountview.h \
+    userstatusbarwidget.h
 
 FORMS += \
     mainwindow.ui \
     pageinsertcard.ui \
-    pagemainaccountview.ui
+    pagemainaccountview.ui \
+    userstatusbarwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
