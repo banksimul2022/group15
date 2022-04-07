@@ -1,18 +1,18 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef ATMWINDOW_H
+#define ATMWINDOW_H
 
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
+namespace Ui { class ATMWindow; }
 QT_END_NAMESPACE
 
-class MainWindow : public QMainWindow {
+class ATMWindow : public QMainWindow {
     Q_OBJECT
 
     public:
-        MainWindow(QWidget *parent = nullptr);
-        ~MainWindow();
+        ATMWindow(QWidget *parent = nullptr);
+        ~ATMWindow();
 
     public slots:
         void fullscreenShortcut();
@@ -21,7 +21,7 @@ class MainWindow : public QMainWindow {
         void setPage(QWidget *page);
 
         QWidget *currentPage;
-        Ui::MainWindow *ui;
+        Ui::ATMWindow *ui;
         QString baseTitle;
 };
-#endif // MAINWINDOW_H
+#endif // ATMWINDOW_H

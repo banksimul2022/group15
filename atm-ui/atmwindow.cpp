@@ -1,13 +1,13 @@
-#include "mainwindow.h"
-#include "ui_mainwindow.h"
+#include "atmwindow.h"
+#include "ui_atmwindow.h"
 #include "pageinsertcard.h"
 
 #include <QShortcut>
 
-MainWindow::MainWindow(QWidget *parent) :
+ATMWindow::ATMWindow(QWidget *parent) :
     QMainWindow(parent),
     currentPage(nullptr),
-    ui(new Ui::MainWindow)
+    ui(new Ui::ATMWindow)
 {
     ui->setupUi(this);
     new QShortcut(QKeySequence(Qt::Key_F11), this, SLOT(fullscreenShortcut()));
@@ -15,11 +15,11 @@ MainWindow::MainWindow(QWidget *parent) :
     this->setPage(new PageInsertCard);
 }
 
-MainWindow::~MainWindow() {
+ATMWindow::~ATMWindow() {
     delete ui;
 }
 
-void MainWindow::fullscreenShortcut() {
+void ATMWindow::fullscreenShortcut() {
     if(this->isFullScreen()) {
         this->showNormal();
     } else {
@@ -27,7 +27,7 @@ void MainWindow::fullscreenShortcut() {
     }
 }
 
-void MainWindow::setPage(QWidget *page) {
+void ATMWindow::setPage(QWidget *page) {
     if(this->currentPage) {
         this->ui->rootLayout->removeWidget(this->currentPage);
         this->currentPage->setParent(nullptr);
