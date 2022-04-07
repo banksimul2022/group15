@@ -13,18 +13,21 @@ SOURCES += \
     mainwindow.cpp \
     pageinsertcard.cpp \
     pagemainaccountview.cpp \
+    pagetransactions.cpp \
     userstatusbarwidget.cpp
 
 HEADERS += \
     mainwindow.h \
     pageinsertcard.h \
     pagemainaccountview.h \
+    pagetransactions.h \
     userstatusbarwidget.h
 
 FORMS += \
     mainwindow.ui \
     pageinsertcard.ui \
     pagemainaccountview.ui \
+    pagetransactions.ui \
     userstatusbarwidget.ui
 
 # Default rules for deployment.
