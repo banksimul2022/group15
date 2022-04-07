@@ -13,7 +13,13 @@ class PageKeypad : public QWidget {
     Q_OBJECT
 
     public:
-        explicit PageKeypad(QWidget *parent = nullptr);
+
+        enum Action {
+            Withdraw,
+            Deposit
+        };
+
+        explicit PageKeypad(PageKeypad::Action action, QWidget *parent = nullptr);
         ~PageKeypad();
 
     private slots:

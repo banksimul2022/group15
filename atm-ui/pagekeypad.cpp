@@ -4,12 +4,21 @@
 
 #include <QDebug>
 
-PageKeypad::PageKeypad(QWidget *parent) :
+PageKeypad::PageKeypad(PageKeypad::Action action, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::PageKeypad)
 {
     ui->setupUi(this);
     this->barWidget = new UserStatusBarWidget;
+
+    if(action == PageKeypad::Action::Withdraw) {
+        this->setWindowTitle(QCoreApplication::translate("PageKeypad", "Nosto - Muu summa", nullptr));
+        this->ui->lblAmountText->setText(QCoreApplication::translate("PageKeypad", "Nostettava summa:", nullptr));
+        this->ui->btnDot->setVisible(false);
+    } else {
+        this->setWindowTitle(QCoreApplication::translate("PageKeypad", "Talletus", nullptr));
+        this->ui->lblAmountText->setText(QCoreApplication::translate("PageKeypad", "Talletettava summa:", nullptr));
+    }
 
     QMargins margins = this->barWidget->contentsMargins();
     margins.setTop(6);

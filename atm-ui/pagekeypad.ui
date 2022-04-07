@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Talletus</string>
+   <string/>
   </property>
   <layout class="QVBoxLayout" name="widgetRootLayout" stretch="0,1,0">
    <property name="spacing">
@@ -36,7 +36,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Talletettava summa:</string>
+        <string/>
        </property>
        <property name="textFormat">
         <enum>Qt::PlainText</enum>
