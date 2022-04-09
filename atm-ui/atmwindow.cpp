@@ -12,7 +12,7 @@ ATMWindow::ATMWindow(QWidget *parent) :
     ui->setupUi(this);
     new QShortcut(QKeySequence(Qt::Key_F11), this, SLOT(fullscreenShortcut()));
     this->baseTitle = this->windowTitle();
-    this->setPage(new PageInsertCard);
+    this->setPage(new PageInsertCard(this));
 }
 
 ATMWindow::~ATMWindow() {

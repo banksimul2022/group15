@@ -11,6 +11,7 @@ CONFIG += c++11
 SOURCES += \
     atmwindow.cpp \
     main.cpp \
+    pagebase.cpp \
     pageinsertcard.cpp \
     pagekeypad.cpp \
     pagemainaccountview.cpp \
@@ -20,6 +21,7 @@ SOURCES += \
 
 HEADERS += \
     atmwindow.h \
+    pagebase.h \
     pageinsertcard.h \
     pagekeypad.h \
     pagemainaccountview.h \
