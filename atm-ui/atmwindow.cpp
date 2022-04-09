@@ -27,6 +27,10 @@ void ATMWindow::fullscreenShortcut() {
     }
 }
 
+void ATMWindow::logout() {
+
+}
+
 void ATMWindow::setPage(QWidget *page) {
     if(this->currentPage) {
         this->ui->rootLayout->removeWidget(this->currentPage);

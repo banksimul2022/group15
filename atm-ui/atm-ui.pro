@@ -25,6 +25,7 @@ HEADERS += \
     pagemainaccountview.h \
     pagetransactions.h \
     pagewithdraw.h \
+    statemanager.h \
     userstatusbarwidget.h
 
 FORMS += \
