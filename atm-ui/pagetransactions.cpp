@@ -2,12 +2,12 @@
 #include "ui_pagetransactions.h"
 #include "userstatusbarwidget.h"
 
-PageTransactions::PageTransactions(QWidget *parent) :
-    QWidget(parent),
+PageTransactions::PageTransactions(StateManager *stateManager, QWidget *parent) :
+    PageWithUserBar(stateManager, parent),
     ui(new Ui::PageTransactions)
 {
     ui->setupUi(this);
-    this->ui->widgetRootLayout->addWidget(new UserStatusBarWidget);
+    this->setupUserBar(this->ui->widgetRootLayout);
 }
 
 PageTransactions::~PageTransactions() {

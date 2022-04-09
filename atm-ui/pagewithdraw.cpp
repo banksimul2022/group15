@@ -4,12 +4,12 @@
 
 #include <QDebug>
 
-PageWithdraw::PageWithdraw(QWidget *parent) :
-    QWidget(parent),
+PageWithdraw::PageWithdraw(StateManager *stateManager, QWidget *parent) :
+    PageWithUserBar(stateManager, parent),
     ui(new Ui::PageWithdraw)
 {
     ui->setupUi(this);
-    this->ui->widgetRootLayout->addWidget(new UserStatusBarWidget);
+    this->setupUserBar(this->ui->widgetRootLayout);
 
     QList<QPushButton*> withdrawButtons = this->findChildren<QPushButton*>();
 

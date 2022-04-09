@@ -17,6 +17,7 @@ SOURCES += \
     pagemainaccountview.cpp \
     pagetransactions.cpp \
     pagewithdraw.cpp \
+    pagewithuserbar.cpp \
     userstatusbarwidget.cpp
 
 HEADERS += \
@@ -27,6 +28,7 @@ HEADERS += \
     pagemainaccountview.h \
     pagetransactions.h \
     pagewithdraw.h \
+    pagewithuserbar.h \
     statemanager.h \
     userstatusbarwidget.h
 

@@ -1,17 +1,19 @@
 #ifndef PAGETRANSACTIONS_H
 #define PAGETRANSACTIONS_H
 
+#include "pagewithuserbar.h"
+
 #include <QWidget>
 
 namespace Ui {
     class PageTransactions;
 }
 
-class PageTransactions : public QWidget {
+class PageTransactions : public PageWithUserBar {
     Q_OBJECT
 
     public:
-        explicit PageTransactions(QWidget *parent = nullptr);
+        explicit PageTransactions(StateManager *stateManager, QWidget *parent = nullptr);
         ~PageTransactions();
 
     private:

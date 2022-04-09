@@ -4,12 +4,17 @@
 
 #include <QDebug>
 
-PageKeypad::PageKeypad(PageKeypad::Action action, QWidget *parent) :
-    QWidget(parent),
+PageKeypad::PageKeypad(PageKeypad::Action action, StateManager *stateManager, QWidget *parent) :
+    PageWithUserBar(stateManager, parent),
     ui(new Ui::PageKeypad)
 {
     ui->setupUi(this);
-    this->barWidget = new UserStatusBarWidget;
+
+    QMargins margins = this->userStatusBar->contentsMargins();
+    margins.setTop(6);
+    this->userStatusBar->setContentsMargins(margins);
+
+    this->setupUserBar(this->ui->widgetRootLayout);
 
     if(action == PageKeypad::Action::Withdraw) {
         this->setWindowTitle(QCoreApplication::translate("PageKeypad", "Nosto - Muu summa", nullptr));
@@ -19,12 +24,6 @@ PageKeypad::PageKeypad(PageKeypad::Action action, QWidget *parent) :
         this->setWindowTitle(QCoreApplication::translate("PageKeypad", "Talletus", nullptr));
         this->ui->lblAmountText->setText(QCoreApplication::translate("PageKeypad", "Talletettava summa:", nullptr));
     }
-
-    QMargins margins = this->barWidget->contentsMargins();
-    margins.setTop(6);
-    this->barWidget->setContentsMargins(margins);
-
-    this->ui->widgetRootLayout->addWidget(this->barWidget);
 
     QList<QPushButton*> gridButtons = this->findChildren<QPushButton*>();
 
@@ -39,7 +38,7 @@ PageKeypad::PageKeypad(PageKeypad::Action action, QWidget *parent) :
 void PageKeypad::onKeypadButtonPress() {
     QPushButton* btn = qobject_cast<QPushButton*>(this->sender());
     qDebug() << btn->text();
-    this->barWidget->resetTimeout();
+    this->userStatusBar->resetTimeout();
 }
 
 PageKeypad::~PageKeypad() {
