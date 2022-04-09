@@ -53,6 +53,6 @@ void ATMWindow::setPage(QWidget *page) {
     sizePolicy.setHeightForWidth(this->currentPage->sizePolicy().hasHeightForWidth());
     this->currentPage->setSizePolicy(sizePolicy);
 
-    this->currentPage->setParent(this->ui->rootWidget);
+    this->currentPage->setParent(this);
     this->ui->rootLayout->addWidget(this->currentPage);
 }
