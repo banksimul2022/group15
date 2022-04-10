@@ -5,6 +5,8 @@ const logger = require("morgan");
 const helmet = require("helmet");
 const cors = require("cors");
 
+require('dotenv').config();
+
 const crudRouter = require("./routes/crud");
 const apiRouter = require("./routes/api");
 
