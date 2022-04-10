@@ -29,7 +29,7 @@ CREATE TABLE bankdb.card (
   cardId INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   customerId INT NOT NULL,
   accountId INT NOT NULL,
-  cardNumber INT UNIQUE NOT NULL,
+  cardNumber VARCHAR(10) UNIQUE NOT NULL,
   locked TINYINT NOT NULL,
   credit TINYINT NOT NULL,
   pin VARCHAR(255) NOT NULL,
@@ -76,7 +76,7 @@ CREATE TABLE bankdb.transaction (
   timestamp DATETIME NOT NULL,
   type ENUM('DEPOSIT', 'WITHDRAW') NOT NULL,
   sum DECIMAL(14,2) NOT NULL,
-  cardNumber VARCHAR(16),
+  cardNumber VARCHAR(10),
   toAccount VARCHAR(45),
 
   PRIMARY KEY (transactionId, accountId),
