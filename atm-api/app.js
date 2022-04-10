@@ -6,6 +6,7 @@ const helmet = require("helmet");
 const cors = require("cors");
 
 const crudRouter = require("./routes/crud");
+const apiRouter = require("./routes/api");
 
 const app = express();
 
@@ -18,5 +19,6 @@ app.use(express.urlencoded({ extended: false }));
 // app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/crud", crudRouter);
+app.use("/api", apiRouter);
 
 module.exports = app;
