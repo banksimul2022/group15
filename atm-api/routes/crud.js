@@ -1,10 +1,10 @@
 const router = require("express").Router();
 
-const customerRouter = require("./customer");
-const accountRouter = require("./account");
-const cardRouter = require("./card");
-const transactionRouter = require("./transaction");
-const customer_has_accountRouter = require("./customer_has_account");
+const customerRouter = require("./crud/customer");
+const accountRouter = require("./crud/account");
+const cardRouter = require("./crud/card");
+const transactionRouter = require("./crud/transaction");
+const customer_has_accountRouter = require("./crud/customer_has_account");
 
 router.use("/customer", customerRouter);
 router.use("/account", accountRouter);

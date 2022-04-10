@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const customer_has_account = require("../models/customer_has_account");
-const butil = require("../util");
+const customer_has_account = require("../../models/crud/customer_has_account");
+const butil = require("../../util");
 
 router.get("/:id?", (req, res) => {
     if(req.params.id) {

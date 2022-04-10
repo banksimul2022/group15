@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const card = require("../models/card");
-const butil = require("../util");
+const card = require("../../models/crud/card");
+const butil = require("../../util");
 
 router.get("/:id?", (req, res) => {
     if(req.params.id) {
