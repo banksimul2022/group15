@@ -36,9 +36,23 @@ PageKeypad::PageKeypad(PageKeypad::Action action, StateManager *stateManager, QW
 }
 
 void PageKeypad::onKeypadButtonPress() {
-    QPushButton* btn = qobject_cast<QPushButton*>(this->sender());
-    qDebug() << btn->text();
     this->userStatusBar->resetTimeout();
+
+    QString name = this->sender()->objectName();
+
+    if(name.startsWith("btnDigit")) {
+        bool ok;
+        uint val = name.remove(0, 8).toUInt(&ok);
+        Q_ASSERT(ok);
+        qDebug() << val;
+    } else if(name == "btnDot") {
+        qDebug() << "Dot";
+    } else if(name == "btnClear") {
+        qDebug() << "Clear";
+    } else {
+        // Code execution SHOULD not get here
+        Q_ASSERT(false);
+    }
 }
 
 PageKeypad::~PageKeypad() {
