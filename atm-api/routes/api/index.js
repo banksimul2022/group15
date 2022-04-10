@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-const loginRouter = require("./api/login");
+const loginRouter = require("./login");
 
 router.use("/login", loginRouter);
 
