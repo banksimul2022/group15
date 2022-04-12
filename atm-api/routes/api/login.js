@@ -34,7 +34,10 @@ router.post("/", (req, res) => {
             }
 
             res.json({
-                "token": jwt.sign({ card_number: req.body.card_number }, process.env.JWT_SECRET, { expiresIn: "1800s" }),
+                "token": jwt.sign({
+                    card_number: req.body.card_number,
+                    permissions: Number.MAX_SAFE_INTEGER // Use max value for now so that everyone has full permissions to everything
+                }, process.env.JWT_SECRET, { expiresIn: tokenTTL + "s" }),
                 "ttl": tokenTTL
             });
         });
