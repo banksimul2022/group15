@@ -23,19 +23,16 @@ router.post("/", (req, res) => {
 
             return dbRes[0];
         })
-        .then(data => {
-            return customer.getById(data.customerId)
-                .then(dbRes => { // Should always have atleast one result as a card must be linked to a customer
-                    data["permissions"] = dbRes[0].permissions;
-                    return data;
-                });
+        .then(async data => {
+            // Should always have atleast one result as a card must be linked to a customer
+            const dbRes = await customer.getById(data.customerId);
+            data["permissions"] = dbRes[0].permissions;
+            return data;
         })
-        .then(data => {
-            return bcrypt.compare(req.body.pin, data.pin)
-                .then(match => {
-                    data["match"] = match;
-                    return data;
-                });
+        .then(async data => {
+            const match = await bcrypt.compare(req.body.pin, data.pin);
+            data["match"] = match;
+            return data;
         })
         .then(data => {
             if(!data["match"]) {
