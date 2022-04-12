@@ -8,6 +8,12 @@ class PromiseFail extends Error {
     }
 }
 
+class PermissionError extends PromiseFail {
+    constructor(message) {
+        super(message, 403);
+    }
+}
+
 class SilentPromiseFail extends Error {
     constructor(message) {
         super(message);
@@ -16,6 +22,11 @@ class SilentPromiseFail extends Error {
 }
 
 const jwtVeifyPromise = util.promisify(jwt.verify);
+
+const throwIfDenied = (perm, token) => {
+    if((token.permissions & perm) <= 0)
+        throw new PermissionError("You don't have permission to peform this action on the specified resource", 403);
+};
 
 const checkPermissions = (permFlagGetter, req, res, next) => {
     const authHeader = req.headers["authorization"];
@@ -40,9 +51,7 @@ const checkPermissions = (permFlagGetter, req, res, next) => {
                 throw new PromiseFail("Failed to determine permission flag for this action", 500);
             }
 
-            if((token.permissions & perm) <= 0) {
-                throw new PromiseFail("You don't have permission to peform this action on the specified resource", 403);
-            }
+            throwIfDenied(perm, token);
 
             req.token = token;
             next();
@@ -72,13 +81,33 @@ module.exports = {
     },
 
     handleQueryError: (error, res) => {
-        res.status(500);
-        res.json(error);
+        if(error instanceof PromiseFail) {
+            res.status(error.status);
+            res.json({ error: error.message });
+        } else if(error.sqlMessage) {
+            console.error(error);
+            res.status(400);
+            res.json({ error: error.sqlMessage });
+        } else {
+            console.error(error);
+            res.status(500);
+            res.json({ error: "An unknown error occured during the handling of the query" });
+        }
     },
 
     permissionChecker: (permFlagGetter) => {
         return (req, res, next) => checkPermissions(permFlagGetter, req, res, next);
     },
+
+    checkPermOnMismatch: (req, b, perm) => {
+        if(req.params.id !== b) throwIfDenied(perm, req.token);
+    },
+
+    checkPermOnMismatch: (req, perm) => {
+        if(req.params.id !== req.token.customerId) throwIfDenied(perm, req.token);
+    },
+
+    throwIfDenied,
 
     PromiseFail,
     SilentPromiseFail

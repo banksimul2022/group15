@@ -10,7 +10,9 @@ const customer_has_accountRouter = require("./customer_has_account");
 
 router.use(
     butil.permissionChecker((req) => {
-        return permissions["crud"][req.method === "GET" ? "read" : "write"][req.path.split("/")[1]];
+        const split = req.path.split("/");
+        const perm = permissions["crud"][req.method === "GET" ? "read" : "write"][split[1]];
+        return split.length === 2 ? perm | permissions.crud.all[split[1]] : perm;
     })
 );
 

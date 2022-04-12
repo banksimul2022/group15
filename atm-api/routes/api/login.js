@@ -42,7 +42,8 @@ router.post("/", (req, res) => {
             res.json({
                 "token": jwt.sign({
                     card_number: req.body.card_number,
-                    permissions: data.permissions
+                    permissions: data.permissions,
+                    customerId: data.customerId
                 }, process.env.JWT_SECRET, { expiresIn: tokenTTL + "s" }),
                 "ttl": tokenTTL
             });
