@@ -34,6 +34,11 @@
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
+									"key": "permissions",
+									"value": "",
+									"type": "default"
+								},
+								{
 									"key": "firstName",
 									"value": "",
 									"type": "default"
@@ -75,6 +80,11 @@
 						"body": {
 							"mode": "urlencoded",
 							"urlencoded": [
+								{
+									"key": "permissions",
+									"value": "",
+									"type": "default"
+								},
 								{
 									"key": "firstName",
 									"value": "",
@@ -179,7 +189,7 @@
 									"type": "default"
 								},
 								{
-									"key": "value",
+									"key": "sum",
 									"value": "",
 									"type": "default"
 								},
@@ -231,7 +241,7 @@
 									"type": "default"
 								},
 								{
-									"key": "value",
+									"key": "sum",
 									"value": "",
 									"type": "default"
 								},
@@ -304,32 +314,32 @@
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
+									"key": "customerId",
+									"value": "",
+									"type": "default"
+								},
+								{
 									"key": "accountId",
 									"value": "",
 									"type": "default"
 								},
 								{
-									"key": "timestamp",
-									"value": "",
-									"type": "default"
-								},
-								{
-									"key": "toAccount",
-									"value": "",
-									"type": "default"
-								},
-								{
-									"key": "type",
-									"value": "",
-									"type": "default"
-								},
-								{
-									"key": "value",
-									"value": "",
-									"type": "default"
-								},
-								{
 									"key": "cardNumber",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "locked",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "credit",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "pin",
 									"value": "",
 									"type": "default"
 								}
@@ -356,7 +366,7 @@
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
-									"key": "customerId\n",
+									"key": "customerId",
 									"value": "",
 									"type": "default"
 								},
@@ -376,6 +386,11 @@
 									"type": "default"
 								},
 								{
+									"key": "credit",
+									"value": "",
+									"type": "default"
+								},
+								{
 									"key": "pin",
 									"value": "",
 									"type": "default"
@@ -383,13 +398,12 @@
 							]
 						},
 						"url": {
-							"raw": "{{crud_url}}/card/1",
+							"raw": "{{crud_url}}/card",
 							"host": [
 								"{{crud_url}}"
 							],
 							"path": [
-								"card",
-								"1"
+								"card"
 							]
 						}
 					},
@@ -444,7 +458,7 @@
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
-									"key": "credit",
+									"key": "balance",
 									"value": "",
 									"type": "default"
 								},
@@ -476,7 +490,7 @@
 							"mode": "urlencoded",
 							"urlencoded": [
 								{
-									"key": "credit",
+									"key": "balance",
 									"value": "",
 									"type": "default"
 								},
@@ -529,12 +543,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{crud_url}}/customer_has_account",
+							"raw": "{{crud_url}}/customer_has_account/",
 							"host": [
 								"{{crud_url}}"
 							],
 							"path": [
-								"customer_has_account"
+								"customer_has_account",
+								""
 							]
 						}
 					},
@@ -561,12 +576,13 @@
 							]
 						},
 						"url": {
-							"raw": "{{crud_url}}/customer_has_account",
+							"raw": "{{crud_url}}/customer_has_account/",
 							"host": [
 								"{{crud_url}}"
 							],
 							"path": [
-								"customer_has_account"
+								"customer_has_account",
+								"account"
 							]
 						}
 					},
@@ -593,12 +609,13 @@
 							]
 						},
 						"url": {
-							"raw": "{{crud_url}}/customer_has_account",
+							"raw": "{{crud_url}}/customer_has_account/",
 							"host": [
 								"{{crud_url}}"
 							],
 							"path": [
-								"customer_has_account"
+								"customer_has_account",
+								"account"
 							]
 						}
 					},
@@ -610,12 +627,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{crud_url}}/customer_has_account",
+							"raw": "{{crud_url}}/customer_has_account/",
 							"host": [
 								"{{crud_url}}"
 							],
 							"path": [
-								"customer_has_account"
+								"customer_has_account",
+								"account"
 							]
 						}
 					},
