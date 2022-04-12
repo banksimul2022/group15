@@ -4,26 +4,26 @@ const bcrypt = require('bcryptjs');
 const saltRounds = 10;
 
 module.exports = {
-    getById: (id, callback) => {
-        return db.query("SELECT * FROM card WHERE cardId=?", [ id ], callback);
+    getById: (id) => {
+        return db.query("SELECT * FROM card WHERE cardId=?", [ id ]);
     },
-    getAll: (callback) => {
-        return db.query("SELECT * FROM card", callback);
+    getAll: () => {
+        return db.query("SELECT * FROM card");
     },
-    add: (card, callback) => {
+    add: (card) => {
         bcrypt.hash(card.pin, saltRounds, (err, hash) => {
-            return db.query("INSERT INTO card (cardId, customerId, accountId, cardNumber, locked, credit, pin) VALUES(?, ?, ?, ?, ?, ?, ?)", [ card.cardId, card.customerId, card.accountId, card.cardNumber, card.locked, card.credit, hash ], callback);
+            return db.query("INSERT INTO card (cardId, customerId, accountId, cardNumber, locked, credit, pin) VALUES(?, ?, ?, ?, ?, ?, ?)", [ card.cardId, card.customerId, card.accountId, card.cardNumber, card.locked, card.credit, hash ]);
         });
     },
-    delete: (id, callback) => {
-        return db.query("DELETE FROM card WHERE cardId=?", [ id ], callback);
+    delete: (id) => {
+        return db.query("DELETE FROM card WHERE cardId=?", [ id ]);
     },
-    update: (id, card, callback) => {
+    update: (id, card) => {
         bcrypt.hash(card.pin, saltRounds, (err, hash) => {
-            return db.query("UPDATE card SET customerId=?, accountId=?, cardNumber=?, locked=?, credit=?, pin=? WHERE cardId=?", [ card.customerId, card.accountId, card.cardNumber, card.locked, card.credit, hash, id ], callback);
+            return db.query("UPDATE card SET customerId=?, accountId=?, cardNumber=?, locked=?, credit=?, pin=? WHERE cardId=?", [ card.customerId, card.accountId, card.cardNumber, card.locked, card.credit, hash, id ]);
         });
     },
-    getPin: (card_number, callback) => {
-        return db.query("SELECT pin FROM card WHERE cardNumber=?", [ card_number ], callback);
+    getPin: (card_number) => {
+        return db.query("SELECT pin FROM card WHERE cardNumber=?", [ card_number ]);
     }
 };

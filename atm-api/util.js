@@ -29,7 +29,7 @@ const checkPermissions = (permFlagGetter, req, res, next) => {
             res.json({ error: "Failed to determine permission flag for this action" });
             return;
         }
-
+        
         if((token.permissions & perm) <= 0) {
             res.status(403);
             res.json({ error: "You don't have permission to peform this action on the specified resource" });
@@ -47,14 +47,9 @@ module.exports = {
         return value === null || value === undefined ? default_value : value;
     },
 
-    handleQueryResult: (res, error, result) => {
-        if(error) {
-            res.status(500);
-            res.json(error);
-            return;
-        }
-
-        res.json(result);
+    handleQueryError: (error, res) => {
+        res.status(500);
+        res.json(error);
     },
 
     permissionChecker: (permFlagGetter) => {

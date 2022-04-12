@@ -5,22 +5,22 @@ const butil = require("../../util");
 
 router.get("/:id?", (req, res) => {
     if(req.params.id) {
-        account.getById(req.params.id, (error, result) => butil.handleQueryResult(res, error, result));
+        account.getById(req.params.id).then(result => res.json(result)).catch(error => butil.handleQueryError(error, res));
     } else {
-        account.getAll((error, result) => butil.handleQueryResult(res, error, result));
+        account.getAll().then(result => res.json(result)).catch(error => butil.handleQueryError(error, res));
     }
 });
 
 router.post("/", (req, res) => {
-    account.add(req.body, (error, result) => butil.handleQueryResult(res, error, result));
+    account.add(req.body).then(result => res.json(result)).catch(error => butil.handleQueryError(error, res));
 });
 
 router.delete("/:id", (req, res) => {
-    account.delete(req.params.id, (error, result) => butil.handleQueryResult(res, error, result));
+    account.delete(req.params.id).then(result => res.json(result)).catch(error => butil.handleQueryError(error, res));
 });
 
 router.put("/:id", (req, res) => {
-    account.update(req.params.id, req.body, (error, result) => butil.handleQueryResult(res, error, result));
+    account.update(req.params.id, req.body).then(result => res.json(result)).catch(error => butil.handleQueryError(error, res));
 });
 
 module.exports = router;

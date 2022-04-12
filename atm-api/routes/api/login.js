@@ -13,35 +13,33 @@ router.post("/", (req, res) => {
         return;
     }
 
-    card.getPin(req.body.card_number, (err, dbRes) => {
-        if(err) {
-            res.status(500); // Internal Server Error
-            res.json(err);
-            return;
-        }
-
-        if(dbRes.length < 1) {
-            res.status(404); // Not Found
-            res.json({ "error": "Unknown card_number" });
-            return;
-        }
-
-        bcrypt.compare(req.body.pin, dbRes[0].pin, (err, compRes) => {
-            if(!compRes) {
-                res.status(403); // Forbidden
-                res.json({ "error": "Invalid pin" });
+    card.getPin(req.body.card_number)
+        .then(dbRes => {
+            if(dbRes.length < 1) {
+                res.status(404); // Not Found
+                res.json({ "error": "Unknown card_number" });
                 return;
             }
 
-            res.json({
-                "token": jwt.sign({
-                    card_number: req.body.card_number,
-                    permissions: Number.MAX_SAFE_INTEGER // Use max value for now so that everyone has full permissions to everything
-                }, process.env.JWT_SECRET, { expiresIn: tokenTTL + "s" }),
-                "ttl": tokenTTL
+            bcrypt.compare(req.body.pin, dbRes[0].pin, (err, compRes) => {
+                if(!compRes) {
+                    res.status(403); // Forbidden
+                    res.json({ "error": "Invalid pin" });
+                    return;
+                }
+
+                res.json({
+                    "token": jwt.sign({
+                        card_number: req.body.card_number,
+                        permissions: Number.MAX_SAFE_INTEGER // Use max value for now so that everyone has full permissions to everything
+                    }, process.env.JWT_SECRET, { expiresIn: tokenTTL + "s" }),
+                    "ttl": tokenTTL
+                });
             });
+        }).catch(err => {
+            res.status(500); // Internal Server Error
+            res.json(err);
         });
-    });
 });
 
 module.exports = router;

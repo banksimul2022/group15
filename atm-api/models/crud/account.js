@@ -1,19 +1,19 @@
 const db = require("../../database");
 
 module.exports = {
-    getById: (id, callback) => {
-        return db.query("SELECT * FROM account WHERE accountId=?", [ id ], callback);
+    getById: (id) => {
+        return db.query("SELECT * FROM account WHERE accountId=?", [ id ]);
     },
-    getAll: (callback) => {
-        return db.query("SELECT * FROM account", callback);
+    getAll: () => {
+        return db.query("SELECT * FROM account");
     },
-    add: (account, callback) => {
-        return db.query("INSERT INTO account (balance, accountNumber) VALUES(?, ?)", [ account.balance, account.accountNumber ], callback);
+    add: (account) => {
+        return db.query("INSERT INTO account (balance, accountNumber) VALUES(?, ?)", [ account.balance, account.accountNumber ]);
     },
-    delete: (id, callback) => {
-        return db.query("DELETE FROM account WHERE accountId=?", [ id ], callback);
+    delete: (id) => {
+        return db.query("DELETE FROM account WHERE accountId=?", [ id ]);
     },
-    update: (id, account, callback) => {
-        return db.query("UPDATE account SET balance=?, accountNumber=? WHERE accountId=?", [ account.balance, account.accountNumber, id ], callback);
+    update: (id, account) => {
+        return db.query("UPDATE account SET balance=?, accountNumber=? WHERE accountId=?", [ account.balance, account.accountNumber, id ]);
     }
 };
