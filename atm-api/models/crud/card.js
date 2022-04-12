@@ -23,7 +23,7 @@ module.exports = {
             return db.query("UPDATE card SET customerId=?, accountId=?, cardNumber=?, locked=?, credit=?, pin=? WHERE cardId=?", [ card.customerId, card.accountId, card.cardNumber, card.locked, card.credit, hash, id ]);
         });
     },
-    getPin: (card_number) => {
-        return db.query("SELECT pin FROM card WHERE cardNumber=?", [ card_number ]);
+    getPinAndCustomerId: (card_number) => {
+        return db.query("SELECT pin, customerId FROM card WHERE cardNumber=?", [ card_number ]);
     }
 };

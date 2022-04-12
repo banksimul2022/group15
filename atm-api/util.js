@@ -1,6 +1,13 @@
 const jwt = require("jsonwebtoken");
 const util = require("util");
 
+class SilentPromiseFail extends Error {
+    constructor(message) {
+        super(message)
+        this.name = 'SILENT_PROMISE_FAIL';
+    }
+}
+
 const checkPermissions = (permFlagGetter, req, res, next) => {
     const authHeader = req.headers["authorization"];
 
@@ -54,5 +61,7 @@ module.exports = {
 
     permissionChecker: (permFlagGetter) => {
         return (req, res, next) => checkPermissions(permFlagGetter, req, res, next);
-    }
+    },
+
+    SilentPromiseFail
 };

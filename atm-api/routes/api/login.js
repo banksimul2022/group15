@@ -1,8 +1,10 @@
-const card = require('../../models/crud/card');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
+const customer = require("../../models/crud/customer");
+const card = require("../../models/crud/card");
+const butil = require("../../util");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
 
-const router = require('express').Router();
+const router = require("express").Router();
 
 const tokenTTL = 1800; // Token time to live in seconds
 
@@ -13,15 +15,25 @@ router.post("/", (req, res) => {
         return;
     }
 
-    card.getPin(req.body.card_number)
+    card.getPinAndCustomerId(req.body.card_number)
         .then(dbRes => {
             if(dbRes.length < 1) {
                 res.status(404); // Not Found
                 res.json({ "error": "Unknown card_number" });
-                return;
+                throw new butil.SilentPromiseFail("Unknown card_number");
             }
 
-            bcrypt.compare(req.body.pin, dbRes[0].pin, (err, compRes) => {
+            return dbRes[0];
+        })
+        .then(data => {
+            return customer.getById(data.customerId)
+                .then(dbRes => { // Should always have atleast one result as a card must be linked to a customer
+                    data["permissions"] = dbRes[0].permissions;
+                    return data;
+                });
+        })
+        .then(data => {
+            bcrypt.compare(req.body.pin, data.pin, (err, compRes) => {
                 if(!compRes) {
                     res.status(403); // Forbidden
                     res.json({ "error": "Invalid pin" });
@@ -31,12 +43,13 @@ router.post("/", (req, res) => {
                 res.json({
                     "token": jwt.sign({
                         card_number: req.body.card_number,
-                        permissions: Number.MAX_SAFE_INTEGER // Use max value for now so that everyone has full permissions to everything
+                        permissions: data.permissions
                     }, process.env.JWT_SECRET, { expiresIn: tokenTTL + "s" }),
                     "ttl": tokenTTL
                 });
             });
         }).catch(err => {
+            if(err instanceof butil.SilentPromiseFail) return;
             res.status(500); // Internal Server Error
             res.json(err);
         });
