@@ -7,21 +7,22 @@ DELETE FROM customer;
 DELETE FROM account;
 
 -- customer
--- +------------+-------------+------+-----+---------+----------------+
--- | Field      | Type        | Null | Key | Default | Extra          |
--- +------------+-------------+------+-----+---------+----------------+
--- | customerId | int         | NO   | PRI | NULL    | auto_increment |
--- | firstName  | varchar(45) | NO   |     | NULL    |                |
--- | lastName   | varchar(45) | NO   |     | NULL    |                |
--- | address    | varchar(45) | NO   |     | NULL    |                |
--- | phone      | varchar(45) | YES  |     | NULL    |                |
--- +------------+-------------+------+-----+---------+----------------+
-INSERT INTO customer VALUES(1, 'Roope', 'Ankka', 'Rahasäiliö 1',    10000);
-INSERT INTO customer VALUES(2, 'Aku',   'Ankka', 'Paratiisitie 13', 43738);
-INSERT INTO customer VALUES(3, 'Iines', 'Ankka', 'Lepolahti 8',     12464);
-INSERT INTO customer VALUES(4, 'Hupu',  'Ankka', 'Paratiisitie 13', 43738);
-INSERT INTO customer VALUES(5, 'Tupu',  'Ankka', 'Paratiisitie 13', 43738);
-INSERT INTO customer VALUES(6, 'Lupu',  'Ankka', 'Paratiisitie 13', 43738);
+-- +------------+--------------+------+-----+---------+----------------+
+-- | Field      | Type         | Null | Key | Default | Extra          |
+-- +------------+--------------+------+-----+---------+----------------+
+-- | customerId | int          | NO   | PRI | NULL    | auto_increment |
+-- | firstName  | int unsigned | NO   |     | NULL    |                |
+-- | firstName  | varchar(45)  | NO   |     | NULL    |                |
+-- | lastName   | varchar(45)  | NO   |     | NULL    |                |
+-- | address    | varchar(45)  | NO   |     | NULL    |                |
+-- | phone      | varchar(45)  | YES  |     | NULL    |                |
+-- +------------+--------------+------+-----+---------+----------------+
+INSERT INTO customer VALUES(1, 4294967295, 'Roope', 'Ankka', 'Rahasäiliö 1',    10000);
+INSERT INTO customer VALUES(2, 0,          'Aku',   'Ankka', 'Paratiisitie 13', 43738);
+INSERT INTO customer VALUES(3, 1,          'Iines', 'Ankka', 'Lepolahti 8',     12464);
+INSERT INTO customer VALUES(4, 0,          'Hupu',  'Ankka', 'Paratiisitie 13', 43738);
+INSERT INTO customer VALUES(5, 0,          'Tupu',  'Ankka', 'Paratiisitie 13', 43738);
+INSERT INTO customer VALUES(6, 0,          'Lupu',  'Ankka', 'Paratiisitie 13', 43738);
 
 
 -- account

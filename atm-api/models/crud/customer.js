@@ -8,12 +8,18 @@ module.exports = {
         return db.query("SELECT * FROM customer");
     },
     add: (customer) => {
-        return db.query("INSERT INTO customer (firstName, lastName, address, phone) VALUES(?, ?, ?, ?)", [ customer.firstName, customer.lastName, customer.address, customer.phone ]);
+        return db.query(
+            "INSERT INTO customer (permissions, firstName, lastName, address, phone) VALUES(?, ?, ?, ?, ?)", 
+            [ customer.permissions, customer.firstName, customer.lastName, customer.address, customer.phone ]
+        );
     },
     delete: (id) => {
         return db.query("DELETE FROM customer WHERE customerId=?", [ id ]);
     },
     update: (id, customer) => {
-        return db.query("UPDATE customer SET firstName=?, lastName=?, address=?, phone=? WHERE customerId=?", [ customer.firstName, customer.lastName, customer.address, customer.phone, id ]);
+        return db.query(
+            "UPDATE customer SET permissions=?, firstName=?, lastName=?, address=?, phone=? WHERE customerId=?", 
+            [ customer.permissions, customer.firstName, customer.lastName, customer.address, customer.phone, id ]
+        );
     }
 };

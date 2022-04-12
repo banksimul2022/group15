@@ -11,6 +11,7 @@ USE bankdb;
 -- Create the customer table
 CREATE TABLE bankdb.customer (
   customerId INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+  permissions INT UNSIGNED NOT NULL,
   firstName VARCHAR(45) NOT NULL,
   lastName VARCHAR(45) NOT NULL,
   address VARCHAR(45) NOT NULL,
