@@ -33,22 +33,28 @@ router.post("/", (req, res) => {
                 });
         })
         .then(data => {
-            bcrypt.compare(req.body.pin, data.pin, (err, compRes) => {
-                if(!compRes) {
-                    res.status(403); // Forbidden
-                    res.json({ "error": "Invalid pin" });
-                    return;
-                }
-
-                res.json({
-                    "token": jwt.sign({
-                        card_number: req.body.card_number,
-                        permissions: data.permissions
-                    }, process.env.JWT_SECRET, { expiresIn: tokenTTL + "s" }),
-                    "ttl": tokenTTL
+            return bcrypt.compare(req.body.pin, data.pin)
+                .then(match => {
+                    data["match"] = match;
+                    return data;
                 });
+        })
+        .then(data => {
+            if(!data["match"]) {
+                res.status(403); // Forbidden
+                res.json({ "error": "Invalid pin" });
+                return;
+            }
+
+            res.json({
+                "token": jwt.sign({
+                    card_number: req.body.card_number,
+                    permissions: data.permissions
+                }, process.env.JWT_SECRET, { expiresIn: tokenTTL + "s" }),
+                "ttl": tokenTTL
             });
-        }).catch(err => {
+        })
+        .catch(err => {
             if(err instanceof butil.SilentPromiseFail) return;
             res.status(500); // Internal Server Error
             res.json(err);
