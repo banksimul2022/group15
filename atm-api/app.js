@@ -3,6 +3,7 @@ const express = require("express");
 // const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const helmet = require("helmet");
+const butil = require("./util");
 const cors = require("cors");
 
 require('dotenv').config();
@@ -22,5 +23,15 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/crud", crudRouter);
 app.use("/api", apiRouter);
+
+app.use((err, req, res, next) => {
+    if(err instanceof butil.PromiseFail) {
+        res.status(err.status);
+        res.json({ error: err.message });
+        return;
+    }
+
+    next(err);
+});
 
 module.exports = app;
