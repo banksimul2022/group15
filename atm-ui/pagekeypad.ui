@@ -13,7 +13,7 @@
   <property name="windowTitle">
    <string/>
   </property>
-  <layout class="QVBoxLayout" name="widgetRootLayout" stretch="0,1,0">
+  <layout class="QVBoxLayout" name="widgetRootLayout" stretch="0,1">
    <property name="spacing">
     <number>0</number>
    </property>
@@ -298,48 +298,16 @@
      </item>
     </layout>
    </item>
-   <item>
-    <layout class="QHBoxLayout" name="okCancelLayout">
-     <item>
-      <widget class="QPushButton" name="btnCancel">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>60</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>Peruuta</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="btnOk">
-       <property name="minimumSize">
-        <size>
-         <width>0</width>
-         <height>60</height>
-        </size>
-       </property>
-       <property name="font">
-        <font>
-         <pointsize>14</pointsize>
-        </font>
-       </property>
-       <property name="text">
-        <string>OK</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PageWithUserBar</class>
+   <extends>QWidget</extends>
+   <header>pagewithuserbar.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

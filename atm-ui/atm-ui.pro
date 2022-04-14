@@ -18,7 +18,8 @@ SOURCES += \
     pagetransactions.cpp \
     pagewithdraw.cpp \
     pagewithuserbar.cpp \
-    userstatusbarwidget.cpp
+    userstatusbarwidget.cpp \
+    utility.cpp
 
 HEADERS += \
     atmwindow.h \
@@ -30,7 +31,8 @@ HEADERS += \
     pagewithdraw.h \
     pagewithuserbar.h \
     statemanager.h \
-    userstatusbarwidget.h
+    userstatusbarwidget.h \
+    utility.h
 
 FORMS += \
     atmwindow.ui \

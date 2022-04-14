@@ -11,26 +11,36 @@ class UserStatusBarWidget : public QWidget {
     Q_OBJECT
 
     public:
-        explicit UserStatusBarWidget(QWidget *parent = nullptr);
+        enum Mode {
+            logout,
+            leaveOnly,
+            leaveAndOk
+        };
+
+        explicit UserStatusBarWidget(Mode logout, QWidget *parent = nullptr);
         ~UserStatusBarWidget();
 
-        void resetTimeout();
+        void resetLeaveTimeout();
+        Mode mode();
 
     signals:
-        void logout();
+        void leave();
+        void ok();
 
     private slots:
-        void logoutTimerTick();
+        void leaveTimerTick();
 
-    private:
+private:
+        uint getDefaultTimeout();
         void updateTimeoutLabel();
 
         static const uint defaultLogoutTimeout = 30;
+        static const uint defaultLeaveTimeout = 10;
 
         Ui::UserStatusBarWidget *ui;
-        QMetaObject::Connection btnConnection;
-        QTimer *logoutTimer;
-        uint logoutTimout;
+        const Mode barMode;
+        QTimer *leaveTimer;
+        uint leaveTimout;
 };
 
 #endif // USERSTATUSBARWIDGET_H

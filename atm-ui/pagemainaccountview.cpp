@@ -3,7 +3,7 @@
 #include "userstatusbarwidget.h"
 
 PageMainAccountView::PageMainAccountView(StateManager *stateManager, QWidget *parent) :
-    PageWithUserBar(stateManager, parent),
+    PageWithUserBar(UserStatusBarWidget::Mode::logout, stateManager, parent),
     ui(new Ui::PageMainAccountView)
 {
     ui->setupUi(this);

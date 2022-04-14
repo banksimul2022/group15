@@ -5,7 +5,7 @@
 #include <QDebug>
 
 PageWithdraw::PageWithdraw(StateManager *stateManager, QWidget *parent) :
-    PageWithUserBar(stateManager, parent),
+    PageWithUserBar(UserStatusBarWidget::Mode::leaveAndOk, stateManager, parent),
     ui(new Ui::PageWithdraw)
 {
     ui->setupUi(this);
@@ -30,8 +30,6 @@ void PageWithdraw::onAmountButtonPress() {
         qDebug() << val;
     } else if(name == "btnOther") {
         qDebug() << "Other";
-    } else if(name == "btnCancel") {
-        qDebug() << "Cancel";
     } else {
         // Code execution SHOULD not get here
         Q_ASSERT(false);

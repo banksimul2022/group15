@@ -1,50 +1,75 @@
 #include "userstatusbarwidget.h"
 #include "ui_userstatusbarwidget.h"
+#include "utility.h"
 
+#include <QSignalMapper>
 #include <QTimer>
 
-UserStatusBarWidget::UserStatusBarWidget(QWidget *parent) :
+UserStatusBarWidget::UserStatusBarWidget(Mode mode, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::UserStatusBarWidget),
-    logoutTimer(new QTimer),
-    logoutTimout(UserStatusBarWidget::defaultLogoutTimeout)
+    barMode(mode),
+    leaveTimer(new QTimer(this)),
+    leaveTimout(this->getDefaultTimeout())
 {
     ui->setupUi(this);
     this->updateTimeoutLabel();
 
-    this->btnConnection = connect(this->ui->btnLogout, &QPushButton::clicked, this, &UserStatusBarWidget::logout);
-    connect(this->logoutTimer, &QTimer::timeout, this, &UserStatusBarWidget::logoutTimerTick);
+    Utility::retainSizeWhenHidden(this->ui->btnLeave);
+    Utility::retainSizeWhenHidden(this->ui->btnOk);
 
-    this->logoutTimer->start(1000);
+    this->connect(this->ui->btnLeave, &QPushButton::clicked, this, &UserStatusBarWidget::leave);
+
+    if(barMode == Mode::logout || barMode == Mode::leaveOnly) {
+        this->ui->btnOk->setVisible(false);
+        this->ui->buttonsLayout->setDirection(QBoxLayout::RightToLeft);
+    } else {
+        this->connect(this->ui->btnOk, &QPushButton::clicked, this, &UserStatusBarWidget::ok);
+    }
+
+    if(barMode == Mode::logout) {
+        this->ui->btnLeave->setText(QCoreApplication::translate("UserStatusBarWidget", "Kirjaudu Ulos", nullptr));
+        this->ui->lblTimerInfo->setText(QCoreApplication::translate("UserStatusBarWidget", "Uloskirjautumis ajastin:", nullptr));
+    } else {
+        this->ui->btnLeave->setText(QCoreApplication::translate("UserStatusBarWidget", "Takaisin", nullptr));
+        this->ui->lblTimerInfo->setText(QCoreApplication::translate("UserStatusBarWidget", "Palataan takasin:", nullptr));
+    }
+
+    this->connect(this->leaveTimer, &QTimer::timeout, this, &UserStatusBarWidget::leaveTimerTick);
+    this->leaveTimer->start(1000);
 }
 
-void UserStatusBarWidget::resetTimeout() {
-    this->logoutTimout = UserStatusBarWidget::defaultLogoutTimeout;
+void UserStatusBarWidget::resetLeaveTimeout() {
+    this->leaveTimout = this->getDefaultTimeout();
     this->updateTimeoutLabel();
+}
+
+UserStatusBarWidget::Mode UserStatusBarWidget::mode() {
+    return this->barMode;
 }
 
 void UserStatusBarWidget::updateTimeoutLabel() {
-    this->ui->lblTimer->setText(QString::number(this->logoutTimout));
+    this->ui->lblTimer->setText(QString::number(this->leaveTimout));
 }
 
-void UserStatusBarWidget::logoutTimerTick() {
-    if(--this->logoutTimout < 1) {
-        this->logoutTimer->stop();
-
-        // Prevent calling the logout signal twice by disconnecting the button on timeout
-        disconnect(this->btnConnection);
-
-        emit logout();
+void UserStatusBarWidget::leaveTimerTick() {
+    if(--this->leaveTimout < 1) {
+        this->leaveTimer->stop();
+        emit leave();
     }
 
     this->updateTimeoutLabel();
 }
 
+uint UserStatusBarWidget::getDefaultTimeout() {
+    return this->barMode == Mode::logout ? UserStatusBarWidget::defaultLogoutTimeout : UserStatusBarWidget::defaultLeaveTimeout;
+}
+
 UserStatusBarWidget::~UserStatusBarWidget() {
-    if(this->logoutTimer->isActive()) {
-        this->logoutTimer->stop();
+    if(this->leaveTimer->isActive()) {
+        this->leaveTimer->stop();
     }
 
-    delete this->logoutTimer;
     delete ui;
 }
+

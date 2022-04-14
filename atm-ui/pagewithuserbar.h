@@ -10,15 +10,16 @@ class PageWithUserBar : public PageBase {
     Q_OBJECT
 
     public:
-        explicit PageWithUserBar(StateManager *stateManager, QWidget *parent = nullptr);
+        explicit PageWithUserBar(UserStatusBarWidget::Mode mode, StateManager *stateManager, QWidget *parent = nullptr);
         virtual ~PageWithUserBar() = 0;
 
     protected:
         void setupUserBar(QLayout *layout);
         UserStatusBarWidget * userStatusBar;
 
-    private slots:
-        void logout();
+    protected slots:
+        virtual void onLeave();
+        virtual void onOk();
 };
 
 #endif // PAGEWITHUSERBAR_H

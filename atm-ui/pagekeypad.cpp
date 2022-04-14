@@ -5,7 +5,7 @@
 #include <QDebug>
 
 PageKeypad::PageKeypad(PageKeypad::Action action, StateManager *stateManager, QWidget *parent) :
-    PageWithUserBar(stateManager, parent),
+    PageWithUserBar(UserStatusBarWidget::Mode::leaveAndOk, stateManager, parent),
     ui(new Ui::PageKeypad)
 {
     ui->setupUi(this);
@@ -36,7 +36,7 @@ PageKeypad::PageKeypad(PageKeypad::Action action, StateManager *stateManager, QW
 }
 
 void PageKeypad::onKeypadButtonPress() {
-    this->userStatusBar->resetTimeout();
+    this->userStatusBar->resetLeaveTimeout();
 
     QString name = this->sender()->objectName();
 
@@ -45,10 +45,6 @@ void PageKeypad::onKeypadButtonPress() {
         uint val = name.remove(0, 8).toUInt(&ok);
         Q_ASSERT(ok);
         qDebug() << val;
-    } else if(name == "btnDot") {
-        qDebug() << "Dot";
-    } else if(name == "btnClear") {
-        qDebug() << "Clear";
     } else {
         // Code execution SHOULD not get here
         Q_ASSERT(false);
