@@ -1,0 +1,788 @@
+{
+	"info": {
+		"_postman_id": "da4fb14c-0f7a-42cf-a766-102a895e798b",
+		"name": "ATM-API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "customer",
+			"item": [
+				{
+					"name": "GET",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{crud_url}}/customer",
+							"host": [
+								"{{crud_url}}"
+							],
+							"path": [
+								"customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "permissions",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "firstName",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "lastName",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "address",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "phone",
+									"value": "",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{crud_url}}/customer",
+							"host": [
+								"{{crud_url}}"
+							],
+							"path": [
+								"customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "permissions",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "firstName",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "lastName",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "address",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "phone",
+									"value": "",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{crud_url}}/customer/1",
+							"host": [
+								"{{crud_url}}"
+							],
+							"path": [
+								"customer",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{crud_url}}/customer/1",
+							"host": [
+								"{{crud_url}}"
+							],
+							"path": [
+								"customer",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "transaction",
+			"item": [
+				{
+					"name": "GET",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{crud_url}}/transaction",
+							"host": [
+								"{{crud_url}}"
+							],
+							"path": [
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "accountId",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "timestamp",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "toAccount",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "type",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "sum",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "cardNumber",
+									"value": "",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{crud_url}}/transaction",
+							"host": [
+								"{{crud_url}}"
+							],
+							"path": [
+								"transaction"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "accountId",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "timestamp",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "toAccount",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "type",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "sum",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "cardNumber",
+									"value": "",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{crud_url}}/transaction/5",
+							"host": [
+								"{{crud_url}}"
+							],
+							"path": [
+								"transaction",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{crud_url}}/transaction/1",
+							"host": [
+								"{{crud_url}}"
+							],
+							"path": [
+								"transaction",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "card",
+			"item": [
+				{
+					"name": "GET",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{crud_url}}/card",
+							"host": [
+								"{{crud_url}}"
+							],
+							"path": [
+								"card"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "customerId",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "accountId",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "cardNumber",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "locked",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "credit",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "pin",
+									"value": "",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{crud_url}}/card",
+							"host": [
+								"{{crud_url}}"
+							],
+							"path": [
+								"card"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "customerId",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "accountId",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "cardNumber",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "locked",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "credit",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "pin",
+									"value": "",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{crud_url}}/card",
+							"host": [
+								"{{crud_url}}"
+							],
+							"path": [
+								"card"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{crud_url}}/card/1",
+							"host": [
+								"{{crud_url}}"
+							],
+							"path": [
+								"card",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "account",
+			"item": [
+				{
+					"name": "GET",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{crud_url}}/account",
+							"host": [
+								"{{crud_url}}"
+							],
+							"path": [
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "balance",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "accountNumber",
+									"value": "",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{crud_url}}/account",
+							"host": [
+								"{{crud_url}}"
+							],
+							"path": [
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "balance",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "accountNumber",
+									"value": "",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{crud_url}}/account/1",
+							"host": [
+								"{{crud_url}}"
+							],
+							"path": [
+								"account",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{crud_url}}/account/1",
+							"host": [
+								"{{crud_url}}"
+							],
+							"path": [
+								"account",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "customer_has_account",
+			"item": [
+				{
+					"name": "GET",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{crud_url}}/customer_has_account/",
+							"host": [
+								"{{crud_url}}"
+							],
+							"path": [
+								"customer_has_account",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ADD",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "customerId",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "accountId",
+									"value": "",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{crud_url}}/customer_has_account/",
+							"host": [
+								"{{crud_url}}"
+							],
+							"path": [
+								"customer_has_account",
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "customerId",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "accountId",
+									"value": "",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{crud_url}}/customer_has_account/",
+							"host": [
+								"{{crud_url}}"
+							],
+							"path": [
+								"customer_has_account",
+								"account"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{crud_url}}/customer_has_account/",
+							"host": [
+								"{{crud_url}}"
+							],
+							"path": [
+								"customer_has_account",
+								"account"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "card_number",
+							"value": "11111111",
+							"type": "default"
+						},
+						{
+							"key": "pin",
+							"value": "9599",
+							"type": "default"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{api_url}}/login",
+					"host": [
+						"{{api_url}}"
+					],
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{TOKEN}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"const path = pm.request.url.path;",
+					"",
+					"if(path.length === 1 && pm.request.method === \"POST\" && path[0] === \"login\") return;",
+					"",
+					"const token = pm.collectionVariables.get(\"TOKEN\");",
+					"const exp = pm.collectionVariables.get(\"TOKEN_EXP\");",
+					"",
+					"if(",
+					"    token !== undefined && ",
+					"    token !== \"\" && ",
+					"    exp !== undefined && ",
+					"    token !== \"\" &&",
+					"    new Date(exp) > new Date()",
+					") return;",
+					"",
+					"console.log(\"Get new token\");",
+					"",
+					"pm.sendRequest({",
+					"    url: pm.collectionVariables.get(\"api_url\").replace(\"{{base_url}}\", pm.collectionVariables.get(\"base_url\")) + \"/login\",",
+					"    method: \"POST\",",
+					"    header: {",
+					"        \"Content-Type\": \"application/x-www-form-urlencoded\"",
+					"    },",
+					"    body: {",
+					"        mode: \"raw\",",
+					"        raw: \"card_number=11111111&pin=9599\"",
+					"    }",
+					"}, (err, res) => {",
+					"    if(err) {",
+					"        console.log(err);",
+					"        return;",
+					"    }",
+					"",
+					"    const json = res.json();",
+					"",
+					"    if(!json.token) return;",
+					"",
+					"    pm.collectionVariables.set(\"TOKEN\", json.token);",
+					"    let ttl = new Date();",
+					"    ttl.setTime(ttl.getTime() + json.ttl * 1000);",
+					"    pm.collectionVariables.set(\"TOKEN_EXP\", ttl.toISOString());",
+					"});"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"const path = pm.request.url.path;",
+					"",
+					"if(path.length !== 2 || pm.request.method !== \"POST\" || path[0] !== \"api\" || path[1] !== \"login\") return;",
+					"",
+					"console.log(\"Update from manual token get\");",
+					"",
+					"const json = pm.response.json();",
+					"",
+					"if(!json.token) return;",
+					"",
+					"pm.collectionVariables.set(\"TOKEN\", json.token);",
+					"let ttl = new Date();",
+					"ttl.setTime(ttl.getTime() + json.ttl * 1000);",
+					"pm.collectionVariables.set(\"TOKEN_EXP\", ttl.toISOString());"
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000",
+			"type": "default"
+		},
+		{
+			"key": "crud_url",
+			"value": "{{base_url}}/crud",
+			"type": "default"
+		},
+		{
+			"key": "api_url",
+			"value": "{{base_url}}/api",
+			"type": "default"
+		},
+		{
+			"key": "TOKEN",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "TOKEN_EXP",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
