@@ -39,19 +39,21 @@ const checkPermissions = (permFlagGetter, req, res, next) => {
 
     jwtVeifyPromise(authHeader.split(" ")[1], process.env.JWT_SECRET)
         .then(token => {
-            let perm = null;
+            if(permFlagGetter) {
+                let perm = null;
 
-            try {
-                perm = permFlagGetter(req);
-            } catch(e) {
-                throw new SilentPromiseFail(util.format("Failed to run permFlagGetter for '%s'! Details below.\n\n%s", req.path, e));
+                try {
+                    perm = permFlagGetter(req);
+                } catch(e) {
+                    throw new SilentPromiseFail(util.format("Failed to run permFlagGetter for '%s'! Details below.\n\n%s", req.path, e));
+                }
+
+                if(perm === undefined || perm === null) {
+                    throw new PromiseFail("Failed to determine permission flag for this action", 500);
+                }
+
+                throwIfDenied(perm, token);
             }
-
-            if(perm === undefined || perm === null) {
-                throw new PromiseFail("Failed to determine permission flag for this action", 500);
-            }
-
-            throwIfDenied(perm, token);
 
             req.token = token;
             next();
