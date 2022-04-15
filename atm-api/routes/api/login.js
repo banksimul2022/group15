@@ -15,7 +15,7 @@ router.post("/", (req, res) => {
         return;
     }
 
-    card.getPinAndCustomerId(req.body.card_number)
+    card.getByCardNumber(req.body.card_number)
         .then(dbRes => {
             if(dbRes.length < 1) {
                 // Even though we return the same error message/code for an invalid customerId/pin
@@ -46,7 +46,8 @@ router.post("/", (req, res) => {
                 "token": jwt.sign({
                     card_number: req.body.card_number,
                     permissions: data.permissions,
-                    customerId: data.customerId
+                    customerId: data.customerId,
+                    accountId: data.accountId
                 }, process.env.JWT_SECRET, { expiresIn: tokenTTL + "s" }),
                 "ttl": tokenTTL
             });
