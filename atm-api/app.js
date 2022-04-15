@@ -3,7 +3,7 @@ const express = require("express");
 // const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const helmet = require("helmet");
-const butil = require("./util");
+const errors = require("./errors");
 const cors = require("cors");
 
 require('dotenv').config();
@@ -25,10 +25,10 @@ app.use("/crud", crudRouter);
 app.use("/api", apiRouter);
 
 app.use((err, req, res, next) => {
-    if(err instanceof butil.APIError) {
+    if(err instanceof errors.APIError) {
         let data = { error: err.code, message: "An error occured while processing your request" };
 
-        if(err instanceof butil.PublicAPIError) {
+        if(err instanceof errors.PublicAPIError) {
             data.error = err.message;
         }
 

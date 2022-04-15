@@ -1,3 +1,31 @@
+class APIError extends Error {
+    constructor(message, code, status) {
+        super(message);
+        this.code = code;
+        this.status = status;
+    }
+}
+
+// Used when the error details should not be sent to the requester
+class PrivateAPIError extends APIError {
+    constructor(message, code, status) {
+        super(message, code, status);
+    }
+}
+
+// Used when the error details can be sent to the requester
+class PublicAPIError extends APIError {
+    constructor(message, code, status) {
+        super(message, code, status);
+    }
+}
+
+class PermissionError extends PublicAPIError {
+    constructor(message, code) {
+        super(message, code, 403);
+    }
+}
+
 // The error code is a unsgined 32-bit int
 // The 16 top bits are individual flags indicating the error type
 // The 16 bottom bits are an unsgined short representing the actual error
@@ -24,4 +52,11 @@ const codes = {
     ERR_INVALID_AUTH: createCode(types.ERR_VALUE | types.ERR_PERMISSION)
 };
 
-module.exports = Object.freeze({types, codes});
+module.exports = Object.freeze({
+    types,
+    codes,
+
+    PrivateAPIError,
+    PublicAPIError,
+    PermissionError
+});

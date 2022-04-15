@@ -1,7 +1,6 @@
 const customer = require("../../models/crud/customer");
 const card = require("../../models/crud/card");
 const errors = require("../../errors");
-const butil = require("../../util");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
@@ -21,7 +20,7 @@ router.post("/", (req, res) => {
             if(dbRes.length < 1) {
                 // Even though we return the same error message/code for an invalid customerId/pin
                 // You could still probably figure this out by using a timing attack
-                throw new butil.PublicAPIError("Invalid customerId or pin", errors.codes.ERR_INVALID_CREDENTIALS, 401);
+                throw new errors.PublicAPIError("Invalid customerId or pin", errors.codes.ERR_INVALID_CREDENTIALS, 401);
             }
 
             return dbRes[0];
@@ -40,7 +39,7 @@ router.post("/", (req, res) => {
         .then(data => {
             if(!data["match"]) {
                 // Same as above
-                throw new butil.PublicAPIError("Invalid customerId or pin", errors.codes.ERR_INVALID_CREDENTIALS, 401);
+                throw new errors.PublicAPIError("Invalid customerId or pin", errors.codes.ERR_INVALID_CREDENTIALS, 401);
             }
 
             res.json({
@@ -53,7 +52,7 @@ router.post("/", (req, res) => {
             });
         })
         .catch(err => {
-            if(err instanceof butil.PublicAPIError) {
+            if(err instanceof errors.PublicAPIError) {
                 res.status(err.status);
                 res.json({ error: err.code, message: err.message });
                 return;

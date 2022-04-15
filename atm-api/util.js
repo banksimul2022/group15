@@ -2,46 +2,18 @@ const errors = require("./errors");
 const jwt = require("jsonwebtoken");
 const util = require("util");
 
-class APIError extends Error {
-    constructor(message, code, status) {
-        super(message);
-        this.code = code;
-        this.status = status;
-    }
-}
-
-// Used when the error details should not be sent to the requester
-class PrivateAPIError extends APIError {
-    constructor(message, code, status) {
-        super(message, code, status);
-    }
-}
-
-// Used when the error details can be sent to the requester
-class PublicAPIError extends APIError {
-    constructor(message, code, status) {
-        super(message, code, status);
-    }
-}
-
-class PermissionError extends PublicAPIError {
-    constructor(message, code) {
-        super(message, code, 403);
-    }
-}
-
 const jwtVeifyPromise = util.promisify(jwt.verify);
 
 const throwIfDenied = (perm, token) => {
     if((token.permissions & perm) <= 0)
-        throw new PermissionError("You don't have permission to peform this action on the specified resource", 403);
+        throw new errors.PermissionError("You don't have permission to peform this action on the specified resource", 403);
 };
 
 const checkPermissions = (permFlagGetter, req, res, next) => {
     const authHeader = req.headers["authorization"];
 
     if(!authHeader || !authHeader.startsWith("Bearer")) {
-        throw new PublicAPIError("Authorization header not set or is not of the Bearer type", errors.codes.ERR_INVALID_AUTH, 401);
+        throw new errors.PublicAPIError("Authorization header not set or is not of the Bearer type", errors.codes.ERR_INVALID_AUTH, 401);
         return;
     }
 
@@ -53,7 +25,7 @@ const checkPermissions = (permFlagGetter, req, res, next) => {
                 try {
                     perm = permFlagGetter(req);
                 } catch(e) {
-                    throw new PrivateAPIError(
+                    throw new errors.PrivateAPIError(
                         util.format("Failed to run permFlagGetter for '%s'! Details below.\n\n%s", req.path, e),
                         errors.codes.ERR_UNKNOWN,
                         403
@@ -61,7 +33,7 @@ const checkPermissions = (permFlagGetter, req, res, next) => {
                 }
 
                 if(perm === undefined || perm === null) {
-                    throw new PublicAPIError("Failed to determine permission flag for this action", errors.codes.ERR_UNKNOWN_PERM_FLAG, 500);
+                    throw new errors.PublicAPIError("Failed to determine permission flag for this action", errors.codes.ERR_UNKNOWN_PERM_FLAG, 500);
                 }
 
                 throwIfDenied(perm, token);
@@ -71,13 +43,13 @@ const checkPermissions = (permFlagGetter, req, res, next) => {
             next();
         })
         .catch(err => {
-            if(err instanceof PublicAPIError) {
+            if(err instanceof errors.PublicAPIError) {
                 res.status(err.status);
                 res.json({ error: err.code, message: err.message });
                 return;
             }
 
-            if(err instanceof PrivateAPIError) {
+            if(err instanceof errors.PrivateAPIError) {
                 console.error(err.message);
                 res.status(err.status);
                 res.json({ error: err.code, message: "Failed to validate the provided token" });
@@ -95,7 +67,7 @@ module.exports = {
     },
 
     handleQueryError: (error, res) => {
-        if(error instanceof PublicAPIError) {
+        if(error instanceof errors.PublicAPIError) {
             res.status(error.status);
             res.json({ error: error.code, message: error.message });
         } else if(error.sqlMessage) {
@@ -121,8 +93,5 @@ module.exports = {
         if(req.params.id !== req.token.customerId) throwIfDenied(perm, req.token);
     },
 
-    throwIfDenied,
-
-    PublicAPIError,
-    PrivateAPIError
+    throwIfDenied
 };
