@@ -18,7 +18,7 @@ router.post("/", (req, res) => {
     card.getPinAndCustomerId(req.body.card_number)
         .then(dbRes => {
             if(dbRes.length < 1) {
-                throw new butil.PromiseFail("Unknown card_number", 404);
+                throw new butil.PublicAPIError("Unknown card_number", 404);
             }
 
             return dbRes[0];
@@ -36,7 +36,7 @@ router.post("/", (req, res) => {
         })
         .then(data => {
             if(!data["match"]) {
-                throw new butil.PromiseFail("Invalid pin", 403);
+                throw new butil.PublicAPIError("Invalid pin", 403);
             }
 
             res.json({
@@ -49,7 +49,7 @@ router.post("/", (req, res) => {
             });
         })
         .catch(err => {
-            if(err instanceof butil.PromiseFail) {
+            if(err instanceof butil.PublicAPIError) {
                 res.status(err.status);
                 res.json({ error: err.message });
                 return;

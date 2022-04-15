@@ -7,7 +7,7 @@ const butil = require("../../util");
 router.get("/:key?/:id?", (req, res) => {
     if(req.params.id) {
         if(req.params.key !== "account" && req.params.key !== "customer")
-            throw new butil.PromiseFail("Invalid key type of " + req.params.key, 400);
+            throw new butil.PublicAPIError("Invalid key type of " + req.params.key, 400);
 
         if(req.params.key === "customer")
             butil.checkPermOnMismatch(req, permissions.crud.all.customer_has_account);

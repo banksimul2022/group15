@@ -25,7 +25,7 @@ app.use("/crud", crudRouter);
 app.use("/api", apiRouter);
 
 app.use((err, req, res, next) => {
-    if(err instanceof butil.PromiseFail) {
+    if(err instanceof butil.PublicAPIError) {
         res.status(err.status);
         res.json({ error: err.message });
         return;
