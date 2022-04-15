@@ -1,3 +1,4 @@
+QT += network
 QT -= gui
 
 TEMPLATE = lib
@@ -10,11 +11,18 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    rest.cpp
+    restengine.cpp \
+    restinfodata.cpp \
+    restinterface.cpp \
+    restreturndata.cpp
 
 HEADERS += \
     REST_global.h \
-    rest.h
+    restengine.h \
+    restinfodata.h \
+    restinterface.h \
+    restreturndata.h \
+    restreturnheader.h
 
 # Default rules for deployment.
 unix {
