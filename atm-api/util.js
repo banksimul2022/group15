@@ -6,7 +6,7 @@ const jwtVeifyPromise = util.promisify(jwt.verify);
 
 const throwIfDenied = (perm, token) => {
     if((token.permissions & perm) <= 0)
-        throw new errors.PermissionError("You don't have permission to peform this action on the specified resource", 403);
+        throw new errors.PermissionError("You don't have permission to perform this action on the specified resource", errors.codes.ERR_NOT_ALLOWED);
 };
 
 const checkPermissions = (permFlagGetter, req, res, next) => {

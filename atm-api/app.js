@@ -25,11 +25,11 @@ app.use("/crud", crudRouter);
 app.use("/api", apiRouter);
 
 app.use((err, req, res, next) => {
-    if(err instanceof errors.APIError) {
+    if(err instanceof errors.PublicAPIError) {
         let data = { error: err.code, message: "An error occured while processing your request" };
 
         if(err instanceof errors.PublicAPIError) {
-            data.error = err.message;
+            data.message = err.message;
         }
 
         res.status(err.status);
