@@ -1,24 +1,32 @@
+const errors = require("./errors");
 const jwt = require("jsonwebtoken");
 const util = require("util");
 
-// Used when the error should not be sent to the requester
-class PrivateAPIError extends Error {
-    constructor(message) {
+class APIError extends Error {
+    constructor(message, code, status) {
         super(message);
-    }
-}
-
-// Used when the error can be sent to the requester
-class PublicAPIError extends Error {
-    constructor(message, status) {
-        super(message);
+        this.code = code;
         this.status = status;
     }
 }
 
+// Used when the error details should not be sent to the requester
+class PrivateAPIError extends APIError {
+    constructor(message, code, status) {
+        super(message, code, status);
+    }
+}
+
+// Used when the error details can be sent to the requester
+class PublicAPIError extends APIError {
+    constructor(message, code, status) {
+        super(message, code, status);
+    }
+}
+
 class PermissionError extends PublicAPIError {
-    constructor(message) {
-        super(message, 403);
+    constructor(message, code) {
+        super(message, code, 403);
     }
 }
 
@@ -33,8 +41,7 @@ const checkPermissions = (permFlagGetter, req, res, next) => {
     const authHeader = req.headers["authorization"];
 
     if(!authHeader || !authHeader.startsWith("Bearer")) {
-        res.status(401);
-        res.json({ error: "Authorization header not set or is not of the Bearer type" });
+        throw new PublicAPIError("Authorization header not set or is not of the Bearer type", errors.codes.ERR_INVALID_AUTH, 401);
         return;
     }
 
@@ -46,11 +53,15 @@ const checkPermissions = (permFlagGetter, req, res, next) => {
                 try {
                     perm = permFlagGetter(req);
                 } catch(e) {
-                    throw new PrivateAPIError(util.format("Failed to run permFlagGetter for '%s'! Details below.\n\n%s", req.path, e));
+                    throw new PrivateAPIError(
+                        util.format("Failed to run permFlagGetter for '%s'! Details below.\n\n%s", req.path, e),
+                        errors.codes.ERR_UNKNOWN,
+                        403
+                    );
                 }
 
                 if(perm === undefined || perm === null) {
-                    throw new PublicAPIError("Failed to determine permission flag for this action", 500);
+                    throw new PublicAPIError("Failed to determine permission flag for this action", errors.codes.ERR_UNKNOWN_PERM_FLAG, 500);
                 }
 
                 throwIfDenied(perm, token);
@@ -62,17 +73,17 @@ const checkPermissions = (permFlagGetter, req, res, next) => {
         .catch(err => {
             if(err instanceof PublicAPIError) {
                 res.status(err.status);
-                res.json({ error: err.message });
+                res.json({ error: err.code, message: err.message });
                 return;
             }
 
-            res.status(403);
-
             if(err instanceof PrivateAPIError) {
                 console.error(err.message);
-                res.json({ error: "Failed to validate the provided token" });
+                res.status(err.status);
+                res.json({ error: err.code, message: "Failed to validate the provided token" });
             } else {
-                res.json({ error: "Failed to validate the provided token", detail: err });
+                res.status(403);
+                res.json({ error: errors.codes.ERR_UNKNOWN, message: "Failed to validate the provided token", detail: err });
             }
         });
 };
@@ -86,15 +97,15 @@ module.exports = {
     handleQueryError: (error, res) => {
         if(error instanceof PublicAPIError) {
             res.status(error.status);
-            res.json({ error: error.message });
+            res.json({ error: error.code, message: error.message });
         } else if(error.sqlMessage) {
             console.error(error);
             res.status(400);
-            res.json({ error: error.sqlMessage });
+            res.json({ error: errors.codes.ERR_DATABASE, message: error.sqlMessage });
         } else {
             console.error(error);
             res.status(500);
-            res.json({ error: "An unknown error occured during the handling of the query" });
+            res.json({ error: errors.codes.ERR_UNKNOWN, message: "An unknown error occured during the handling of the query" });
         }
     },
 

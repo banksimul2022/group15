@@ -25,9 +25,15 @@ app.use("/crud", crudRouter);
 app.use("/api", apiRouter);
 
 app.use((err, req, res, next) => {
-    if(err instanceof butil.PublicAPIError) {
+    if(err instanceof butil.APIError) {
+        let data = { error: err.code, message: "An error occured while processing your request" };
+
+        if(err instanceof butil.PublicAPIError) {
+            data.error = err.message;
+        }
+
         res.status(err.status);
-        res.json({ error: err.message });
+        res.json(data);
         return;
     }
 
