@@ -10,9 +10,6 @@
     <height>480</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string/>
-  </property>
   <layout class="QVBoxLayout" name="widgetRootLayout" stretch="0,1">
    <property name="spacing">
     <number>0</number>
@@ -34,9 +31,6 @@
         <font>
          <pointsize>14</pointsize>
         </font>
-       </property>
-       <property name="text">
-        <string/>
        </property>
        <property name="textFormat">
         <enum>Qt::PlainText</enum>
@@ -70,9 +64,6 @@
        </property>
        <property name="frameShape">
         <enum>QFrame::Box</enum>
-       </property>
-       <property name="text">
-        <string/>
        </property>
       </widget>
      </item>

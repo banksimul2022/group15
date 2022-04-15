@@ -23,11 +23,20 @@ class PageKeypad : public PageWithUserBar {
         explicit PageKeypad(PageKeypad::Action action, StateManager *stateManager, QWidget *parent = nullptr);
         ~PageKeypad();
 
+    protected slots:
+        void onOk() override;
+
     private slots:
         void onKeypadButtonPress();
+        void onFlashTick();
 
     private:
+        void flash(ushort count);
+
         Ui::PageKeypad *ui;
+        QTimer *flashTimer;
+        ushort flashCount;
+        bool flashState;
 };
 
 #endif // PAGEKEYPAD_H
