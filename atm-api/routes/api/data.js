@@ -83,4 +83,30 @@ router.post("/withdraw", (req, res) => {
         .catch(error => butil.handleQueryError(error, res));
 });
 
+router.post("/deposit", (req, res) => {
+    account.getById(req.token.accountId)
+        .then(async results => {
+            const sum = Number(req.body.sum);
+
+            if(isNaN(sum) || sum < 0.01) {
+                throw new errors.PublicAPIError("sum not set or invalid", errors.codes.ERR_INVALID_SUM, 400);
+            }
+
+            const accRes = results[0];
+            accRes["balance"] += sum;
+
+            await transaction.add({
+                accountId: req.token.accountId,
+                timestamp: new Date(),
+                toAccount: accRes["accountNumber"],
+                type: "DEPOSIT",
+                sum,
+                cardNumber: req.token.cardNumber
+            });
+
+            res.json(await account.update(req.token.accountId, accRes));
+        })
+        .catch(error => butil.handleQueryError(error, res));
+});
+
 module.exports = router;
