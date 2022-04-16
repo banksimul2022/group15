@@ -1,6 +1,7 @@
 const transaction = require("../../models/crud/transaction");
 const customer = require("../../models/crud/customer");
 const account = require("../../models/crud/account");
+const errors = require("../../errors");
 const butil = require("../../util");
 
 const router = require("express").Router();
@@ -49,6 +50,37 @@ router.get("/transactions", (req, res) => {
         });
     })
     .catch(error => butil.handleQueryError(error, res));
+});
+
+router.post("/withdraw", (req, res) => {
+    account.getById(req.token.accountId)
+        .then(async results => {
+            const sum = Number(req.body.sum);
+
+            if(isNaN(sum) || sum < 0.01) {
+                throw new errors.PublicAPIError("sum not set or invalid", errors.codes.ERR_INVALID_SUM, 400);
+            }
+
+            const accRes = results[0];
+
+            if(accRes.balance < sum) {
+                throw new errors.PublicAPIError("Insufficient funds", errors.codes.ERR_INSUFFICIENT_FUNDS, 200);
+            }
+
+            accRes["balance"] -= sum;
+
+            await transaction.add({
+                accountId: req.token.accountId,
+                timestamp: new Date(),
+                toAccount: null,
+                type: "WITHDRAW",
+                sum,
+                cardNumber: req.token.cardNumber
+            });
+
+            res.json(await account.update(req.token.accountId, accRes));
+        })
+        .catch(error => butil.handleQueryError(error, res));
 });
 
 module.exports = router;

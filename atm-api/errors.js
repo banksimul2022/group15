@@ -51,7 +51,10 @@ const codes = {
 
     ERR_INVALID_CREDENTIALS: createCode(types.ERR_VALUE),
     ERR_INVALID_AUTH: createCode(types.ERR_VALUE | types.ERR_PERMISSION),
-    ERR_NOT_ALLOWED: createCode(types.ERR_PERMISSION)
+    ERR_NOT_ALLOWED: createCode(types.ERR_PERMISSION),
+
+    ERR_INSUFFICIENT_FUNDS: createCode(types.ERR_VALUE),
+    ERR_INVALID_SUM: createCode(types.ERR_VALUE)
 };
 
 module.exports = Object.freeze({
