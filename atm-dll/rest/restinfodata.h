@@ -2,10 +2,12 @@
 #define RESTINFODATA_H
 #include "restreturndata.h"
 
+#include <QJsonObject>
+
 class REST_EXPORT RestInfoData : public RestReturnData
 {
 public:
-    RestInfoData(QString fName,QString lName,QString accountNumber,int error);
+    RestInfoData(QJsonObject *info,int error);
     QString getfName();
     QString getlName();
     QString getAccountNumber();
@@ -13,9 +15,9 @@ public:
 
 
 private:
-    const QString fName;
-    const QString lName;
-    const QString accountNumber;
+     QString fName;
+     QString lName;
+     QString accountNumber;
 };
 
 #endif // RESTINFODATA_H

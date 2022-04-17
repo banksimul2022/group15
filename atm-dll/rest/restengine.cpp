@@ -155,9 +155,7 @@ void RESTEngine::replySlot(QNetworkReply *reply)
         case RestReturnData::typeInfo:
                 emit dataReturn(
                   new RestInfoData(
-                    jsonObj.value("fName").toString(),
-                    jsonObj.value("lName").toString(),
-                    jsonObj.value("accountNumber").toString(),
+                    &jsonObj,
                     error
                 )
              );
