@@ -13,7 +13,12 @@ class PageAccountInfo : public PageWithUserBar {
     Q_OBJECT
 
     public:
-        explicit PageAccountInfo(StateManager *stateManager, QWidget *parent = nullptr);
+        enum Action {
+            ViewBalance,
+            ViewTransactions
+        };
+
+        explicit PageAccountInfo(Action action, StateManager *stateManager, QWidget *parent = nullptr);
         ~PageAccountInfo();
 
     private:
