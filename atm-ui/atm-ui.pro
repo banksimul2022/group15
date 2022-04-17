@@ -11,11 +11,11 @@ CONFIG += c++11
 SOURCES += \
     atmwindow.cpp \
     main.cpp \
+    pageaccountinfo.cpp \
     pagebase.cpp \
     pageinsertcard.cpp \
     pagekeypad.cpp \
     pagemainaccountview.cpp \
-    pagetransactions.cpp \
     pagewithdraw.cpp \
     pagewithuserbar.cpp \
     userstatusbarwidget.cpp \
@@ -23,11 +23,11 @@ SOURCES += \
 
 HEADERS += \
     atmwindow.h \
+    pageaccountinfo.h \
     pagebase.h \
     pageinsertcard.h \
     pagekeypad.h \
     pagemainaccountview.h \
-    pagetransactions.h \
     pagewithdraw.h \
     pagewithuserbar.h \
     statemanager.h \
@@ -36,10 +36,10 @@ HEADERS += \
 
 FORMS += \
     atmwindow.ui \
+    pageaccountinfo.ui \
     pageinsertcard.ui \
     pagekeypad.ui \
     pagemainaccountview.ui \
-    pagetransactions.ui \
     pagewithdraw.ui \
     userstatusbarwidget.ui
 
