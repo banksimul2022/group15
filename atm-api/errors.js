@@ -47,7 +47,7 @@ const codes = {
 
     ERR_DATABASE: createCode(types.ERR_GENERIC),
 
-    ERR_INVALID_KEY: createCode(types.ERR_VALUE),
+    ERR_INVALID_PARAM: createCode(types.ERR_VALUE),
 
     ERR_INVALID_CREDENTIALS: createCode(types.ERR_VALUE),
     ERR_INVALID_AUTH: createCode(types.ERR_VALUE | types.ERR_PERMISSION),
