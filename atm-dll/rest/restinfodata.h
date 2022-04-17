@@ -1,6 +1,5 @@
 #ifndef RESTINFODATA_H
 #define RESTINFODATA_H
-#include <QString>
 #include "restreturndata.h"
 
 class REST_EXPORT RestInfoData : public RestReturnData

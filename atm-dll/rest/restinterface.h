@@ -14,10 +14,14 @@ public:
     static RESTInterface *createInstance();
 
     explicit RESTInterface(QObject *parent = nullptr);
-    virtual ~RESTInterface()=0;
+    virtual ~RESTInterface() =0;
     virtual void login(QString cardNumber, QString pin)=0;
     virtual void getInfo() =0;
-    virtual void logout()=0;
+    virtual void logout() =0;
+    virtual void nextTransactions(int count) =0;
+    virtual void prevTransactions(int count) =0;
+    virtual void withdraw(double sum) =0;
+    virtual void deposit(double sum) =0;
 
 private:
 
