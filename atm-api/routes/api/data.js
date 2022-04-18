@@ -20,6 +20,17 @@ router.get("/info", (req, res) => {
         .catch(error => butil.handleQueryError(error, res));
 });
 
+router.get("/balance", (req, res) => {
+    account.getById(req.token.accountId)
+        .then(async accResult => {
+            res.json({
+                balance: accResult[0].balance,
+                credit: accResult[0].credit
+            });
+        })
+        .catch(error => butil.handleQueryError(error, res));
+});
+
 router.get("/transactions/:direction", (req, res) => {
     if(req.params.direction !== "back" && req.params.direction !== "forward") {
         throw new errors.PublicAPIError("Invalid direction type of " + req.params.direction, errors.codes.ERR_INVALID_PARAM, 400);

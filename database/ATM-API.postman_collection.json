@@ -780,6 +780,23 @@
 					"response": []
 				},
 				{
+					"name": "balance",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{api_url}}/balance",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"balance"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "transactions",
 					"request": {
 						"method": "GET",
