@@ -6,6 +6,7 @@
 
 ATMWindow::ATMWindow(QWidget *parent) :
     QMainWindow(parent),
+    loadingPage(new PageLoading(this)),
     currentPage(nullptr),
     ui(new Ui::ATMWindow)
 {

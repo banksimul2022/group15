@@ -1,6 +1,7 @@
 #ifndef ATMWINDOW_H
 #define ATMWINDOW_H
 
+#include "pageloading.h"
 #include "statemanager.h"
 
 #include <QMainWindow>
@@ -23,6 +24,7 @@ class ATMWindow : public QMainWindow, public StateManager {
         void fullscreenShortcut();
 
     private:
+        PageLoading *loadingPage;
         QWidget *currentPage;
         Ui::ATMWindow *ui;
         QString baseTitle;

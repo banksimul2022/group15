@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui svg
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -15,6 +15,7 @@ SOURCES += \
     pagebase.cpp \
     pageinsertcard.cpp \
     pagekeypad.cpp \
+    pageloading.cpp \
     pagemainaccountview.cpp \
     pagewithdraw.cpp \
     pagewithuserbar.cpp \
@@ -27,6 +28,7 @@ HEADERS += \
     pagebase.h \
     pageinsertcard.h \
     pagekeypad.h \
+    pageloading.h \
     pagemainaccountview.h \
     pagewithdraw.h \
     pagewithuserbar.h \
@@ -39,6 +41,7 @@ FORMS += \
     pageaccountinfo.ui \
     pageinsertcard.ui \
     pagekeypad.ui \
+    pageloading.ui \
     pagemainaccountview.ui \
     pagewithdraw.ui \
     userstatusbarwidget.ui
@@ -47,3 +50,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    resources.qrc
