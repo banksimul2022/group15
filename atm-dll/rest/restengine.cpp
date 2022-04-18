@@ -17,7 +17,7 @@ RESTEngine::RESTEngine(QUrl endpointstr, QObject *parent) :
     RESTInterface(parent),
     apiEndpoint(endpointstr),
     token(nullptr),
-    offset(0),
+    nextOffset(0),
     prevOffset(0)
 
 
@@ -46,7 +46,7 @@ void RESTEngine::login(QString cardNumber, QString pin)
 void RESTEngine::logout()
 {
  this->token=nullptr;
-    this->offset=0;
+    this->nextOffset=0;
     this->prevOffset=0;
 
     emit dataReturn(new RestReturnData(RestReturnData::typeLogout,-1));
@@ -65,9 +65,9 @@ void RESTEngine::getInfo()
 void RESTEngine::nextTransactions(int count)
 {
     QUrlQuery query;
-    query.addQueryItem("offset",QString::number(this->offset));
+    query.addQueryItem("offset",QString::number(this->nextOffset));
     query.addQueryItem("count",QString::number(count));
-    QNetworkRequest request = this->createRequest("/api/transactions",RestReturnData::typeTransaction);
+    QNetworkRequest request = this->createRequest("/api/transactions/forward",query,RestReturnData::typeTransaction);
     this->Manager->get(request);
 }
 
@@ -76,7 +76,7 @@ void RESTEngine::prevTransactions(int count)
     QUrlQuery query;
     query.addQueryItem("offset",QString::number(this->prevOffset));
     query.addQueryItem("count",QString::number(count));
-    QNetworkRequest request = this->createRequest("/api/transactions",RestReturnData::typeTransaction);
+    QNetworkRequest request = this->createRequest("/api/transactions/back",query,RestReturnData::typeTransaction);
     this->Manager->get(request);
 
 }
@@ -100,6 +100,13 @@ void RESTEngine::deposit(double sum)
 
     this->Manager->post(request,QJsonDocument(Jsonobj).toJson());
 
+}
+
+void RESTEngine::showBalance()
+{
+    QNetworkRequest request = this->createRequest("/api/balance",RestReturnData::typeBalance);
+
+    this->Manager->get(request);
 }
 QNetworkRequest RESTEngine::createRequest(QString path,  RestReturnData::ReturnType type, QString contentType) //creates web request
 {
@@ -151,29 +158,29 @@ void RESTEngine::replySlot(QNetworkReply *reply)
                 this->token = ("Bearer "+jsonObj.value("token").toString()).toUtf8(); // Luetaan JSonobjectista token arvo ja muutetaan se string->QByteArray utf8 muodossa
                  }
                 emit dataReturn(new RestReturnData(RestReturnData::typeLogin,error));
-            break;
+                break;
         case RestReturnData::typeInfo:
-                emit dataReturn(
-                  new RestInfoData(
-                    &jsonObj,
-                    error
-                )
-             );
-            break;
+                emit dataReturn(new RestInfoData(&jsonObj,error));
+                break;
        case RestReturnData::typeDeposit:
 
         emit dataReturn(new RestReturnData(RestReturnData::typeDeposit,error));
-            break;
+                break;
        case RestReturnData::typeWithdraw:
         emit dataReturn(new RestReturnData(RestReturnData::typeWithdraw,error));
-            break;
-       case RestReturnData::typeTransaction:
+                break;
+       case RestReturnData::typeTransaction: {
             RestTransactionData *data = new RestTransactionData(&jsonObj,error);
-            this->prevOffset=this->offset;
-            this->offset=data->getNextOffSet();
-           emit dataReturn(data);
-            break;
 
+            this->nextOffset=jsonObj.value("nextOffset").toInt(0);
+            this->prevOffset=jsonObj.value("prevOffset").toInt(0);
+
+           emit dataReturn(data);
+                break; }
+       case RestReturnData::typeBalance: {
+            emit dataReturn(new RestBalanceData(&jsonObj,error));
+                break;
+            }
     }
 
 

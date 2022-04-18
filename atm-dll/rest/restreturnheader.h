@@ -4,5 +4,6 @@
 #include "restinfodata.h"
 #include "resttransactiondata.h"
 #include "banktransaction.h"
+#include "restbalancedata.h"
 
 #endif // RESTRETURNHEADER_H

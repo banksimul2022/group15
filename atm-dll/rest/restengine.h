@@ -21,6 +21,7 @@ public:
     void prevTransactions(int count) override;
     void withdraw(double sum)override;
     void deposit(double sum) override;
+    void showBalance() override;
 
 
 private:
@@ -32,11 +33,8 @@ private:
     QNetworkRequest createRequest(QString path, RestReturnData::ReturnType type, QString contentType=nullptr);
     QNetworkRequest createRequest(QUrl url, RestReturnData::ReturnType type, QString contentType);
 
-    int offset;
+    int nextOffset;
     int prevOffset;
-
-
-
 
 
 signals:

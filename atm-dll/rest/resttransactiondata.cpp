@@ -10,7 +10,7 @@ RestTransactionData::RestTransactionData(QJsonObject *transactionInfo,
     }
 
     this->count=transactionInfo->value("count").toInt(-1);
-    this->NextOffset=transactionInfo->value("nextOffset").toInt(-1);
+
     this->hasPrev=transactionInfo->value("hasPrev").toBool(false);
     this->hasNext=transactionInfo->value("hasNext").toBool(false);
 
@@ -34,10 +34,6 @@ int RestTransactionData::getCount()
     return this->count;
 }
 
-int RestTransactionData::getNextOffSet()
-{
-    return this->NextOffset;
-}
 
 bool RestTransactionData::getHasPrev()
 {

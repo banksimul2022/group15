@@ -12,6 +12,7 @@ CONFIG += c++11
 
 SOURCES += \
     banktransaction.cpp \
+    restbalancedata.cpp \
     restengine.cpp \
     restinfodata.cpp \
     restinterface.cpp \
@@ -21,6 +22,7 @@ SOURCES += \
 HEADERS += \
     REST_global.h \
     banktransaction.h \
+    restbalancedata.h \
     restengine.h \
     restinfodata.h \
     restinterface.h \

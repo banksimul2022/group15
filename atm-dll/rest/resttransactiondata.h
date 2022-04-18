@@ -15,13 +15,13 @@ public:
     ~RestTransactionData();
     int getCount();
     BankTransaction *getTransaction(int id);
-    int getNextOffSet();
+
     bool getHasPrev();
     bool getHasNext();
 
 private:
     QList<BankTransaction*> *transactions;
-    int NextOffset;
+
     int count;    
     bool hasPrev;
     bool hasNext;

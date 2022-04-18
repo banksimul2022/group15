@@ -22,6 +22,7 @@ public:
     virtual void prevTransactions(int count) =0;
     virtual void withdraw(double sum) =0;
     virtual void deposit(double sum) =0;
+    virtual void showBalance() =0;
 
 private:
 
