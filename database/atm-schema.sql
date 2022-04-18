@@ -22,6 +22,7 @@ CREATE TABLE bankdb.customer (
 CREATE TABLE bankdb.account (
   accountId INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   balance DECIMAL(14,2) NOT NULL,
+  credit DECIMAL(14,2) NOT NULL,
   accountNumber VARCHAR(45) UNIQUE NOT NULL
 ) ENGINE = InnoDB;
 

@@ -466,6 +466,11 @@
 											"type": "default"
 										},
 										{
+											"key": "credit",
+											"value": "",
+											"type": "default"
+										},
+										{
 											"key": "accountNumber",
 											"value": "",
 											"type": "default"
@@ -494,6 +499,11 @@
 									"urlencoded": [
 										{
 											"key": "balance",
+											"value": "",
+											"type": "default"
+										},
+										{
+											"key": "credit",
 											"value": "",
 											"type": "default"
 										},
