@@ -21,5 +21,23 @@ module.exports = {
             "UPDATE transaction SET accountId=?, timestamp=?, toAccount=?, type=?, sum=?, cardNumber=? WHERE transactionId=?",
             [ transaction.accountId, transaction.timestamp, transaction.toAccount, transaction.type, transaction.sum, transaction.cardNumber, id ]
         ); 
-    } 
+    },
+    ascFromOffset: async (accountId, offset, max) => {
+        // Use 'WHERE id > offset LIMIT max' instead of 'LIMIT offset,max' to increase query performance
+        // https://stackoverflow.com/a/4502392
+        return await db.query(
+            "SELECT * FROM transaction WHERE transactionId > ? AND accountId = ? ORDER BY transactionId LIMIT ?",
+            [ offset, accountId, max ]
+        );
+    },
+    dscFromOffset: async (accountId, offset, max) => {
+        // Using another trick from the link above
+        return await db.query(
+            `SELECT transaction.* FROM (
+                SELECT transactionId FROM transaction WHERE transactionId < ? AND accountId = ?
+                ORDER BY transactionId DESC LIMIT ?
+            ) i JOIN transaction ON transaction.transactionId = i.transactionId ORDER BY transaction.transactionId`,
+            [ offset, accountId, max ]
+        );
+    }
 };

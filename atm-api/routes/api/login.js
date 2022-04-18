@@ -1,6 +1,6 @@
 const customer = require("../../models/crud/customer");
 const card = require("../../models/crud/card");
-const butil = require("../../util");
+const errors = require("../../errors");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
@@ -15,10 +15,12 @@ router.post("/", (req, res) => {
         return;
     }
 
-    card.getPinAndCustomerId(req.body.card_number)
+    card.getByCardNumber(req.body.card_number)
         .then(dbRes => {
             if(dbRes.length < 1) {
-                throw new butil.PromiseFail("Unknown card_number", 404);
+                // Even though we return the same error message/code for an invalid customerId/pin
+                // You could still probably figure this out by using a timing attack
+                throw new errors.PublicAPIError("Invalid customerId or pin", errors.codes.ERR_INVALID_CREDENTIALS, 401);
             }
 
             return dbRes[0];
@@ -36,27 +38,33 @@ router.post("/", (req, res) => {
         })
         .then(data => {
             if(!data["match"]) {
-                throw new butil.PromiseFail("Invalid pin", 403);
+                // Same as above
+                throw new errors.PublicAPIError("Invalid customerId or pin", errors.codes.ERR_INVALID_CREDENTIALS, 401);
             }
 
             res.json({
                 "token": jwt.sign({
                     card_number: req.body.card_number,
                     permissions: data.permissions,
-                    customerId: data.customerId
+                    customerId: data.customerId,
+                    accountId: data.accountId
                 }, process.env.JWT_SECRET, { expiresIn: tokenTTL + "s" }),
                 "ttl": tokenTTL
             });
         })
         .catch(err => {
-            if(err instanceof butil.PromiseFail) {
+            if(err instanceof errors.PublicAPIError) {
                 res.status(err.status);
-                res.json({ error: err.message });
+                res.json({ error: err.code, message: err.message });
                 return;
             }
 
             res.status(500); // Internal Server Error
-            res.json(err);
+            res.json({
+                error: errors.codes.ERR_UNKNOWN,
+                message: "An unknown error occured during the processing of the login request",
+                detail: err
+            });
         });
 });
 

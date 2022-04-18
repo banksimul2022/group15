@@ -27,7 +27,7 @@ module.exports = {
             [card.customerId, card.accountId, card.cardNumber, card.locked, card.credit, hash, id]
         );
     },
-    getPinAndCustomerId: (card_number) => {
-        return db.query("SELECT pin, customerId FROM card WHERE cardNumber=?", [ card_number ]);
+    getByCardNumber: (card_number) => {
+        return db.query("SELECT * FROM card WHERE cardNumber=?", [ card_number ]);
     }
 };
