@@ -20,31 +20,57 @@ router.get("/info", (req, res) => {
         .catch(error => butil.handleQueryError(error, res));
 });
 
-router.get("/transactions", (req, res) => {
-    // Limit offset to 0 or higher (Also substract 1 for prev check)
-    const offset = Math.max(Number(butil.nshcl(req.query.offset, 0)) - 1, 0);
+router.get("/transactions/:direction", (req, res) => {
+    if(req.params.direction !== "back" && req.params.direction !== "forward") {
+        throw new errors.PublicAPIError("Invalid direction type of " + req.params.direction, errors.codes.ERR_INVALID_PARAM, 400);
+    }
+
+    const descent = req.params.direction === "back";
+
+    // Limit offset to 0 or higher
+    const offset = Math.max(Number(butil.nshcl(req.query.offset, 0)), 0);
     // Limit amount to 1-30
     const itemCount = Math.min(Math.max(Number(butil.nshcl(req.query.count, 10)), 1), 30);
 
-    transaction.fromOffset(
+    (descent ? transaction.dscFromOffset : transaction.ascFromOffset)(
         req.token.accountId,
         offset,
-        itemCount + 1 // Add 1 for next check
+        itemCount + 1 // Add 1 for forward/back check
     )
     .then(async results => {
         if(results.length < 1) {
-            res.json({ transactions: results, count: 0, nextOffset: 0 });
+            const queryRes = descent ?
+                (await transaction.ascFromOffset(req.token.accountId, offset, itemCount)) :
+                (await transaction.dscFromOffset(req.token.accountId, offset, itemCount));
+
+            res.json({
+                transactions: results,
+                count: 0,
+                prevOffset: queryRes.length < 1 ? 0 : queryRes[0].transactionId,
+                nextOffset: queryRes.length < 1 ? 0 : queryRes[queryRes.length - 1].transactionId,
+                hasPrev: !descent,
+                hasNext: descent
+            });
             return;
         }
 
-        const hasPrev = results[0].transactionId < offset;
-        const hasNext = results.length - hasPrev > itemCount;
-        const retData = results.slice(hasPrev, results.length - hasNext);
+        let hasPrev, hasNext;
+
+        if(descent) {
+            hasPrev = results.length > itemCount;
+            hasNext = (await transaction.ascFromOffset(req.token.accountId, results[results.length - 1].transactionId, 1)).length > 0;
+        } else {
+            hasNext = results.length > itemCount;
+            hasPrev = (await transaction.dscFromOffset(req.token.accountId, results[0].transactionId, 1)).length > 0;
+        }
+
+        const retData = results.slice(descent && hasPrev, results.length - (!descent && hasNext));
 
         res.json({
             transactions: retData,
             count: retData.length,
-            nextOffset: results[results.length - 1].transactionId + 1,
+            prevOffset: retData[0].transactionId,
+            nextOffset: retData[retData.length - 1].transactionId,
             hasPrev,
             hasNext
         });
