@@ -4,6 +4,7 @@
 
 PageWithUserBar::PageWithUserBar(UserStatusBarWidget::Mode mode, StateManager *stateManager, QWidget *parent) : PageBase{stateManager, parent} {
     this->userStatusBar = new UserStatusBarWidget(mode, this);
+    this->connect(this->userStatusBar, &UserStatusBarWidget::extraButton, this, &PageWithUserBar::onExtraButton);
     this->connect(this->userStatusBar, &UserStatusBarWidget::leave, this, &PageWithUserBar::onLeave);
 
     if(mode == UserStatusBarWidget::Mode::leaveAndOk) {
@@ -14,6 +15,8 @@ PageWithUserBar::PageWithUserBar(UserStatusBarWidget::Mode mode, StateManager *s
 void PageWithUserBar::setupUserBar(QLayout *layout) {
     layout->addWidget(this->userStatusBar);
 }
+
+void PageWithUserBar::onExtraButton(int id) { Q_UNUSED(id) }
 
 void PageWithUserBar::onLeave() {
     if(this->userStatusBar->mode() == UserStatusBarWidget::Mode::logout) {

@@ -18,6 +18,7 @@ class PageWithUserBar : public PageBase {
         UserStatusBarWidget * userStatusBar;
 
     protected slots:
+        virtual void onExtraButton(int id);
         virtual void onLeave();
         virtual void onOk();
 };
