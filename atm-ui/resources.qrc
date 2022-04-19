@@ -1,5 +1,9 @@
 <RCC>
     <qresource>
         <file>files/icons/spinner.svg</file>
+        <file>files/icons/info.svg</file>
+        <file>files/icons/question.svg</file>
+        <file>files/icons/warning.svg</file>
+        <file>files/icons/error.svg</file>
     </qresource>
 </RCC>

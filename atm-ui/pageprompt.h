@@ -13,6 +13,10 @@ class PagePrompt : public PageWithUserBar {
 
     public:
         enum Icon {
+            info,
+            question,
+            warning,
+            error,
             none
         };
 
