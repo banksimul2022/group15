@@ -11,12 +11,12 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    interfaceclass.cpp \
+    rfidinterface.cpp \
     serialcardreader.cpp
 
 HEADERS += \
     SerialCardReader_global.h \
-    interfaceclass.h \
+    rfidinterface.h \
     serialcardreader.h
 
 # Default rules for deployment.

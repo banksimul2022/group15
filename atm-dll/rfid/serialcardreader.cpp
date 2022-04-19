@@ -5,9 +5,10 @@
 #include <QString>
 
 
-SerialCardReader::SerialCardReader()
+SerialCardReader::SerialCardReader(QObject *parent) : QObject{parent}
 {
     SerialCardReaderGetCOM();
+    connect(&CardReader, &QSerialPort::readyRead, this, &SerialCardReader::ReadSerial);
     CardReader.setPortName(CardReaderCOMport);
     CardReader.setBaudRate(QSerialPort::Baud9600);
     CardReader.setDataBits(QSerialPort::Data8);
@@ -32,18 +33,13 @@ SerialCardReader::~SerialCardReader()
   CardReader.close();
 }
 
-QString SerialCardReader::SerialRead()
+void SerialCardReader::ReadSerial()
 {
-  outRAW.clear();  //Clears outRaw
-  outTrimmed.clear(); //Clears outTrimmed
-  CardReader.waitForReadyRead(); //Waits for output, ??? theoretically could be replaced with "connect(CardReader, SIGNAL(readyRead()), ****, SLOT(SerialRead()));" in .exe ???
-  byteOut= CardReader.readAll(); //Reads output
-  outRAW += QString::fromStdString(outRAW.toStdString()); //Converts output to string
-  outTrimmed = rnTrim[1]; //Takes string 1 with information
-  outTrimmed.remove(0,4); //Removes first 4 symbols
-  outTrimmed.chop(3); //Removes last 3 symbols;
-
-  return outTrimmed;
+    QByteArray byteOut = CardReader.readAll(); //Reads output
+    QString out = QString::fromStdString(byteOut.toStdString()); //Converts output to string
+    out.remove(0, 4); //Removes first 4 symbols
+    out.chop(3); //Removes last 3 symbols;
+    emit cardRead(out);
 }
 
 
