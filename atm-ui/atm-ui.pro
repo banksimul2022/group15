@@ -17,6 +17,7 @@ SOURCES += \
     pagekeypad.cpp \
     pageloading.cpp \
     pagemainaccountview.cpp \
+    pageprompt.cpp \
     pagewithdraw.cpp \
     pagewithuserbar.cpp \
     userstatusbarwidget.cpp \
@@ -30,6 +31,7 @@ HEADERS += \
     pagekeypad.h \
     pageloading.h \
     pagemainaccountview.h \
+    pageprompt.h \
     pagewithdraw.h \
     pagewithuserbar.h \
     statemanager.h \
@@ -43,6 +45,7 @@ FORMS += \
     pagekeypad.ui \
     pageloading.ui \
     pagemainaccountview.ui \
+    pageprompt.ui \
     pagewithdraw.ui \
     userstatusbarwidget.ui
 
