@@ -1,4 +1,4 @@
-#include "pagewithuserbar.h"
+#include "page/abstract/pagewithuserbar.h"
 
 #include <QDebug>
 

@@ -1,4 +1,4 @@
-#include "pageinsertcard.h"
+#include "page/pageinsertcard.h"
 #include "ui_pageinsertcard.h"
 
 PageInsertCard::PageInsertCard(StateManager *stateManager, QWidget *parent) : PageBase(stateManager, parent), ui(new Ui::PageInsertCard) {

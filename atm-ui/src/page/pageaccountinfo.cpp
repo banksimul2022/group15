@@ -1,4 +1,4 @@
-#include "pageaccountinfo.h"
+#include "page/pageaccountinfo.h"
 #include "ui_pageaccountinfo.h"
 #include "userstatusbarwidget.h"
 

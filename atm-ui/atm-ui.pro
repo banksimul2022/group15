@@ -9,45 +9,47 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    atmwindow.cpp \
-    main.cpp \
-    pageaccountinfo.cpp \
-    pagebase.cpp \
-    pageinsertcard.cpp \
-    pagekeypad.cpp \
-    pageloading.cpp \
-    pagemainaccountview.cpp \
-    pageprompt.cpp \
-    pagewithdraw.cpp \
-    pagewithuserbar.cpp \
-    userstatusbarwidget.cpp \
-    utility.cpp
+    src/atmwindow.cpp \
+    src/main.cpp \
+    src/page/pageaccountinfo.cpp \
+    src/page/abstract/pagebase.cpp \
+    src/page/pageinsertcard.cpp \
+    src/page/pagekeypad.cpp \
+    src/page/pageloading.cpp \
+    src/page/pagemainaccountview.cpp \
+    src/page/pageprompt.cpp \
+    src/page/pagewithdraw.cpp \
+    src/page/abstract/pagewithuserbar.cpp \
+    src/userstatusbarwidget.cpp \
+    src/utility.cpp
 
 HEADERS += \
-    atmwindow.h \
-    pageaccountinfo.h \
-    pagebase.h \
-    pageinsertcard.h \
-    pagekeypad.h \
-    pageloading.h \
-    pagemainaccountview.h \
-    pageprompt.h \
-    pagewithdraw.h \
-    pagewithuserbar.h \
-    statemanager.h \
-    userstatusbarwidget.h \
-    utility.h
+    include/atmwindow.h \
+    include/page/pageaccountinfo.h \
+    include/page/abstract/pagebase.h \
+    include/page/pageinsertcard.h \
+    include/page/pagekeypad.h \
+    include/page/pageloading.h \
+    include/page/pagemainaccountview.h \
+    include/page/pageprompt.h \
+    include/page/pagewithdraw.h \
+    include/page/abstract/pagewithuserbar.h \
+    include/statemanager.h \
+    include/userstatusbarwidget.h \
+    include/utility.h
+
+INCLUDEPATH += include
 
 FORMS += \
-    atmwindow.ui \
-    pageaccountinfo.ui \
-    pageinsertcard.ui \
-    pagekeypad.ui \
-    pageloading.ui \
-    pagemainaccountview.ui \
-    pageprompt.ui \
-    pagewithdraw.ui \
-    userstatusbarwidget.ui
+    form/atmwindow.ui \
+    form/page/pageaccountinfo.ui \
+    form/page/pageinsertcard.ui \
+    form/page/pagekeypad.ui \
+    form/page/pageloading.ui \
+    form/page/pagemainaccountview.ui \
+    form/page/pageprompt.ui \
+    form/page/pagewithdraw.ui \
+    form/userstatusbarwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

@@ -1,4 +1,4 @@
-#include "pageloading.h"
+#include "page/pageloading.h"
 #include "ui_pageloading.h"
 #include "userstatusbarwidget.h"
 

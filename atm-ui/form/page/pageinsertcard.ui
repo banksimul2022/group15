@@ -40,6 +40,14 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PageBase</class>
+   <extends>QWidget</extends>
+   <header>page/abstract/pagebase.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -1,7 +1,7 @@
 #ifndef PAGEMAINACCOUNTVIEW_H
 #define PAGEMAINACCOUNTVIEW_H
 
-#include "pagewithuserbar.h"
+#include "page/abstract/pagewithuserbar.h"
 
 #include <QWidget>
 

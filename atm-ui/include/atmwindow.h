@@ -1,7 +1,7 @@
 #ifndef ATMWINDOW_H
 #define ATMWINDOW_H
 
-#include "pageloading.h"
+#include "page/pageloading.h"
 #include "statemanager.h"
 
 #include <QMainWindow>

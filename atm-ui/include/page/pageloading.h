@@ -1,7 +1,7 @@
 #ifndef PAGELOADING_H
 #define PAGELOADING_H
 
-#include "pagebase.h"
+#include "page/abstract/pagebase.h"
 
 #include <QWidget>
 

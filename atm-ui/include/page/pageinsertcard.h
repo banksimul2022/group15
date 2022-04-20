@@ -1,7 +1,7 @@
 #ifndef PAGEINSERTCARD_H
 #define PAGEINSERTCARD_H
 
-#include "pagebase.h"
+#include "page/abstract/pagebase.h"
 
 #include <QWidget>
 

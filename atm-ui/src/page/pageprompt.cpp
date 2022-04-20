@@ -1,4 +1,4 @@
-#include "pageprompt.h"
+#include "page/pageprompt.h"
 #include "ui_pageprompt.h"
 #include "userstatusbarwidget.h"
 

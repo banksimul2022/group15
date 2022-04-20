@@ -1,7 +1,7 @@
 #ifndef PAGEWITHDRAW_H
 #define PAGEWITHDRAW_H
 
-#include "pagewithuserbar.h"
+#include "page/abstract/pagewithuserbar.h"
 
 #include <QWidget>
 

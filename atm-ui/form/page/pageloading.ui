@@ -79,7 +79,7 @@
   <customwidget>
    <class>PageBase</class>
    <extends>QWidget</extends>
-   <header>pagebase.h</header>
+   <header>page/abstract/pagebase.h</header>
    <container>1</container>
   </customwidget>
   <customwidget>

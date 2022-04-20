@@ -1,7 +1,7 @@
 #ifndef PAGEPROMPT_H
 #define PAGEPROMPT_H
 
-#include "pagewithuserbar.h"
+#include "page/abstract/pagewithuserbar.h"
 #include <QWidget>
 
 namespace Ui {

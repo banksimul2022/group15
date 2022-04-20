@@ -1,7 +1,7 @@
 #ifndef PAGEACCOUNTINFO_H
 #define PAGEACCOUNTINFO_H
 
-#include "pagewithuserbar.h"
+#include "page/abstract/pagewithuserbar.h"
 
 #include <QWidget>
 

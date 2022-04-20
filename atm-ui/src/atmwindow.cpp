@@ -1,6 +1,6 @@
 #include "atmwindow.h"
 #include "ui_atmwindow.h"
-#include "pageinsertcard.h"
+#include "page/pageinsertcard.h"
 
 #include <QShortcut>
 

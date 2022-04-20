@@ -1,4 +1,4 @@
-#include "pagemainaccountview.h"
+#include "page/pagemainaccountview.h"
 #include "ui_pagemainaccountview.h"
 #include "userstatusbarwidget.h"
 

@@ -194,7 +194,7 @@
   <customwidget>
    <class>PageWithUserBar</class>
    <extends>QWidget</extends>
-   <header>pagewithuserbar.h</header>
+   <header>page/abstract/pagewithuserbar.h</header>
    <container>1</container>
   </customwidget>
  </customwidgets>
