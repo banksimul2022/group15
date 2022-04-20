@@ -5,6 +5,8 @@
 #include "statemanager.h"
 
 #include <QMainWindow>
+#include <QVariant>
+#include <QStack>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class ATMWindow; }
@@ -20,17 +22,20 @@ class ATMWindow : public QMainWindow, public StateManager {
         RFIDInterface *getRFIDInterface() override;
         RESTInterface *getRESTInterface() override;
 
+        void navigateToPage(QWidget *page) override;
+        bool leaveCurrentPage(QVariant result) override;
+
     public slots:
         void fullscreenShortcut();
 
     private:
-        void setPage(QWidget *page);
+        void setPage(QWidget *page, QWidget *oldPage = nullptr);
 
         RFIDInterface *rfidInterface;
         RESTInterface *restInterface;
 
-        PageLoading *loadingPage;
-        QWidget *currentPage;
+        QStack<QWidget*> pageStack;
+
         Ui::ATMWindow *ui;
         QString baseTitle;
 };

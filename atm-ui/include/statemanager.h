@@ -9,6 +9,9 @@ class StateManager {
     public:
         virtual RFIDInterface *getRFIDInterface() = 0;
         virtual RESTInterface *getRESTInterface() = 0;
+
+        virtual void navigateToPage(QWidget *page) = 0;
+        virtual bool leaveCurrentPage(QVariant result) = 0;
 };
 
 #endif // STATEMANAGER_H

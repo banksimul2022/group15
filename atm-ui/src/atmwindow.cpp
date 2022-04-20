@@ -3,19 +3,18 @@
 #include "page/pageinsertcard.h"
 
 #include <QShortcut>
+#include <QDebug>
 
 ATMWindow::ATMWindow(QWidget *parent) :
     QMainWindow(parent),
     rfidInterface(new RFIDInterface),
     restInterface(RESTInterface::createInstance()),
-    loadingPage(new PageLoading(this)),
-    currentPage(nullptr),
     ui(new Ui::ATMWindow)
 {
     ui->setupUi(this);
     new QShortcut(QKeySequence(Qt::Key_F11), this, SLOT(fullscreenShortcut()));
     this->baseTitle = this->windowTitle();
-    this->setPage(new PageInsertCard(this));
+    this->navigateToPage(new PageInsertCard(this));
 }
 
 ATMWindow::~ATMWindow() {
@@ -30,6 +29,25 @@ RESTInterface *ATMWindow::getRESTInterface() {
     return this->restInterface;
 }
 
+void ATMWindow::navigateToPage(QWidget *page) {
+    Q_ASSERT(page != nullptr);
+    QWidget *currentPage = this->pageStack.top();
+    this->pageStack.push(page);
+    this->setPage(page, currentPage);
+}
+
+bool ATMWindow::leaveCurrentPage(QVariant result) {
+    if(this->pageStack.length() < 2) {
+        return false; // There must be atleast one page on the stack (PageInsertCard)
+    }
+
+    QWidget *oldPage = this->pageStack.pop();
+    this->setPage(this->pageStack.top(), oldPage);
+    oldPage->deleteLater(); // Use delete later in case the method caller is oldPage
+
+    return true;
+}
+
 void ATMWindow::fullscreenShortcut() {
     if(this->isFullScreen()) {
         this->showNormal();
@@ -38,28 +56,24 @@ void ATMWindow::fullscreenShortcut() {
     }
 }
 
-void ATMWindow::setPage(QWidget *page) {
-    if(this->currentPage) {
-        this->ui->rootLayout->removeWidget(this->currentPage);
-        this->currentPage->setParent(nullptr);
-        delete this->currentPage;
-    }
-
+void ATMWindow::setPage(QWidget *page, QWidget *oldPage) {
     if(!page) {
-        this->currentPage = nullptr;
-        this->setWindowTitle(this->baseTitle);
         return;
     }
 
+    if(oldPage) {
+        this->ui->rootLayout->removeWidget(oldPage);
+        oldPage->setParent(nullptr);
+    }
+
     this->setWindowTitle(QString("%1 - %2").arg(this->baseTitle, page->windowTitle()));
-    this->currentPage = page;
 
     QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
     sizePolicy.setHorizontalStretch(0);
     sizePolicy.setVerticalStretch(0);
-    sizePolicy.setHeightForWidth(this->currentPage->sizePolicy().hasHeightForWidth());
-    this->currentPage->setSizePolicy(sizePolicy);
+    sizePolicy.setHeightForWidth(page->sizePolicy().hasHeightForWidth());
+    page->setSizePolicy(sizePolicy);
 
-    this->currentPage->setParent(this);
-    this->ui->rootLayout->addWidget(this->currentPage);
+    page->setParent(this);
+    this->ui->rootLayout->addWidget(page);
 }
