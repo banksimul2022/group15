@@ -32,6 +32,7 @@ HEADERS += \
     include/page/pageloading.h \
     include/page/pagemainaccountview.h \
     include/page/pageprompt.h \
+    include/page/pageprompt_enum.h \
     include/page/pagewithdraw.h \
     include/page/abstract/pagewithuserbar.h \
     include/statemanager.h \

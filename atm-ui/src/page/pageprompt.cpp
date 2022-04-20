@@ -4,7 +4,7 @@
 
 #include <QSvgRenderer>
 
-PagePrompt::PagePrompt(const char *ctx, const char *title, const char *prompt, PagePrompt::Icon icon, StateManager *stateManager, QWidget *parent, int count, ...) :
+PagePrompt::PagePrompt(const char *ctx, const char *title, const char *prompt, PromptEnum::Icon icon, StateManager *stateManager, QWidget *parent, int count, ...) :
     PageWithUserBar(UserStatusBarWidget::custom, stateManager, parent),
     ui(new Ui::PagePrompt)
 {
@@ -14,7 +14,7 @@ PagePrompt::PagePrompt(const char *ctx, const char *title, const char *prompt, P
     va_end(args);
 }
 
-PagePrompt::PagePrompt(const char *ctx, const char *title, const char *prompt, PagePrompt::Icon icon, int count, va_list args, StateManager *stateManager, QWidget *parent) :
+PagePrompt::PagePrompt(const char *ctx, const char *title, const char *prompt, PromptEnum::Icon icon, int count, va_list args, StateManager *stateManager, QWidget *parent) :
     PageWithUserBar(UserStatusBarWidget::custom, stateManager, parent),
     ui(new Ui::PagePrompt)
 {
@@ -25,7 +25,7 @@ PagePrompt::~PagePrompt() {
     delete ui;
 }
 
-void PagePrompt::construct(const char *ctx, const char *title, const char *prompt, Icon icon, int count, va_list args) {
+void PagePrompt::construct(const char *ctx, const char *title, const char *prompt, PromptEnum::Icon icon, int count, va_list args) {
     ui->setupUi(this);
     this->setupUserBar(this->ui->widgetRootLayout);
 
@@ -35,20 +35,20 @@ void PagePrompt::construct(const char *ctx, const char *title, const char *promp
     this->userStatusBar->setButtonTitles(ctx, count, args);
 
     switch(icon) {
-        case Icon::info:
+        case PromptEnum::info:
             this->ui->icon->load(QString(":files/icons/info.svg"));
             break;
-        case Icon::question:
+        case PromptEnum::question:
             this->ui->icon->load(QString(":files/icons/question.svg"));
             break;
-        case Icon::warning:
+        case PromptEnum::warning:
             this->ui->icon->load(QString(":files/icons/warning.svg"));
             break;
-        case Icon::error:
+        case PromptEnum::error:
             this->ui->icon->load(QString(":files/icons/error.svg"));
             break;
         default:
-        case Icon::none:
+        case PromptEnum::none:
             /* Do nothing */
             break;
     }
