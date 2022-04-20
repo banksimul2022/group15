@@ -6,6 +6,8 @@
 
 ATMWindow::ATMWindow(QWidget *parent) :
     QMainWindow(parent),
+    rfidInterface(new RFIDInterface),
+    restInterface(RESTInterface::createInstance()),
     loadingPage(new PageLoading(this)),
     currentPage(nullptr),
     ui(new Ui::ATMWindow)
@@ -20,16 +22,20 @@ ATMWindow::~ATMWindow() {
     delete ui;
 }
 
+RFIDInterface *ATMWindow::getRFIDInterface() {
+    return this->rfidInterface;
+}
+
+RESTInterface *ATMWindow::getRESTInterface() {
+    return this->restInterface;
+}
+
 void ATMWindow::fullscreenShortcut() {
     if(this->isFullScreen()) {
         this->showNormal();
     } else {
         this->showFullScreen();
     }
-}
-
-void ATMWindow::logout() {
-
 }
 
 void ATMWindow::setPage(QWidget *page) {

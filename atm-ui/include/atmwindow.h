@@ -17,13 +17,18 @@ class ATMWindow : public QMainWindow, public StateManager {
         ATMWindow(QWidget *parent = nullptr);
         ~ATMWindow();
 
-        void logout() override;
-        void setPage(QWidget *page) override;
+        RFIDInterface *getRFIDInterface() override;
+        RESTInterface *getRESTInterface() override;
 
     public slots:
         void fullscreenShortcut();
 
     private:
+        void setPage(QWidget *page);
+
+        RFIDInterface *rfidInterface;
+        RESTInterface *restInterface;
+
         PageLoading *loadingPage;
         QWidget *currentPage;
         Ui::ATMWindow *ui;

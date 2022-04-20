@@ -21,7 +21,6 @@ void PageWithUserBar::onExtraButton(int id) { Q_UNUSED(id) }
 void PageWithUserBar::onLeave() {
     if(this->userStatusBar->mode() == UserStatusBarWidget::Mode::logout) {
         qDebug() << "logout called from" << this->sender();
-        this->stateManager->logout();
     }
 }
 

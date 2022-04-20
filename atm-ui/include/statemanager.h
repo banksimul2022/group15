@@ -2,11 +2,13 @@
 #define STATEMANAGER_H
 
 #include <QWidget>
+#include <restinterface.h>
+#include <rfidinterface.h>
 
 class StateManager {
     public:
-        virtual void logout() = 0;
-        virtual void setPage(QWidget *page) = 0;
+        virtual RFIDInterface *getRFIDInterface() = 0;
+        virtual RESTInterface *getRESTInterface() = 0;
 };
 
 #endif // STATEMANAGER_H
