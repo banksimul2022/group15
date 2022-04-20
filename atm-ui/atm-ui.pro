@@ -1,4 +1,4 @@
-QT       += core gui svg
+QT       += core gui svg serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -58,3 +58,21 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     resources.qrc
+
+# ----- RFID LIBRARY BEGIN -----
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../atm-dll/rfid/build/release/ -lSerialCardReader
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../atm-dll/rfid/build/debug/ -lSerialCardReader
+else:unix: LIBS += -L$$PWD/../atm-dll/rfid/build/ -lSerialCardReader
+
+INCLUDEPATH += $$PWD/../atm-dll/rfid
+DEPENDPATH += $$PWD/../atm-dll/rfid
+# ----- RFID LIBRARY END -----
+
+# ----- REST LIBRARY BEGIN -----
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../atm-dll/rest/build/release/ -lREST
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../atm-dll/rest/build/debug/ -lREST
+else:unix: LIBS += -L$$PWD/../atm-dll/rest/build/ -lREST
+
+INCLUDEPATH += $$PWD/../atm-dll/rest
+DEPENDPATH += $$PWD/../atm-dll/rest
+# ----- REST LIBRARY END -----
