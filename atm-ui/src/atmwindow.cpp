@@ -42,7 +42,18 @@ bool ATMWindow::leaveCurrentPage(QVariant result) {
     }
 
     QWidget *oldPage = this->pageStack.pop();
-    this->setPage(this->pageStack.top(), oldPage);
+    QWidget *newPage = this->pageStack.top();
+    PageBase *page = qobject_cast<PageBase*>(newPage);
+
+    while(this->pageStack.length() > 1 && page != nullptr && page->processResult(oldPage, result)) {
+        this->pageStack.pop();
+        newPage->deleteLater();
+
+        newPage = this->pageStack.top();
+        page = qobject_cast<PageBase*>(newPage);
+    }
+
+    this->setPage(newPage, oldPage);
     oldPage->deleteLater(); // Use delete later in case the method caller is oldPage
 
     return true;

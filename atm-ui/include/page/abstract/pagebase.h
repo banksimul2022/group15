@@ -3,6 +3,7 @@
 
 #include "statemanager.h"
 
+#include <QVariant>
 #include <QWidget>
 
 class PageBase : public QWidget {
@@ -11,6 +12,9 @@ class PageBase : public QWidget {
     public:
         explicit PageBase(StateManager *stateManager, QWidget *parent = nullptr);
         virtual ~PageBase() = 0;
+
+        // Return true if this page should be closed
+        virtual bool processResult(QWidget *page, QVariant result);
 
     protected:
         StateManager *stateManager;
