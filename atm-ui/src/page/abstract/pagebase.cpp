@@ -2,6 +2,7 @@
 
 PageBase::PageBase(StateManager *stateManager, QWidget *parent) : QWidget{parent} {
     this->stateManager = stateManager;
+    this->connect(this->stateManager->getRESTInterface(false), &RESTInterface::dataReturn, this, &PageBase::onRestData);
 }
 
 bool PageBase::processResult(QWidget *page, QVariant result) {
@@ -9,6 +10,6 @@ bool PageBase::processResult(QWidget *page, QVariant result) {
     return false;
 }
 
-PageBase::~PageBase() {
+void PageBase::onRestData(RestReturnData *data) { Q_UNUSED(data) }
 
-}
+PageBase::~PageBase() { }

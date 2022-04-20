@@ -16,6 +16,9 @@ class PageBase : public QWidget {
         // Return true if this page should be closed
         virtual bool processResult(QWidget *page, QVariant result);
 
+    protected slots:
+        virtual void onRestData(RestReturnData *data);
+
     protected:
         StateManager *stateManager;
 };
