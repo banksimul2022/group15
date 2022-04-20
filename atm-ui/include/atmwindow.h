@@ -22,6 +22,8 @@ class ATMWindow : public QMainWindow, public StateManager {
         RFIDInterface *getRFIDInterface() override;
         RESTInterface *getRESTInterface(bool displayLoadingPage = true) override;
 
+        void displayPrompt(QObject *ctx, const char *title, const char *message, PromptEnum::Icon icon, int btnCount, ...) override;
+
         void navigateToPage(QWidget *page) override;
         bool leaveCurrentPage(QVariant result) override;
 

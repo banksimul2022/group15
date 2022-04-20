@@ -4,6 +4,8 @@
 
 #include <QShortcut>
 
+#include "page/pageprompt.h"
+
 ATMWindow::ATMWindow(QWidget *parent) :
     QMainWindow(parent),
     rfidInterface(new RFIDInterface),
@@ -34,6 +36,13 @@ RESTInterface *ATMWindow::getRESTInterface(bool displayLoadingPage) {
     }
 
     return this->restInterface;
+}
+
+void ATMWindow::displayPrompt(QObject *ctx, const char *title, const char *message, PromptEnum::Icon icon, int btnCount, ...) {
+    va_list args;
+    va_start(args, btnCount);
+    this->navigateToPage(new PagePrompt(ctx->metaObject()->className(), title, message, icon, btnCount, args, this));
+    va_end(args);
 }
 
 void ATMWindow::navigateToPage(QWidget *page) {
