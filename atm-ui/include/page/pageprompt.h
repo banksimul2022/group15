@@ -21,9 +21,11 @@ class PagePrompt : public PageWithUserBar {
         };
 
         explicit PagePrompt(const char *ctx, const char *title, const char *prompt, PagePrompt::Icon icon, StateManager *stateManager, QWidget *parent = nullptr, int count = 0, ...);
+        explicit PagePrompt(const char *ctx, const char *title, const char *prompt, PagePrompt::Icon icon, int count, va_list args, StateManager *stateManager, QWidget *parent = nullptr);
         ~PagePrompt();
 
     private:
+        void construct(const char *ctx, const char *title, const char *prompt, PagePrompt::Icon icon, int count, va_list args);
         Ui::PagePrompt *ui;
 };
 
