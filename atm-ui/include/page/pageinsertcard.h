@@ -16,7 +16,15 @@ class PageInsertCard : public PageBase {
         explicit PageInsertCard(StateManager *stateManager, QWidget *parent = nullptr);
         ~PageInsertCard();
 
+        bool processResult(QWidget *page, QVariant result) override;
+
+    private slots:
+        void onCardRead(QString number);
+        void onRestData(RestReturnData *data) override;
+
     private:
+        bool processReads;
+
         Ui::PageInsertCard *ui;
 };
 
