@@ -20,7 +20,7 @@ class ATMWindow : public QMainWindow, public StateManager {
         ~ATMWindow();
 
         RFIDInterface *getRFIDInterface() override;
-        RESTInterface *getRESTInterface() override;
+        RESTInterface *getRESTInterface(bool displayLoadingPage = true) override;
 
         void navigateToPage(QWidget *page) override;
         bool leaveCurrentPage(QVariant result) override;
@@ -35,6 +35,7 @@ class ATMWindow : public QMainWindow, public StateManager {
         RESTInterface *restInterface;
 
         QStack<QWidget*> pageStack;
+        PageLoading *loadingPage;
 
         Ui::ATMWindow *ui;
         QString baseTitle;

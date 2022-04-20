@@ -3,15 +3,16 @@
 #include "page/pageinsertcard.h"
 
 #include <QShortcut>
-#include <QDebug>
 
 ATMWindow::ATMWindow(QWidget *parent) :
     QMainWindow(parent),
     rfidInterface(new RFIDInterface),
     restInterface(RESTInterface::createInstance()),
+    loadingPage(new PageLoading(this)),
     ui(new Ui::ATMWindow)
 {
     ui->setupUi(this);
+    this->loadingPage->setVisible(false); // To prevent loading page from randomly opening in it's own window
     new QShortcut(QKeySequence(Qt::Key_F11), this, SLOT(fullscreenShortcut()));
     this->baseTitle = this->windowTitle();
     this->navigateToPage(new PageInsertCard(this));
@@ -25,13 +26,25 @@ RFIDInterface *ATMWindow::getRFIDInterface() {
     return this->rfidInterface;
 }
 
-RESTInterface *ATMWindow::getRESTInterface() {
+RESTInterface *ATMWindow::getRESTInterface(bool displayLoadingPage) {
+    if(displayLoadingPage) {
+        this->setPage(this->loadingPage, this->pageStack.top());
+        this->loadingPage->setVisible(true);
+        this->pageStack.push(this->loadingPage);
+    }
+
     return this->restInterface;
 }
 
 void ATMWindow::navigateToPage(QWidget *page) {
     Q_ASSERT(page != nullptr);
-    QWidget *currentPage = this->pageStack.top();
+    QWidget *currentPage = this->pageStack.isEmpty() ? nullptr : this->pageStack.top();
+
+    if(currentPage == this->loadingPage) {
+        this->pageStack.pop();
+        currentPage->setVisible(false);
+    }
+
     this->pageStack.push(page);
     this->setPage(page, currentPage);
 }
@@ -42,19 +55,26 @@ bool ATMWindow::leaveCurrentPage(QVariant result) {
     }
 
     QWidget *oldPage = this->pageStack.pop();
-    QWidget *newPage = this->pageStack.top();
-    PageBase *page = qobject_cast<PageBase*>(newPage);
+    QWidget *actualPage = oldPage;
 
-    while(this->pageStack.length() > 1 && page != nullptr && page->processResult(oldPage, result)) {
+    if(oldPage == this->loadingPage) {
+        Q_ASSERT(this->pageStack.length() > 1);
+        actualPage = this->pageStack.pop();
+        oldPage->setVisible(false);
+    }
+
+    QWidget *newPage = this->pageStack.top();
+
+    PageBase *page;
+    while((page = qobject_cast<PageBase*>(newPage)) != nullptr && page->processResult(actualPage, result) && this->pageStack.length() > 1) {
         this->pageStack.pop();
         newPage->deleteLater();
-
         newPage = this->pageStack.top();
-        page = qobject_cast<PageBase*>(newPage);
     }
 
     this->setPage(newPage, oldPage);
-    oldPage->deleteLater(); // Use delete later in case the method caller is oldPage
+    if(actualPage != oldPage) actualPage->deleteLater();
+    if(oldPage != this->loadingPage) oldPage->deleteLater(); // Use delete later in case the method caller is oldPage
 
     return true;
 }
