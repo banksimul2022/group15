@@ -3,14 +3,13 @@ const express = require("express");
 // const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 const helmet = require("helmet");
+const errors = require("./errors");
 const cors = require("cors");
 
-const customerRouter = require("./routes/customer");
-const accountRouter = require("./routes/account");
-const cardRouter = require("./routes/card");
-const transactionRouter = require("./routes/transaction");
-const customer_has_accountRouter = require("./routes/customer_has_account");
+require('dotenv').config();
 
+const crudRouter = require("./routes/crud");
+const apiRouter = require("./routes/api");
 
 const app = express();
 
@@ -22,11 +21,23 @@ app.use(express.urlencoded({ extended: false }));
 // app.use(cookieParser()); (Not used)
 // app.use(express.static(path.join(__dirname, "public")));
 
+app.use("/crud", crudRouter);
+app.use("/api", apiRouter);
 
-app.use("/customer", customerRouter);
-app.use("/account", accountRouter);
-app.use("/card", cardRouter);
-app.use("/transaction", transactionRouter);
-app.use("/customer_has_account", customer_has_accountRouter);
+app.use((err, req, res, next) => {
+    if(err instanceof errors.PublicAPIError) {
+        let data = { error: err.code, message: "An error occured while processing your request" };
+
+        if(err instanceof errors.PublicAPIError) {
+            data.message = err.message;
+        }
+
+        res.status(err.status);
+        res.json(data);
+        return;
+    }
+
+    next(err);
+});
 
 module.exports = app;
