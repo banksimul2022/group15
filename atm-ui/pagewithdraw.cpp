@@ -4,12 +4,12 @@
 
 #include <QDebug>
 
-PageWithdraw::PageWithdraw(QWidget *parent) :
-    QWidget(parent),
+PageWithdraw::PageWithdraw(StateManager *stateManager, QWidget *parent) :
+    PageWithUserBar(UserStatusBarWidget::Mode::leaveAndOk, stateManager, parent),
     ui(new Ui::PageWithdraw)
 {
     ui->setupUi(this);
-    this->ui->widgetRootLayout->addWidget(new UserStatusBarWidget);
+    this->setupUserBar(this->ui->widgetRootLayout);
 
     QList<QPushButton*> withdrawButtons = this->findChildren<QPushButton*>();
 
@@ -30,8 +30,6 @@ void PageWithdraw::onAmountButtonPress() {
         qDebug() << val;
     } else if(name == "btnOther") {
         qDebug() << "Other";
-    } else if(name == "btnCancel") {
-        qDebug() << "Cancel";
     } else {
         // Code execution SHOULD not get here
         Q_ASSERT(false);

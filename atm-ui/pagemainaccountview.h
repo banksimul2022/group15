@@ -1,17 +1,19 @@
 #ifndef PAGEMAINACCOUNTVIEW_H
 #define PAGEMAINACCOUNTVIEW_H
 
+#include "pagewithuserbar.h"
+
 #include <QWidget>
 
 namespace Ui {
     class PageMainAccountView;
 }
 
-class PageMainAccountView : public QWidget {
+class PageMainAccountView : public PageWithUserBar {
     Q_OBJECT
 
     public:
-        explicit PageMainAccountView(QWidget *parent = nullptr);
+        explicit PageMainAccountView(StateManager *stateManager, QWidget *parent = nullptr);
         ~PageMainAccountView();
 
     private:

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PagePrompt</class>
+ <widget class="PageWithUserBar" name="PagePrompt">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>640</width>
+    <height>480</height>
+   </rect>
+  </property>
+  <layout class="QVBoxLayout" name="widgetRootLayout" stretch="1,2,1">
+   <item>
+    <widget class="QSvgWidget" name="icon" native="true"/>
+   </item>
+   <item>
+    <widget class="QLabel" name="prompt">
+     <property name="font">
+      <font>
+       <pointsize>20</pointsize>
+      </font>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <spacer name="bottomSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>PageWithUserBar</class>
+   <extends>QWidget</extends>
+   <header>pagewithuserbar.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QSvgWidget</class>
+   <extends>QWidget</extends>
+   <header>qsvgwidget.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

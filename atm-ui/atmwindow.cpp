@@ -6,13 +6,14 @@
 
 ATMWindow::ATMWindow(QWidget *parent) :
     QMainWindow(parent),
+    loadingPage(new PageLoading(this)),
     currentPage(nullptr),
     ui(new Ui::ATMWindow)
 {
     ui->setupUi(this);
     new QShortcut(QKeySequence(Qt::Key_F11), this, SLOT(fullscreenShortcut()));
     this->baseTitle = this->windowTitle();
-    this->setPage(new PageInsertCard);
+    this->setPage(new PageInsertCard(this));
 }
 
 ATMWindow::~ATMWindow() {
@@ -25,6 +26,10 @@ void ATMWindow::fullscreenShortcut() {
     } else {
         this->showFullScreen();
     }
+}
+
+void ATMWindow::logout() {
+
 }
 
 void ATMWindow::setPage(QWidget *page) {
@@ -49,6 +54,6 @@ void ATMWindow::setPage(QWidget *page) {
     sizePolicy.setHeightForWidth(this->currentPage->sizePolicy().hasHeightForWidth());
     this->currentPage->setSizePolicy(sizePolicy);
 
-    this->currentPage->setParent(this->ui->rootWidget);
+    this->currentPage->setParent(this);
     this->ui->rootLayout->addWidget(this->currentPage);
 }

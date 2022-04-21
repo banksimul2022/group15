@@ -1,4 +1,4 @@
-QT       += core gui
+QT       += core gui svg
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -11,28 +11,41 @@ CONFIG += c++11
 SOURCES += \
     atmwindow.cpp \
     main.cpp \
+    pageaccountinfo.cpp \
+    pagebase.cpp \
     pageinsertcard.cpp \
     pagekeypad.cpp \
+    pageloading.cpp \
     pagemainaccountview.cpp \
-    pagetransactions.cpp \
+    pageprompt.cpp \
     pagewithdraw.cpp \
-    userstatusbarwidget.cpp
+    pagewithuserbar.cpp \
+    userstatusbarwidget.cpp \
+    utility.cpp
 
 HEADERS += \
     atmwindow.h \
+    pageaccountinfo.h \
+    pagebase.h \
     pageinsertcard.h \
     pagekeypad.h \
+    pageloading.h \
     pagemainaccountview.h \
-    pagetransactions.h \
+    pageprompt.h \
     pagewithdraw.h \
-    userstatusbarwidget.h
+    pagewithuserbar.h \
+    statemanager.h \
+    userstatusbarwidget.h \
+    utility.h
 
 FORMS += \
     atmwindow.ui \
+    pageaccountinfo.ui \
     pageinsertcard.ui \
     pagekeypad.ui \
+    pageloading.ui \
     pagemainaccountview.ui \
-    pagetransactions.ui \
+    pageprompt.ui \
     pagewithdraw.ui \
     userstatusbarwidget.ui
 
@@ -40,3 +53,6 @@ FORMS += \
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+RESOURCES += \
+    resources.qrc

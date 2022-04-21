@@ -2,12 +2,12 @@
 #include "ui_pagemainaccountview.h"
 #include "userstatusbarwidget.h"
 
-PageMainAccountView::PageMainAccountView(QWidget *parent) :
-    QWidget(parent),
+PageMainAccountView::PageMainAccountView(StateManager *stateManager, QWidget *parent) :
+    PageWithUserBar(UserStatusBarWidget::Mode::logout, stateManager, parent),
     ui(new Ui::PageMainAccountView)
 {
     ui->setupUi(this);
-    this->ui->widgetRootLayout->addWidget(new UserStatusBarWidget);
+    this->setupUserBar(this->ui->widgetRootLayout);
 }
 
 PageMainAccountView::~PageMainAccountView() {

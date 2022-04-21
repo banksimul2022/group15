@@ -1,6 +1,7 @@
 #ifndef PAGEKEYPAD_H
 #define PAGEKEYPAD_H
 
+#include "pagewithuserbar.h"
 #include "userstatusbarwidget.h"
 
 #include <QWidget>
@@ -9,7 +10,7 @@ namespace Ui {
     class PageKeypad;
 }
 
-class PageKeypad : public QWidget {
+class PageKeypad : public PageWithUserBar {
     Q_OBJECT
 
     public:
@@ -19,15 +20,23 @@ class PageKeypad : public QWidget {
             Deposit
         };
 
-        explicit PageKeypad(PageKeypad::Action action, QWidget *parent = nullptr);
+        explicit PageKeypad(PageKeypad::Action action, StateManager *stateManager, QWidget *parent = nullptr);
         ~PageKeypad();
+
+    protected slots:
+        void onOk() override;
 
     private slots:
         void onKeypadButtonPress();
+        void onFlashTick();
 
     private:
+        void flash(ushort count);
+
         Ui::PageKeypad *ui;
-        UserStatusBarWidget *barWidget;
+        QTimer *flashTimer;
+        ushort flashCount;
+        bool flashState;
 };
 
 #endif // PAGEKEYPAD_H
