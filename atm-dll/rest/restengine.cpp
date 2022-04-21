@@ -6,6 +6,7 @@
 #include <QVariant>
 #include <QJsonDocument>
 #include <QDebug>
+#include "resterrorcode.h"
 
 
 RESTEngine::RESTEngine(QString endpointstr, QObject *parent) : RESTEngine(QUrl(endpointstr),parent)
@@ -137,38 +138,52 @@ QNetworkRequest RESTEngine::createRequest(QUrl url, RestReturnData::ReturnType t
     return request;
 }
 
+
 void RESTEngine::replySlot(QNetworkReply *reply)
 {
 
     QVariant variant = reply->request().attribute(QNetworkRequest::User);
     if (!variant.canConvert<int>()){
+        emit dataReturn(new RestReturnData(RestReturnData::typeinternalerror, RestErrors::ERR_UNTAGGED_REPLY));
+
         return;
     }
+    if (reply->error()!=QNetworkReply::NoError && reply->error() < QNetworkReply::ProxyConnectionRefusedError ){
+         emit dataReturn(new RestReturnData(RestReturnData::typeinternalerror, RestErrors::ERR_NETWORK));
+        return;
+}
 
-    QByteArray responseData = reply->readAll();
-    QJsonDocument jsonDoc = QJsonDocument::fromJson(responseData);
+    QJsonDocument jsonDoc;
+    QJsonObject jsonObj;
+    int type = variant.value<int>();
 
-    QJsonObject jsonObj = jsonDoc.object();
+        QByteArray responseData = reply->readAll();
+        jsonDoc = QJsonDocument::fromJson(responseData);
+
+        jsonObj = jsonDoc.object();
+
+
     int error = jsonObj.value("error").toInt(-1); //  error oletus arvo -1(kaikki ok)
 
-    switch (variant.value<int>()) {
+    switch (type) {
         case RestReturnData::typeLogin:
 
             if(error == -1){
                 this->token = ("Bearer "+jsonObj.value("token").toString()).toUtf8(); // Luetaan JSonobjectista token arvo ja muutetaan se string->QByteArray utf8 muodossa
                  }
                 emit dataReturn(new RestReturnData(RestReturnData::typeLogin,error));
-                break;
-        case RestReturnData::typeInfo:
-                emit dataReturn(new RestInfoData(&jsonObj,error));
-                break;
+                return;
+        case RestReturnData::typeInfo: {
+                 emit dataReturn(new RestInfoData(&jsonObj,error));
+
+                return; }
        case RestReturnData::typeDeposit:
 
         emit dataReturn(new RestReturnData(RestReturnData::typeDeposit,error));
-                break;
+                return;
        case RestReturnData::typeWithdraw:
         emit dataReturn(new RestReturnData(RestReturnData::typeWithdraw,error));
-                break;
+                return;
        case RestReturnData::typeTransaction: {
             RestTransactionData *data = new RestTransactionData(&jsonObj,error);
 
@@ -176,12 +191,14 @@ void RESTEngine::replySlot(QNetworkReply *reply)
             this->prevOffset=jsonObj.value("prevOffset").toInt(0);
 
            emit dataReturn(data);
-                break; }
+                return; }
        case RestReturnData::typeBalance: {
             emit dataReturn(new RestBalanceData(&jsonObj,error));
-                break;
+                return;
             }
+
     }
 
 
+    emit dataReturn(new RestReturnData(RestReturnData::typeinternalerror, RestErrors::ERR_UNKNOW_REPLY));
 }
