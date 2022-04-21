@@ -10,6 +10,8 @@ bool PageBase::processResult(QWidget *page, QVariant result) {
     return false;
 }
 
+bool PageBase::keepLoadingPageOnNavigate() { return false; }
+
 void PageBase::onRestData(RestReturnData *data) { Q_UNUSED(data) }
 
 PageBase::~PageBase() { }

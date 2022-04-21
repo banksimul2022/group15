@@ -30,9 +30,7 @@ RFIDInterface *ATMWindow::getRFIDInterface() {
 
 RESTInterface *ATMWindow::getRESTInterface(bool displayLoadingPage) {
     if(displayLoadingPage) {
-        this->setPage(this->loadingPage, this->pageStack.top());
-        this->loadingPage->setVisible(true);
-        this->pageStack.push(this->loadingPage);
+        this->displayLoadingPage();
     }
 
     return this->restInterface;
@@ -48,10 +46,21 @@ void ATMWindow::displayPrompt(QObject *ctx, const char *title, const char *messa
 void ATMWindow::navigateToPage(QWidget *page) {
     Q_ASSERT(page != nullptr);
     QWidget *currentPage = this->pageStack.isEmpty() ? nullptr : this->pageStack.top();
+    PageBase *pageCast = qobject_cast<PageBase*>(page);
+    bool keep = pageCast == nullptr ? false : pageCast->keepLoadingPageOnNavigate();
 
     if(currentPage == this->loadingPage) {
-        this->pageStack.pop();
-        currentPage->setVisible(false);
+        if(keep) {
+            pageStack.insert(pageStack.length() - 1, page); // Add page before loading page
+            return;
+        } else {
+            this->pageStack.pop();
+            currentPage->setVisible(false);
+        }
+    } else if(keep) {
+        this->displayLoadingPage();
+        pageStack.insert(pageStack.length() - 1, page); // Add page before loading page
+        return;
     }
 
     this->pageStack.push(page);
@@ -116,4 +125,14 @@ void ATMWindow::setPage(QWidget *page, QWidget *oldPage) {
 
     page->setParent(this);
     this->ui->rootLayout->addWidget(page);
+}
+
+void ATMWindow::displayLoadingPage() {
+    if(this->pageStack.top() == this->loadingPage) {
+        return;
+    }
+
+    this->setPage(this->loadingPage, this->pageStack.top());
+    this->loadingPage->setVisible(true);
+    this->pageStack.push(this->loadingPage);
 }

@@ -32,6 +32,7 @@ class ATMWindow : public QMainWindow, public StateManager {
 
     private:
         void setPage(QWidget *page, QWidget *oldPage = nullptr);
+        void displayLoadingPage();
 
         RFIDInterface *rfidInterface;
         RESTInterface *restInterface;
