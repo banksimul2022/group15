@@ -1,6 +1,7 @@
 QT += network
 QT -= gui
 
+
 TEMPLATE = lib
 DEFINES += REST_LIBRARY
 
@@ -24,6 +25,7 @@ HEADERS += \
     banktransaction.h \
     restbalancedata.h \
     restengine.h \
+    resterrorcode.h \
     restinfodata.h \
     restinterface.h \
     restreturndata.h \
