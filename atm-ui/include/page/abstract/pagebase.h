@@ -13,6 +13,8 @@ class PageBase : public QWidget {
         explicit PageBase(StateManager *stateManager, QWidget *parent = nullptr);
         virtual ~PageBase() = 0;
 
+        virtual void onNavigate();
+
         // Return true if this page should be closed
         virtual bool processResult(QWidget *page, QVariant result);
 

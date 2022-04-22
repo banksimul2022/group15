@@ -5,6 +5,8 @@ PageBase::PageBase(StateManager *stateManager, QWidget *parent) : QWidget{parent
     this->connect(this->stateManager->getRESTInterface(false), &RESTInterface::dataReturn, this, &PageBase::onRestData);
 }
 
+void PageBase::onNavigate() { /* Unused in base class */ }
+
 bool PageBase::processResult(QWidget *page, QVariant result) {
     Q_UNUSED(page) Q_UNUSED(result)
     return false;

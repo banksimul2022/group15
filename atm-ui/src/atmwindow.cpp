@@ -74,6 +74,7 @@ void ATMWindow::navigateToPage(QWidget *page) {
 
     this->pageStack.push(page);
     this->setPage(page, currentPage);
+    if(pageCast != nullptr) pageCast->onNavigate();
 }
 
 bool ATMWindow::leaveCurrentPage(QVariant result) {
