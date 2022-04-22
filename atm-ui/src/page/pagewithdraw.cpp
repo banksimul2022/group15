@@ -5,7 +5,7 @@
 #include <QDebug>
 
 PageWithdraw::PageWithdraw(StateManager *stateManager, QWidget *parent) :
-    PageWithUserBar(UserStatusBarWidget::Mode::leaveAndOk, stateManager, parent),
+    PageWithUserBar(UserStatusBarWidget::Mode::leaveAndOk, stateManager, nullptr, parent),
     ui(new Ui::PageWithdraw)
 {
     ui->setupUi(this);

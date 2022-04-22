@@ -3,7 +3,7 @@
 #include "userstatusbarwidget.h"
 
 PageAccountInfo::PageAccountInfo(Action action, StateManager *stateManager, QWidget *parent) :
-    PageWithUserBar(UserStatusBarWidget::Mode::leaveOnly, stateManager, parent),
+    PageWithUserBar(UserStatusBarWidget::Mode::leaveOnly, stateManager, nullptr, parent),
     ui(new Ui::PageAccountInfo)
 {
     ui->setupUi(this);

@@ -6,7 +6,7 @@
 #include <QPushButton>
 #include <QTimer>
 
-UserStatusBarWidget::UserStatusBarWidget(Mode mode, QWidget *parent) :
+UserStatusBarWidget::UserStatusBarWidget(Mode mode, RestInfoData *userInfo, QWidget *parent) :
     QWidget(parent),
     ui(new Ui::UserStatusBarWidget),
     extraBtnMapper(nullptr),
@@ -16,6 +16,15 @@ UserStatusBarWidget::UserStatusBarWidget(Mode mode, QWidget *parent) :
 {
     ui->setupUi(this);
     this->updateTimeoutLabel();
+
+    if(userInfo != nullptr) {
+        this->ui->lblUserInfo->setText(
+            QCoreApplication::translate("UserStatusBarWidget", "%1 %2 Tili %3", nullptr)
+                .arg(userInfo->getfName(), userInfo->getlName(), userInfo->getAccountNumber())
+        );
+    } else {
+        this->ui->lblUserInfo->setVisible(false);
+    }
 
     Utility::retainSizeWhenHidden(this->ui->btnLeave);
     Utility::retainSizeWhenHidden(this->ui->btnOk);

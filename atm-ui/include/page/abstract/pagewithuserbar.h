@@ -10,7 +10,7 @@ class PageWithUserBar : public PageBase {
     Q_OBJECT
 
     public:
-        explicit PageWithUserBar(UserStatusBarWidget::Mode mode, StateManager *stateManager, QWidget *parent = nullptr);
+        explicit PageWithUserBar(UserStatusBarWidget::Mode mode, StateManager *stateManager, RestInfoData *infoData = nullptr, QWidget *parent = nullptr);
         virtual ~PageWithUserBar() = 0;
 
     protected:

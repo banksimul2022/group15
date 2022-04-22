@@ -3,6 +3,7 @@
 
 #include <QSignalMapper>
 #include <QWidget>
+#include <restinfodata.h>
 
 namespace Ui {
     class UserStatusBarWidget;
@@ -19,7 +20,7 @@ class UserStatusBarWidget : public QWidget {
             custom
         };
 
-        explicit UserStatusBarWidget(Mode logout, QWidget *parent = nullptr);
+        explicit UserStatusBarWidget(Mode logout, RestInfoData *userInfo = nullptr, QWidget *parent = nullptr);
         ~UserStatusBarWidget();
 
         void setButtonTitles(const char *ctx, int count, ...);
