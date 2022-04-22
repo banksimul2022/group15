@@ -15,6 +15,8 @@ class StateManager {
         // Convenience method for displayting messages
         virtual void displayPrompt(QObject *ctx, const char *title, const char *message, PromptEnum::Icon icon, int btnCount, ...) = 0;
 
+        virtual void leaveLoadingPage() = 0;
+
         virtual void navigateToPage(QWidget *page) = 0;
         virtual bool leaveCurrentPage(QVariant result) = 0;
         virtual void leaveAllPages(QVariant result) = 0;

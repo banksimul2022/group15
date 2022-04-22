@@ -4,6 +4,7 @@
 #include "page/abstract/pagewithuserbar.h"
 
 #include <QWidget>
+#include <restinfodata.h>
 
 namespace Ui {
     class PageMainAccountView;
@@ -15,6 +16,11 @@ class PageMainAccountView : public PageWithUserBar {
     public:
         explicit PageMainAccountView(StateManager *stateManager, QWidget *parent = nullptr);
         ~PageMainAccountView();
+
+        bool keepLoadingPageOnNavigate() override;
+
+    protected slots:
+        void onRestData(RestReturnData *data) override;
 
     private:
         Ui::PageMainAccountView *ui;

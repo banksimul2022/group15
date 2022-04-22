@@ -24,6 +24,8 @@ class ATMWindow : public QMainWindow, public StateManager {
 
         void displayPrompt(QObject *ctx, const char *title, const char *message, PromptEnum::Icon icon, int btnCount, ...) override;
 
+        void leaveLoadingPage() override;
+
         void navigateToPage(QWidget *page) override;
         bool leaveCurrentPage(QVariant result) override;
         void leaveAllPages(QVariant result) override;

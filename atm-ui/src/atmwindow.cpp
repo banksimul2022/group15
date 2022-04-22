@@ -43,6 +43,15 @@ void ATMWindow::displayPrompt(QObject *ctx, const char *title, const char *messa
     va_end(args);
 }
 
+void ATMWindow::leaveLoadingPage() {
+    if(this->pageStack.top() != this->loadingPage) {
+        return;
+    }
+
+    QWidget* loadingPage = this->pageStack.pop();
+    this->setPage(this->pageStack.top(), loadingPage);
+}
+
 void ATMWindow::navigateToPage(QWidget *page) {
     Q_ASSERT(page != nullptr);
     QWidget *currentPage = this->pageStack.isEmpty() ? nullptr : this->pageStack.top();
