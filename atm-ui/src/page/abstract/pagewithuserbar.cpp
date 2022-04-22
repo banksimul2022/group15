@@ -12,6 +12,14 @@ PageWithUserBar::PageWithUserBar(UserStatusBarWidget::Mode mode, StateManager *s
     }
 }
 
+void PageWithUserBar::stopTimer() {
+    this->userStatusBar->stopLeaveTimeout();
+}
+
+void PageWithUserBar::startTimer() {
+    this->userStatusBar->resetLeaveTimeout();
+}
+
 void PageWithUserBar::setupUserBar(QLayout *layout) {
     layout->addWidget(this->userStatusBar);
 }

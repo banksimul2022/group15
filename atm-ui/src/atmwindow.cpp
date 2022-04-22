@@ -148,6 +148,8 @@ void ATMWindow::setPage(QWidget *page, QWidget *oldPage) {
     }
 
     if(oldPage) {
+        PageWithUserBar *pageCast = qobject_cast<PageWithUserBar*>(oldPage);
+        if(pageCast != nullptr) pageCast->stopTimer();
         this->ui->rootLayout->removeWidget(oldPage);
         oldPage->setParent(nullptr);
     }
@@ -162,6 +164,9 @@ void ATMWindow::setPage(QWidget *page, QWidget *oldPage) {
 
     page->setParent(this);
     this->ui->rootLayout->addWidget(page);
+
+    PageWithUserBar *pageCast = qobject_cast<PageWithUserBar*>(page);
+    if(pageCast != nullptr) pageCast->startTimer();
 }
 
 void ATMWindow::deletePage(QWidget *page, QWidget *page2) {

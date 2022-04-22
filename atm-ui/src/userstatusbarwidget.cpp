@@ -49,8 +49,6 @@ UserStatusBarWidget::UserStatusBarWidget(Mode mode, RestInfoData *userInfo, QWid
         } else {
             this->connect(this->ui->btnOk, &QPushButton::clicked, this, &UserStatusBarWidget::ok);
         }
-
-        this->leaveTimer->start();
     }
 }
 
@@ -72,8 +70,6 @@ void UserStatusBarWidget::setButtonTitles(const char *ctx, int count, va_list ar
             this->ui->btnLeave->setText(QCoreApplication::translate(ctx, text, nullptr));
         }
     }
-
-    this->leaveTimer->start();
 
     if(count-- > 0) {
         this->connect(this->ui->btnOk, &QPushButton::clicked, this, &UserStatusBarWidget::ok);
@@ -103,7 +99,15 @@ void UserStatusBarWidget::setButtonTitles(const char *ctx, int count, va_list ar
     }
 }
 
+void UserStatusBarWidget::stopLeaveTimeout() {
+    this->leaveTimer->stop();
+}
+
 void UserStatusBarWidget::resetLeaveTimeout() {
+    if(!this->leaveTimer->isActive()) {
+        this->leaveTimer->start();
+    }
+
     this->leaveTimout = this->getDefaultTimeout();
     this->updateTimeoutLabel();
 }

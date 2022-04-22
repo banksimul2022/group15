@@ -13,6 +13,9 @@ class PageWithUserBar : public PageBase {
         explicit PageWithUserBar(UserStatusBarWidget::Mode mode, StateManager *stateManager, RestInfoData *infoData = nullptr, QWidget *parent = nullptr);
         virtual ~PageWithUserBar() = 0;
 
+        void stopTimer();
+        void startTimer();
+
     protected:
         void setupUserBar(QLayout *layout);
         UserStatusBarWidget * userStatusBar;

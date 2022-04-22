@@ -26,6 +26,7 @@ class UserStatusBarWidget : public QWidget {
         void setButtonTitles(const char *ctx, int count, ...);
         void setButtonTitles(const char *ctx, int count, va_list args) ;
 
+        void stopLeaveTimeout();
         void resetLeaveTimeout();
         Mode mode();
 
