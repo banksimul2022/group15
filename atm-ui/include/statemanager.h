@@ -17,6 +17,7 @@ class StateManager {
 
         virtual void navigateToPage(QWidget *page) = 0;
         virtual bool leaveCurrentPage(QVariant result) = 0;
+        virtual void leaveAllPages(QVariant result) = 0;
 };
 
 #endif // STATEMANAGER_H

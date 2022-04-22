@@ -72,29 +72,46 @@ bool ATMWindow::leaveCurrentPage(QVariant result) {
         return false; // There must be atleast one page on the stack (PageInsertCard)
     }
 
-    QWidget *oldPage = this->pageStack.pop();
-    QWidget *actualPage = oldPage;
+    QWidget *oldPage = nullptr;
+    QWidget *actualPage = nullptr;
 
-    if(oldPage == this->loadingPage) {
-        Q_ASSERT(this->pageStack.length() > 1);
-        actualPage = this->pageStack.pop();
-        oldPage->setVisible(false);
-    }
+    this->popTopPage(&oldPage, &actualPage);
 
     QWidget *newPage = this->pageStack.top();
 
     PageBase *page;
     while((page = qobject_cast<PageBase*>(newPage)) != nullptr && page->processResult(actualPage, result) && this->pageStack.length() > 1) {
         this->pageStack.pop();
-        newPage->deleteLater();
+        this->deletePage(newPage);
         newPage = this->pageStack.top();
     }
 
     this->setPage(newPage, oldPage);
-    if(actualPage != oldPage) actualPage->deleteLater();
-    if(oldPage != this->loadingPage) oldPage->deleteLater(); // Use delete later in case the method caller is oldPage
+    this->deletePage(oldPage, actualPage);
 
     return true;
+}
+
+void ATMWindow::leaveAllPages(QVariant result) {
+    Q_ASSERT(this->pageStack.length() > 1);
+    QWidget *currentPage = nullptr;
+    QWidget *actualPage = nullptr;
+
+    this->popTopPage(&currentPage, &actualPage);
+
+    while(this->pageStack.length() > 1) {
+        this->deletePage(this->pageStack.pop());
+    }
+
+    QWidget *newPage = this->pageStack.top();
+    PageBase *newPageCast = qobject_cast<PageBase*>(newPage);
+
+    if(newPageCast != nullptr) {
+        newPageCast->processResult(actualPage, result);
+    }
+
+    this->setPage(newPage, currentPage);
+    this->deletePage(currentPage, actualPage);
 }
 
 void ATMWindow::fullscreenShortcut() {
@@ -102,6 +119,17 @@ void ATMWindow::fullscreenShortcut() {
         this->showNormal();
     } else {
         this->showFullScreen();
+    }
+}
+
+void ATMWindow::popTopPage(QWidget **oldPage, QWidget **actualPage) {
+    *oldPage = this->pageStack.pop();
+    *actualPage = *oldPage;
+
+    if(*oldPage == this->loadingPage) {
+        Q_ASSERT(this->pageStack.length() > 1);
+        *actualPage = this->pageStack.pop();
+        (*oldPage)->setVisible(false);
     }
 }
 
@@ -125,6 +153,11 @@ void ATMWindow::setPage(QWidget *page, QWidget *oldPage) {
 
     page->setParent(this);
     this->ui->rootLayout->addWidget(page);
+}
+
+void ATMWindow::deletePage(QWidget *page, QWidget *page2) {
+    if(page2 != nullptr && page2 != this->loadingPage && page2 != page) page2->deleteLater();
+    if(page != this->loadingPage) page->deleteLater();
 }
 
 void ATMWindow::displayLoadingPage() {

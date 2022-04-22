@@ -26,12 +26,15 @@ class ATMWindow : public QMainWindow, public StateManager {
 
         void navigateToPage(QWidget *page) override;
         bool leaveCurrentPage(QVariant result) override;
+        void leaveAllPages(QVariant result) override;
 
     public slots:
         void fullscreenShortcut();
 
     private:
+        void popTopPage(QWidget **oldPage, QWidget **newPage); // Pops the actual top page (Check for loading page at top of stack)
         void setPage(QWidget *page, QWidget *oldPage = nullptr);
+        void deletePage(QWidget *page, QWidget *page2 = nullptr); // Protects the loading page from getting deleted
         void displayLoadingPage();
 
         RFIDInterface *rfidInterface;
