@@ -14,7 +14,6 @@ ATMWindow::ATMWindow(QWidget *parent) :
     ui(new Ui::ATMWindow)
 {
     ui->setupUi(this);
-    this->loadingPage->setVisible(false); // To prevent loading page from randomly opening in it's own window
     new QShortcut(QKeySequence(Qt::Key_F11), this, SLOT(fullscreenShortcut()));
     this->baseTitle = this->windowTitle();
     this->navigateToPage(new PageInsertCard(this));
@@ -64,7 +63,6 @@ void ATMWindow::navigateToPage(QWidget *page) {
             return;
         } else {
             this->pageStack.pop();
-            currentPage->setVisible(false);
         }
     } else if(keep) {
         this->displayLoadingPage();
@@ -151,6 +149,7 @@ void ATMWindow::setPage(QWidget *page, QWidget *oldPage) {
     if(oldPage) {
         PageWithUserBar *pageCast = qobject_cast<PageWithUserBar*>(oldPage);
         if(pageCast != nullptr) pageCast->stopTimer();
+        oldPage->setVisible(false); // Prevent page from opening as seperate window
         this->ui->rootLayout->removeWidget(oldPage);
         oldPage->setParent(nullptr);
     }
@@ -165,6 +164,7 @@ void ATMWindow::setPage(QWidget *page, QWidget *oldPage) {
 
     page->setParent(this);
     this->ui->rootLayout->addWidget(page);
+    page->setVisible(true);
 
     PageWithUserBar *pageCast = qobject_cast<PageWithUserBar*>(page);
     if(pageCast != nullptr) pageCast->startTimer();
@@ -181,6 +181,5 @@ void ATMWindow::displayLoadingPage() {
     }
 
     this->setPage(this->loadingPage, this->pageStack.top());
-    this->loadingPage->setVisible(true);
     this->pageStack.push(this->loadingPage);
 }
