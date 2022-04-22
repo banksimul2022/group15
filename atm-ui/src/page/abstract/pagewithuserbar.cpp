@@ -16,11 +16,29 @@ void PageWithUserBar::setupUserBar(QLayout *layout) {
     layout->addWidget(this->userStatusBar);
 }
 
+void PageWithUserBar::onRestData(RestReturnData *data) {
+    PageBase::onRestData(data); // Call parent class method
+
+    if(this->userStatusBar->mode() != UserStatusBarWidget::Mode::logout || data->type() != RestReturnData::typeLogout) {
+        return;
+    }
+
+    int error = data->error();
+    delete data;
+
+    if(error != -1) {
+        //TODO: Replace with prompt
+        qDebug() << "ERROR during logout:" << error;
+    }
+
+    this->stateManager->leaveAllPages(QVariant());
+}
+
 void PageWithUserBar::onExtraButton(int id) { Q_UNUSED(id) }
 
 void PageWithUserBar::onLeave() {
     if(this->userStatusBar->mode() == UserStatusBarWidget::Mode::logout) {
-        qDebug() << "logout called from" << this->sender();
+        this->stateManager->getRESTInterface()->logout();
     }
 }
 
