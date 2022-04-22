@@ -35,8 +35,7 @@ PageKeypad::PageKeypad(PageKeypad::Action action, StateManager *stateManager, QW
     QList<QPushButton*> gridButtons = this->findChildren<QPushButton*>();
 
     foreach(QPushButton *btn, gridButtons) {
-        // Quick hack to exclude the "Ok" and "Cancel" buttons from having their clicked signals added
-        if(btn->text().length() == 1) {
+        if(btn->parent() == this) {
             connect(btn, &QPushButton::clicked, this, &PageKeypad::onKeypadButtonPress);
         }
     }

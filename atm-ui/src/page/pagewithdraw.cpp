@@ -5,7 +5,7 @@
 #include <QDebug>
 
 PageWithdraw::PageWithdraw(StateManager *stateManager, QWidget *parent) :
-    PageWithUserBar(UserStatusBarWidget::Mode::leaveAndOk, stateManager, nullptr, parent),
+    PageWithUserBar(UserStatusBarWidget::leaveOnly, stateManager, nullptr, parent),
     ui(new Ui::PageWithdraw)
 {
     ui->setupUi(this);
@@ -14,7 +14,7 @@ PageWithdraw::PageWithdraw(StateManager *stateManager, QWidget *parent) :
     QList<QPushButton*> withdrawButtons = this->findChildren<QPushButton*>();
 
     foreach(QPushButton *btn, withdrawButtons) {
-        if(btn->objectName() != "btnLogout") {
+        if(btn->parent() == this) {
             connect(btn, &QPushButton::clicked, this, &PageWithdraw::onAmountButtonPress);
         }
     }
