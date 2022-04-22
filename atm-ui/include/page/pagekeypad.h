@@ -24,6 +24,7 @@ class PageKeypad : public PageWithUserBar {
         ~PageKeypad();
 
     protected slots:
+        void onLeave() override;
         void onOk() override;
 
     private slots:

@@ -44,6 +44,10 @@ PageKeypad::PageKeypad(PageKeypad::Action action, StateManager *stateManager, QW
     this->connect(this->flashTimer, &QTimer::timeout, this, &PageKeypad::onFlashTick);
 }
 
+void PageKeypad::onLeave() {
+    this->stateManager->leaveCurrentPage(QVariant(false));
+}
+
 void PageKeypad::onOk() {
     QString sumStr = this->ui->lblAmount->text();
 
@@ -54,8 +58,8 @@ void PageKeypad::onOk() {
 
     bool ok = false;
     double sum = sumStr.toDouble(&ok);
-    Q_ASSERT(ok); // Temporary until i get the error page setup
-    qDebug() << sum;
+    Q_ASSERT(ok); // TODO: Temporary until i get the error page setup
+    this->stateManager->leaveCurrentPage(QVariant(sum));
 }
 
 void PageKeypad::onKeypadButtonPress() {
