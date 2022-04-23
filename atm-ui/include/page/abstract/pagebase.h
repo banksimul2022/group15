@@ -24,6 +24,10 @@ class PageBase : public QWidget {
         virtual void onRestData(RestReturnData *data);
 
     protected:
+        template <class PageClass, class ...Args> inline void navigate(Args &&... args) {
+            this->stateManager->navigateToPage(new PageClass(args..., this->stateManager));
+        };
+
         StateManager *stateManager;
 };
 

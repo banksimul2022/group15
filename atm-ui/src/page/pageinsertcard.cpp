@@ -52,5 +52,5 @@ void PageInsertCard::onRestData(RestReturnData *data) {
         return;
     }
 
-    this->stateManager->navigateToPage(new PageMainAccountView(this->stateManager));
+    this->navigate<PageMainAccountView>();
 }
