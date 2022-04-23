@@ -109,7 +109,7 @@ router.post("/withdraw", (req, res) => {
     account.getById(req.token.accountId)
         .then(async results => {
             const sum = Number(req.body.sum);
-            const useCredit = typeof(req.body.credit === "string") ? req.body.credit === "true" : Boolean(req.body.credit);
+            const useCredit = typeof(req.body.credit) === "string" ? req.body.credit === "true" : Boolean(req.body.credit);
 
             if(useCredit) {
                 const cardResult = await card.getByCardNumber(req.token.card_number);
