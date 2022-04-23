@@ -23,7 +23,8 @@ class PageMainAccountView : public PageWithUserBar {
         void onRestData(RestReturnData *data) override;
 
     private slots:
-            void on_btnWidthdraw_clicked();
+        void on_btnWidthdraw_clicked();
+        void on_btnBalance_clicked();
 
     private:
             RestInfoData *userInfo;

@@ -2,6 +2,7 @@
 #include "ui_pagemainaccountview.h"
 #include "userstatusbarwidget.h"
 
+#include "page/pageaccountinfo.h"
 #include <page/pagewithdraw.h>
 
 PageMainAccountView::PageMainAccountView(StateManager *stateManager, QWidget *parent) :
@@ -44,3 +45,6 @@ void PageMainAccountView::on_btnWidthdraw_clicked() {
     this->navigate<PageWithdraw>(this->userInfo);
 }
 
+void PageMainAccountView::on_btnBalance_clicked() {
+    this->navigate<PageAccountInfo>(PageAccountInfo::ViewBalance, this->userInfo);
+}

@@ -20,6 +20,7 @@ SOURCES += \
     src/page/pageprompt.cpp \
     src/page/pagewithdraw.cpp \
     src/page/abstract/pagewithuserbar.cpp \
+    src/transactiontablemodel.cpp \
     src/userstatusbarwidget.cpp \
     src/utility.cpp
 
@@ -37,7 +38,8 @@ HEADERS += \
     include/page/abstract/pagewithuserbar.h \
     include/statemanager.h \
     include/userstatusbarwidget.h \
-    include/utility.h
+    include/utility.h \
+    include/transactiontablemodel.h
 
 INCLUDEPATH += include
 

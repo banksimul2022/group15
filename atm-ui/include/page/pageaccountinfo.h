@@ -18,8 +18,13 @@ class PageAccountInfo : public PageWithUserBar {
             ViewTransactions
         };
 
-        explicit PageAccountInfo(Action action, StateManager *stateManager, QWidget *parent = nullptr);
+        explicit PageAccountInfo(Action action, RestInfoData *userInfo, StateManager *stateManager, QWidget *parent = nullptr);
         ~PageAccountInfo();
+
+        bool keepLoadingPageOnNavigate() override;
+
+    protected slots:
+        void onRestData(RestReturnData *data) override;
 
     private:
         Ui::PageAccountInfo *ui;
