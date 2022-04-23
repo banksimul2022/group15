@@ -23,11 +23,11 @@ PageWithdraw::PageWithdraw(RestInfoData *userInfo, StateManager *stateManager, Q
         }
     }
 
-    this->useCredit = userInfo->credit(); // Set useCredit based on if card can use credit
+    this->userInfo = userInfo;
 }
 
 void PageWithdraw::onNavigate() {
-    if(this->useCredit) { // If the card can use credit ask the user if they want to do so
+    if(this->userInfo->credit()) {
         this->stateManager->displayPrompt(this, "Valitse nosto tapa", "Haluatko käyttää credit vai debit korttia?", PromptEnum::question, 3, nullptr, "Debit", "Credit");
     }
 }
@@ -35,10 +35,12 @@ void PageWithdraw::onNavigate() {
 bool PageWithdraw::processResult(QWidget *page, QVariant result) {
     if(Utility::isOfType<PageKeypad>(page)) {
         if(result.type() == QVariant::Double) {
-            qDebug() << "Withdraw amount:" << result.toDouble();
-        } else if(result.type() == QVariant::Bool) { // Is always going to be false (Back)
-            return false;
+            this->stateManager->getRESTInterface()->withdraw(result.toDouble(), this->useCredit);
+        } else if(result.type() != QVariant::Bool) {
+            return true;
         }
+
+        return false;
     } else if(Utility::isOfType<PagePrompt>(page)) {
         if(result.type() == QVariant::Int) {
             this->useCredit = result.toInt(); // Store the user answer in useCredit
@@ -74,7 +76,7 @@ void PageWithdraw::onAmountButtonPress() {
         Q_ASSERT(ok);
         this->stateManager->getRESTInterface()->withdraw(val, this->useCredit);
     } else if(name == "btnOther") {
-        qDebug() << "Other";
+        this->navigate<PageKeypad>(PageKeypad::Withdraw, this->userInfo);
     } else {
         // Code execution SHOULD not get here
         Q_ASSERT(false);

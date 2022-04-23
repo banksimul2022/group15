@@ -25,6 +25,7 @@ class PageWithdraw : public PageWithUserBar {
 
     private:
         bool useCredit;
+        RestInfoData *userInfo;
         Ui::PageWithdraw *ui;
 };
 

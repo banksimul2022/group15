@@ -20,7 +20,7 @@ class PageKeypad : public PageWithUserBar {
             Deposit
         };
 
-        explicit PageKeypad(PageKeypad::Action action, StateManager *stateManager, QWidget *parent = nullptr);
+        explicit PageKeypad(PageKeypad::Action action, RestInfoData *userInfo, StateManager *stateManager, QWidget *parent = nullptr);
         ~PageKeypad();
 
     protected slots:

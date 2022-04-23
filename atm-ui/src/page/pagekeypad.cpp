@@ -7,8 +7,8 @@
 #include <QTimer>
 #include <QStyle>
 
-PageKeypad::PageKeypad(PageKeypad::Action action, StateManager *stateManager, QWidget *parent) :
-    PageWithUserBar(UserStatusBarWidget::Mode::leaveAndOk, stateManager, nullptr, parent),
+PageKeypad::PageKeypad(PageKeypad::Action action, RestInfoData *userInfo, StateManager *stateManager, QWidget *parent) :
+    PageWithUserBar(UserStatusBarWidget::Mode::leaveAndOk, stateManager, userInfo, parent),
     ui(new Ui::PageKeypad),
     flashTimer(new QTimer(this)),
     flashCount(0)
