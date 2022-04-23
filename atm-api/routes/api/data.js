@@ -34,17 +34,30 @@ router.get("/balance", (req, res) => {
         .catch(error => butil.handleQueryError(error, res));
 });
 
-router.get("/transactions/:direction", (req, res) => {
-    if(req.params.direction !== "back" && req.params.direction !== "forward") {
-        throw new errors.PublicAPIError("Invalid direction type of " + req.params.direction, errors.codes.ERR_INVALID_PARAM, 400);
+router.get("/transactions/:mode", (req, res) => {
+    if(!["back", "forward", "latest"].includes(req.params.mode)) {
+        throw new errors.PublicAPIError("Invalid mode type of " + req.params.mode, errors.codes.ERR_INVALID_PARAM, 400);
     }
-
-    const descent = req.params.direction === "back";
 
     // Limit offset to 0 or higher
     const offset = Math.max(Number(butil.nshcl(req.query.offset, 0)), 0);
     // Limit amount to 1-30
     const itemCount = Math.min(Math.max(Number(butil.nshcl(req.query.count, 10)), 1), 30);
+
+    if(req.params.mode === "latest") {
+        transaction.latestTransactions(req.token.accountId, itemCount)
+            .then(results => {
+                res.json({
+                    transactions: results,
+                    count: results.length
+                });
+            })
+            .catch(error => butil.handleQueryError(error, res));
+
+        return;
+    }
+
+    const descent = req.params.mode === "back";
 
     (descent ? transaction.dscFromOffset : transaction.ascFromOffset)(
         req.token.accountId,
