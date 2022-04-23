@@ -1,6 +1,7 @@
 const transaction = require("../../models/crud/transaction");
 const customer = require("../../models/crud/customer");
 const account = require("../../models/crud/account");
+const card = require("../../models/crud/card");
 const errors = require("../../errors");
 const butil = require("../../util");
 
@@ -10,11 +11,13 @@ router.get("/info", (req, res) => {
     customer.getById(req.token.customerId)
         .then(async custResult => {
             const accResult = await account.getById(req.token.accountId);
+            const cardResult = await card.getByCardNumber(req.token.card_number);
 
             res.json({
                 fName: custResult[0].firstName,
                 lName: custResult[0].lastName,
-                accountNumber: accResult[0].accountNumber
+                accountNumber: accResult[0].accountNumber,
+                credit: Boolean(cardResult[0].credit)
             });
         })
         .catch(error => butil.handleQueryError(error, res));
@@ -93,6 +96,15 @@ router.post("/withdraw", (req, res) => {
     account.getById(req.token.accountId)
         .then(async results => {
             const sum = Number(req.body.sum);
+            const useCredit = typeof(req.body.credit === "string") ? req.body.credit === "true" : Boolean(req.body.credit);
+
+            if(useCredit) {
+                const cardResult = await card.getByCardNumber(req.token.card_number);
+
+                if(!cardResult[0].credit) {
+                    throw new errors.PublicAPIError("the used card doesn't support the credit feature", errors.codes.ERR_CREDIT_NOT_SUPPORTED, 400);
+                }
+            }
 
             if(isNaN(sum) || sum < 0.01) {
                 throw new errors.PublicAPIError("sum not set or invalid", errors.codes.ERR_INVALID_SUM, 400);
@@ -100,17 +112,21 @@ router.post("/withdraw", (req, res) => {
 
             const accRes = results[0];
 
-            if(accRes.balance < sum) {
-                throw new errors.PublicAPIError("Insufficient funds", errors.codes.ERR_INSUFFICIENT_FUNDS, 200);
-            }
+            if(useCredit) {
+                accRes["credit"] += sum;
+            } else {
+                if(accRes.balance < sum) {
+                    throw new errors.PublicAPIError("Insufficient funds", errors.codes.ERR_INSUFFICIENT_FUNDS, 200);
+                }
 
-            accRes["balance"] -= sum;
+                accRes["balance"] -= sum;
+            }
 
             await transaction.add({
                 accountId: req.token.accountId,
                 timestamp: new Date(),
                 toAccount: null,
-                type: "WITHDRAW",
+                type: useCredit ? "CREDIT_WITHDRAW" : "WITHDRAW",
                 sum,
                 cardNumber: req.token.cardNumber
             });
