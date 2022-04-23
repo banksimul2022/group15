@@ -10,6 +10,7 @@
 
 class REST_EXPORT RestTransactionData : public RestReturnData
 {
+
 public:
     explicit RestTransactionData(QJsonObject *transactionInfo,int error);
     ~RestTransactionData();

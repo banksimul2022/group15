@@ -83,11 +83,12 @@ void RESTEngine::prevTransactions(int count)
 }
 
 
-void RESTEngine::withdraw(double sum) //muuta sum
+void RESTEngine::withdraw(double sum, bool useCredit) //muuta sum
 {
     QNetworkRequest request = this->createRequest("/api/withdraw",RestReturnData::typeWithdraw,"application/json"); //post pyyntö käyttää "application/json"
     QJsonObject Jsonobj;
     Jsonobj.insert("sum",sum);
+    Jsonobj.insert("credit",useCredit);
 
     this->Manager->post(request,QJsonDocument(Jsonobj).toJson());
 

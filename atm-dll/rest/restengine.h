@@ -19,15 +19,18 @@ public:
     void getInfo() override;
     void nextTransactions(int count) override;
     void prevTransactions(int count) override;
-    void withdraw(double sum)override;
+    void withdraw(double sum, bool useCredit)override;
     void deposit(double sum) override;
     void showBalance() override;
+
+
 
 
 private:
     const QUrl apiEndpoint;
     QNetworkAccessManager *Manager;
     QByteArray token;
+
 
     QNetworkRequest createRequest(QString path, QUrlQuery params, RestReturnData::ReturnType type, QString contentType=nullptr);
     QNetworkRequest createRequest(QString path, RestReturnData::ReturnType type, QString contentType=nullptr);
