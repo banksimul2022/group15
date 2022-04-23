@@ -72,17 +72,18 @@ void UserStatusBarWidget::setButtonTitles(const char *ctx, int count, va_list ar
     }
 
     if(count-- > 0) {
-        this->connect(this->ui->btnOk, &QPushButton::clicked, this, &UserStatusBarWidget::ok);
+        if(this->extraBtnMapper == nullptr) {
+            this->extraBtnMapper = new QSignalMapper(this); // Setting the parent automatically deletes the object when the parent is deleted
+            this->connect(this->extraBtnMapper, &QSignalMapper::mappedInt, this, &UserStatusBarWidget::extraButton);
+        }
+
+        this->extraBtnMapper->setMapping(this->ui->btnOk, 0);
+        this->connect(this->ui->btnOk, &QPushButton::clicked, extraBtnMapper, QOverload<>::of(&QSignalMapper::map));
         this->ui->btnOk->setText(QCoreApplication::translate(ctx, va_arg(args, const char*), nullptr));
     } else {
         this->ui->btnOk->setVisible(false);
         this->ui->buttonsLayout->setDirection(QBoxLayout::RightToLeft);
         return;
-    }
-
-    if(this->extraBtnMapper == nullptr) {
-        this->extraBtnMapper = new QSignalMapper(this); // Setting the parent automatically deletes the object when the parent is deleted
-        this->connect(this->extraBtnMapper, &QSignalMapper::mappedInt, this, &UserStatusBarWidget::extraButton);
     }
 
     QFont font = this->ui->btnLeave->font();
@@ -93,7 +94,7 @@ void UserStatusBarWidget::setButtonTitles(const char *ctx, int count, va_list ar
         btn->setMinimumSize(QSize(50, 50));
         btn->setFont(font);
         btn->setText(QCoreApplication::translate(ctx, va_arg(args, const char*), nullptr));
-        this->extraBtnMapper->setMapping(btn, i + 2);
+        this->extraBtnMapper->setMapping(btn, i + 1);
         this->connect(btn, &QPushButton::clicked, extraBtnMapper, QOverload<>::of(&QSignalMapper::map));
         this->ui->buttonsLayout->addWidget(btn);
     }
