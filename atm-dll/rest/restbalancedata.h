@@ -6,6 +6,7 @@
 
 class REST_EXPORT RestBalanceData : public RestReturnData
 {
+
 public:
     RestBalanceData(QJsonObject *balance,int error);
     double getBalance();

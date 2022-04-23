@@ -20,7 +20,7 @@ public:
     virtual void logout() =0;
     virtual void nextTransactions(int count) =0;
     virtual void prevTransactions(int count) =0;
-    virtual void withdraw(double sum) =0;
+    virtual void withdraw(double sum, bool useCredit) =0;
     virtual void deposit(double sum) =0;
     virtual void showBalance() =0;
 

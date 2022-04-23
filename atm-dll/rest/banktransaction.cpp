@@ -19,6 +19,7 @@ BankTransaction::~BankTransaction()
 
 QDateTime BankTransaction::getTimestamp()
 {
+
     return this->timestamp;
 }
 
