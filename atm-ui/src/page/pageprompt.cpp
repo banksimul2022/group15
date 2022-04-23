@@ -21,6 +21,10 @@ PagePrompt::PagePrompt(const char *ctx, const char *title, const char *prompt, P
     this->construct(ctx, title, prompt, icon, count, args);
 }
 
+void PagePrompt::onExtraButton(int id) {
+    this->stateManager->leaveCurrentPage(QVariant(id));
+}
+
 PagePrompt::~PagePrompt() {
     delete ui;
 }

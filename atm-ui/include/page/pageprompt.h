@@ -17,6 +17,9 @@ class PagePrompt : public PageWithUserBar {
         explicit PagePrompt(const char *ctx, const char *title, const char *prompt, PromptEnum::Icon icon, int count, va_list args, StateManager *stateManager, QWidget *parent = nullptr);
         ~PagePrompt();
 
+    protected slots:
+        void onExtraButton(int id) override;
+
     private:
         void construct(const char *ctx, const char *title, const char *prompt, PromptEnum::Icon icon, int count, va_list args);
         Ui::PagePrompt *ui;
