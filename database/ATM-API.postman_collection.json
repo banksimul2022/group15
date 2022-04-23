@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "da4fb14c-0f7a-42cf-a766-102a895e798b",
+		"_postman_id": "e09ca653-d199-44d4-9970-f79a91e8f8a1",
 		"name": "ATM-API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -730,6 +730,11 @@
 									"key": "sum",
 									"value": "",
 									"type": "default"
+								},
+								{
+									"key": "credit",
+									"value": "",
+									"type": "default"
 								}
 							]
 						},
@@ -757,23 +762,6 @@
 							],
 							"path": [
 								"info"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "balance",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{api_url}}/balance",
-							"host": [
-								"{{api_url}}"
-							],
-							"path": [
-								"balance"
 							]
 						}
 					},
