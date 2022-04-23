@@ -13,7 +13,7 @@ class PageWithdraw : public PageWithUserBar {
     Q_OBJECT
 
     public:
-        explicit PageWithdraw(StateManager *stateManager, QWidget *parent = nullptr);
+        explicit PageWithdraw(RestInfoData *userInfo, StateManager *stateManager, QWidget *parent = nullptr);
         ~PageWithdraw();
 
     private slots:

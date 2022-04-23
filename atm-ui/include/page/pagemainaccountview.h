@@ -22,8 +22,12 @@ class PageMainAccountView : public PageWithUserBar {
     protected slots:
         void onRestData(RestReturnData *data) override;
 
+    private slots:
+            void on_btnWidthdraw_clicked();
+
     private:
-        Ui::PageMainAccountView *ui;
+            RestInfoData *userInfo;
+            Ui::PageMainAccountView *ui;
 };
 
 #endif // PAGEMAINACCOUNTVIEW_H

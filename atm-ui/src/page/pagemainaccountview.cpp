@@ -2,8 +2,11 @@
 #include "ui_pagemainaccountview.h"
 #include "userstatusbarwidget.h"
 
+#include <page/pagewithdraw.h>
+
 PageMainAccountView::PageMainAccountView(StateManager *stateManager, QWidget *parent) :
     PageWithUserBar(UserStatusBarWidget::Mode::logout, stateManager, nullptr, parent),
+    userInfo(nullptr),
     ui(new Ui::PageMainAccountView)
 {
     ui->setupUi(this);
@@ -12,6 +15,7 @@ PageMainAccountView::PageMainAccountView(StateManager *stateManager, QWidget *pa
 }
 
 PageMainAccountView::~PageMainAccountView() {
+    if(this->userInfo != nullptr) delete this->userInfo;
     delete ui;
 }
 
@@ -31,8 +35,12 @@ void PageMainAccountView::onRestData(RestReturnData *data) {
         return;
     }
 
-    RestInfoData *userInfo = static_cast<RestInfoData*>(data);
-    this->ui->lblAccountInfo->setText(this->ui->lblAccountInfo->text().arg(userInfo->getfName(), userInfo->getlName(), userInfo->getAccountNumber()));
-    delete data;
+    this->userInfo = static_cast<RestInfoData*>(data);
+    this->ui->lblAccountInfo->setText(this->ui->lblAccountInfo->text().arg(this->userInfo->getfName(), this->userInfo->getlName(), this->userInfo->getAccountNumber()));
     this->stateManager->leaveLoadingPage();
 }
+
+void PageMainAccountView::on_btnWidthdraw_clicked() {
+    this->navigate<PageWithdraw>(this->userInfo);
+}
+
