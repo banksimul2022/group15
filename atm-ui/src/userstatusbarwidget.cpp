@@ -11,7 +11,6 @@ UserStatusBarWidget::UserStatusBarWidget(Mode mode, RestInfoData *userInfo, QWid
     ui(new Ui::UserStatusBarWidget),
     extraBtnMapper(nullptr),
     barMode(mode),
-    leaveTimer(new QTimer(this)),
     leaveTimout(this->getDefaultTimeout())
 {
     ui->setupUi(this);
@@ -30,9 +29,9 @@ UserStatusBarWidget::UserStatusBarWidget(Mode mode, RestInfoData *userInfo, QWid
     Utility::retainSizeWhenHidden(this->ui->btnOk);
 
     this->connect(this->ui->btnLeave, &QPushButton::clicked, this, &UserStatusBarWidget::leave);
-    this->connect(this->leaveTimer, &QTimer::timeout, this, &UserStatusBarWidget::leaveTimerTick);
+    this->connect(&this->leaveTimer, &QTimer::timeout, this, &UserStatusBarWidget::leaveTimerTick);
 
-    this->leaveTimer->setInterval(1000);
+    this->leaveTimer.setInterval(1000);
 
     if(barMode == Mode::logout) {
         this->ui->btnLeave->setText(QCoreApplication::translate("UserStatusBarWidget", "Kirjaudu Ulos", nullptr));
@@ -101,12 +100,16 @@ void UserStatusBarWidget::setButtonTitles(const char *ctx, int count, va_list ar
 }
 
 void UserStatusBarWidget::stopLeaveTimeout() {
-    this->leaveTimer->stop();
+    this->leaveTimer.stop();
 }
 
-void UserStatusBarWidget::resetLeaveTimeout() {
-    if(!this->leaveTimer->isActive()) {
-        this->leaveTimer->start();
+void UserStatusBarWidget::startLeaveTimeout() {
+    this->leaveTimer.start();
+}
+
+void UserStatusBarWidget::resetLeaveTimeout(bool start) {
+    if(start && !this->leaveTimer.isActive()) {
+        this->leaveTimer.start();
     }
 
     this->leaveTimout = this->getDefaultTimeout();
@@ -123,7 +126,7 @@ void UserStatusBarWidget::updateTimeoutLabel() {
 
 void UserStatusBarWidget::leaveTimerTick() {
     if(--this->leaveTimout < 1) {
-        this->leaveTimer->stop();
+        this->leaveTimer.stop();
         emit leave();
     }
 
@@ -135,8 +138,8 @@ uint UserStatusBarWidget::getDefaultTimeout() {
 }
 
 UserStatusBarWidget::~UserStatusBarWidget() {
-    if(this->leaveTimer->isActive()) {
-        this->leaveTimer->stop();
+    if(this->leaveTimer.isActive()) {
+        this->leaveTimer.stop();
     }
 
     delete ui;

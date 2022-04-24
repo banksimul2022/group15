@@ -3,6 +3,7 @@
 
 #include <QSignalMapper>
 #include <QWidget>
+#include <QTimer>
 #include <restinfodata.h>
 
 namespace Ui {
@@ -27,7 +28,8 @@ class UserStatusBarWidget : public QWidget {
         void setButtonTitles(const char *ctx, int count, va_list args) ;
 
         void stopLeaveTimeout();
-        void resetLeaveTimeout();
+        void startLeaveTimeout();
+        void resetLeaveTimeout(bool start = true);
         Mode mode();
 
     signals:
@@ -49,7 +51,7 @@ private:
         Ui::UserStatusBarWidget *ui;
         QSignalMapper *extraBtnMapper;
         const Mode barMode;
-        QTimer *leaveTimer;
+        QTimer leaveTimer;
         uint leaveTimout;
 };
 
