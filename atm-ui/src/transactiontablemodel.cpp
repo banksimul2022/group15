@@ -78,7 +78,7 @@ QVariant TransactionTableModel::getData(int row, int column) const {
 
     switch (column) {
         case 0:
-            return QVariant(transaction->getTimestamp());
+            return QVariant(transaction->getTimestamp().toLocalTime());
         case 1:
             return QVariant(this->getTypeFrendlyName(transaction->getType()));
         case 2:
