@@ -19,7 +19,10 @@ PageAccountInfo::PageAccountInfo(Action action, RestInfoData *userInfo, StateMan
 
     if(action == Action::ViewBalance) {
         this->setWindowTitle(QCoreApplication::translate("PageAccountInfo", "Saldo", nullptr));
-        this->ui->lblTitle->setText(QCoreApplication::translate("PageAccountInfo", "Saldo tilille %1", nullptr).arg(userInfo->getAccountNumber()));
+        this->ui->lblTitle->setText(
+            QCoreApplication::translate("PageAccountInfo", "%1 %2 tässä saldo tilille %3", nullptr)
+                .arg(userInfo->getfName(), userInfo->getlName(), userInfo->getAccountNumber())
+        );
         this->ui->btnNext->setVisible(false);
         this->ui->btnPrev->setVisible(false);
         this->showTable();
@@ -27,7 +30,10 @@ PageAccountInfo::PageAccountInfo(Action action, RestInfoData *userInfo, StateMan
         this->stateManager->getRESTInterface()->getBalance();
     } else {
         this->setWindowTitle(QCoreApplication::translate("PageAccountInfo", "Tapahtumat", nullptr));
-        this->ui->lblTitle->setText(QCoreApplication::translate("PageAccountInfo", "Tapahtumat tilille %1", nullptr).arg(userInfo->getAccountNumber()));
+        this->ui->lblTitle->setText(
+            QCoreApplication::translate("PageAccountInfo", "%1 %2 tässä tapahtumat tilille %3", nullptr)
+                .arg(userInfo->getfName(), userInfo->getlName(), userInfo->getAccountNumber())
+        );
 
         this->ui->svgLoading->load(QString(":files/icons/spinner.svg"));
         this->ui->svgLoading->renderer()->setAspectRatioMode(Qt::KeepAspectRatio);
