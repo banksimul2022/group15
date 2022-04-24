@@ -15,7 +15,12 @@ PageAccountInfo::PageAccountInfo(Action action, RestInfoData *userInfo, StateMan
     ui->setupUi(this);
     this->setupUserBar(this->ui->widgetRootLayout);
 
+    this->ui->svgLoading->load(QString(":files/icons/spinner.svg"));
+    this->ui->svgLoading->renderer()->setAspectRatioMode(Qt::KeepAspectRatio);
+
     this->ui->tblTransactions->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeMode::Stretch);
+
+    this->showLoading();
 
     if(action == Action::ViewBalance) {
         this->setWindowTitle(QCoreApplication::translate("PageAccountInfo", "Saldo", nullptr));
@@ -25,34 +30,18 @@ PageAccountInfo::PageAccountInfo(Action action, RestInfoData *userInfo, StateMan
         );
         this->ui->btnNext->setVisible(false);
         this->ui->btnPrev->setVisible(false);
-        this->showTable();
-
-        this->stateManager->getRESTInterface()->getBalance();
     } else {
         this->setWindowTitle(QCoreApplication::translate("PageAccountInfo", "Tapahtumat", nullptr));
         this->ui->lblTitle->setText(
             QCoreApplication::translate("PageAccountInfo", "%1 %2 tässä tapahtumat tilille %3", nullptr)
                 .arg(userInfo->getfName(), userInfo->getlName(), userInfo->getAccountNumber())
         );
-
-        this->ui->svgLoading->load(QString(":files/icons/spinner.svg"));
-        this->ui->svgLoading->renderer()->setAspectRatioMode(Qt::KeepAspectRatio);
-        this->showLoading();
-
-        QList<QLabel*> labels = this->findChildren<QLabel*>();
-
-        foreach(QLabel *label, labels) {
-            if(!label->objectName().startsWith("lblAcc")) continue;
-            label->setVisible(false);
-        }
-
-        RESTInterface *interface = this->stateManager->getRESTInterface(false);
-        interface->resetTransactionPageIndex();
-        interface->nextTransactions(10);
     }
+
+    this->stateManager->getRESTInterface()->getBalance();
 }
 
-bool PageAccountInfo::keepLoadingPageOnNavigate() { return this->action == Action::ViewBalance; }
+bool PageAccountInfo::keepLoadingPageOnNavigate() { return true; }
 
 void PageAccountInfo::onRestData(RestReturnData *data) {
     if(data->type() == RestReturnData::typeBalance) {
@@ -66,7 +55,17 @@ void PageAccountInfo::onRestData(RestReturnData *data) {
         RestBalanceData *balData = static_cast<RestBalanceData*>(data);
         this->ui->lblAccBalance->setText(QString::number(balData->getBalance(), 'f', 2));
         this->ui->lblAccCredit->setText(QString::number(balData->getCredit(), 'f', 2));
-        this->stateManager->getRESTInterface()->latestTransactions(5);
+
+        this->stateManager->leaveLoadingPage();
+
+        RESTInterface *interface = this->stateManager->getRESTInterface(false);
+
+        if(this->action == Action::ViewBalance) {
+            interface->latestTransactions(5);
+        } else {
+            interface->resetTransactionPageIndex();
+            interface->nextTransactions(10);
+        }
     } else if(data->type() == RestReturnData::typeLatestTransaction || data->type() == RestReturnData::typeTransaction) {
         if(data->error() != -1) {
             // TODO: Add error prompt
@@ -80,14 +79,13 @@ void PageAccountInfo::onRestData(RestReturnData *data) {
         this->ui->tblTransactions->setModel(new TransactionTableModel(transactionData, this->ui->tblTransactions));
         delete oldModel;
 
-        if(data->type() == RestReturnData::typeLatestTransaction) {
-            this->stateManager->leaveLoadingPage();
-        } else {
+        if(data->type() == RestReturnData::typeTransaction) {
             this->ui->btnPrev->setEnabled(transactionData->getHasPrev());
             this->ui->btnNext->setEnabled(transactionData->getHasNext());
-            this->showTable();
             this->userStatusBar->startLeaveTimeout();
         }
+
+        this->showTable();
     }
 }
 
