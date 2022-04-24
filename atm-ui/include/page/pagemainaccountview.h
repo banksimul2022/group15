@@ -25,6 +25,7 @@ class PageMainAccountView : public PageWithUserBar {
     private slots:
         void on_btnWidthdraw_clicked();
         void on_btnBalance_clicked();
+        void on_btnTransactions_clicked();
 
     private:
             RestInfoData *userInfo;

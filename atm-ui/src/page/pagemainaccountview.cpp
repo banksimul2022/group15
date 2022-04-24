@@ -48,3 +48,8 @@ void PageMainAccountView::on_btnWidthdraw_clicked() {
 void PageMainAccountView::on_btnBalance_clicked() {
     this->navigate<PageAccountInfo>(PageAccountInfo::ViewBalance, this->userInfo);
 }
+
+void PageMainAccountView::on_btnTransactions_clicked() {
+    this->navigate<PageAccountInfo>(PageAccountInfo::ViewTransactions, this->userInfo);
+}
+

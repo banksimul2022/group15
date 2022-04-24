@@ -26,7 +26,15 @@ class PageAccountInfo : public PageWithUserBar {
     protected slots:
         void onRestData(RestReturnData *data) override;
 
+    private slots:
+        void on_btnPrev_clicked();
+        void on_btnNext_clicked();
+
     private:
+        void showLoading();
+        void showTable();
+
+        Action action;
         Ui::PageAccountInfo *ui;
 };
 
