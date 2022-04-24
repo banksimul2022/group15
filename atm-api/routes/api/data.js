@@ -141,7 +141,7 @@ router.post("/withdraw", (req, res) => {
                 toAccount: null,
                 type: useCredit ? "CREDIT_WITHDRAW" : "WITHDRAW",
                 sum,
-                cardNumber: req.token.cardNumber
+                cardNumber: req.token.card_number
             });
 
             res.json(await account.update(req.token.accountId, accRes));
@@ -167,7 +167,7 @@ router.post("/deposit", (req, res) => {
                 toAccount: accRes["accountNumber"],
                 type: "DEPOSIT",
                 sum,
-                cardNumber: req.token.cardNumber
+                cardNumber: req.token.card_number
             });
 
             res.json(await account.update(req.token.accountId, accRes));
