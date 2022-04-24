@@ -80,7 +80,7 @@ void PageAccountInfo::onRestData(RestReturnData *data) {
             this->ui->btnPrev->setEnabled(transactionData->getHasPrev());
             this->ui->btnNext->setEnabled(transactionData->getHasNext());
             this->showTable();
-            this->userStatusBar->resetLeaveTimeout();
+            this->userStatusBar->startLeaveTimeout();
         }
     }
 }
@@ -104,11 +104,13 @@ PageAccountInfo::~PageAccountInfo() {
 void PageAccountInfo::on_btnPrev_clicked() {
     this->showLoading();
     this->userStatusBar->stopLeaveTimeout();
+    this->userStatusBar->resetLeaveTimeout(false);
     this->stateManager->getRESTInterface(false)->prevTransactions(10);
 }
 
 void PageAccountInfo::on_btnNext_clicked() {
     this->showLoading();
     this->userStatusBar->stopLeaveTimeout();
+    this->userStatusBar->resetLeaveTimeout(false);
     this->stateManager->getRESTInterface(false)->nextTransactions(10);
 }
