@@ -28,7 +28,7 @@ PageKeypad::PageKeypad(PageKeypad::Action action, RestInfoData *userInfo, StateM
         this->ui->lblAmountText->setText(QCoreApplication::translate("PageKeypad", "Nostettava summa:", nullptr));
         this->ui->btnDot->setVisible(false);
     } else {
-        this->setWindowTitle(QCoreApplication::translate("PageKeypad", "Talletus", nullptr));
+        this->setWindowTitle(QCoreApplication::translate("PageKeypad", "Talletus - Summan syöttö", nullptr));
         this->ui->lblAmountText->setText(QCoreApplication::translate("PageKeypad", "Talletettava summa:", nullptr));
     }
 

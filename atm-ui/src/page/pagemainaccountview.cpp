@@ -1,9 +1,9 @@
 #include "page/pagemainaccountview.h"
 #include "ui_pagemainaccountview.h"
 #include "userstatusbarwidget.h"
-
 #include "page/pageaccountinfo.h"
-#include <page/pagewithdraw.h>
+#include "page/pagewithdraw.h"
+#include "page/pagedeposit.h"
 
 PageMainAccountView::PageMainAccountView(StateManager *stateManager, QWidget *parent) :
     PageWithUserBar(UserStatusBarWidget::Mode::logout, stateManager, nullptr, parent),
@@ -53,3 +53,6 @@ void PageMainAccountView::on_btnTransactions_clicked() {
     this->navigate<PageAccountInfo>(PageAccountInfo::ViewTransactions, this->userInfo);
 }
 
+void PageMainAccountView::on_btnDeposit_clicked() {
+    this->navigate<PageDeposit>(this->userInfo);
+}

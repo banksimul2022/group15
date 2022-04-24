@@ -13,6 +13,7 @@ SOURCES += \
     src/main.cpp \
     src/page/pageaccountinfo.cpp \
     src/page/abstract/pagebase.cpp \
+    src/page/pagedeposit.cpp \
     src/page/pageinsertcard.cpp \
     src/page/pagekeypad.cpp \
     src/page/pageloading.cpp \
@@ -39,7 +40,8 @@ HEADERS += \
     include/statemanager.h \
     include/userstatusbarwidget.h \
     include/utility.h \
-    include/transactiontablemodel.h
+    include/transactiontablemodel.h \
+    include/page/pagedeposit.h
 
 INCLUDEPATH += include
 
@@ -52,7 +54,8 @@ FORMS += \
     form/page/pagemainaccountview.ui \
     form/page/pageprompt.ui \
     form/page/pagewithdraw.ui \
-    form/userstatusbarwidget.ui
+    form/userstatusbarwidget.ui \
+    form/page/pagedeposit.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
