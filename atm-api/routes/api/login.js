@@ -23,6 +23,10 @@ router.post("/", (req, res) => {
                 throw new errors.PublicAPIError("Invalid customerId or pin", errors.codes.ERR_INVALID_CREDENTIALS, 401);
             }
 
+            if(dbRes[0].attempts < 1) {
+                throw new errors.PublicAPIError("This card is locked", errors.codes.ERR_CARD_LOCKED, 403);
+            }
+
             return dbRes[0];
         })
         .then(async data => {
@@ -36,10 +40,22 @@ router.post("/", (req, res) => {
             data["match"] = match;
             return data;
         })
-        .then(data => {
+        .then(async data => {
             if(!data["match"]) {
+                if(--data["attempts"] < 1) {
+                    await card.update(data["cardId"], data, true);
+                    throw new errors.PublicAPIError("This card is locked", errors.codes.ERR_CARD_LOCKED, 403);
+                }
+
+                await card.update(data["cardId"], data, true);
+
                 // Same as above
                 throw new errors.PublicAPIError("Invalid customerId or pin", errors.codes.ERR_INVALID_CREDENTIALS, 401);
+            }
+
+            if(data["attempts"] !== 3) {
+                data["attempts"] = 3;
+                await card.update(data["cardId"], data, true);
             }
 
             res.json({
