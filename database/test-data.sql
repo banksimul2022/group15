@@ -49,16 +49,16 @@ INSERT INTO account VALUES(5, 878451.87, 0,      555555);
 -- | customerId | int          | NO   | MUL | NULL    |                |
 -- | accountId  | int          | NO   | MUL | NULL    |                |
 -- | cardNumber | varchar(10)  | NO   |     | NULL    |                |
--- | locked     | tinyint      | NO   |     | NULL    |                |
+-- | attempts   | tinyint      | NO   |     | 3       |                |
 -- | credit     | tinyint      | NO   |     | NULL    |                |
 -- | pin        | varchar(255) | NO   |     | NULL    |                |
 -- +------------+--------------+------+-----+---------+----------------+
-INSERT INTO card VALUES(1, 1, 1, '11111111', 0, 0, '$2a$10$HcdMFpD7dc1iMXjraAO6LucN/duerFdGpOSSJZ/E02gGs5Ty06WqK'); -- 9599
-INSERT INTO card VALUES(2, 2, 2, '22222222', 0, 0, '$2a$10$/8brIP8WQemls9sdo2QvHeLcqHmRhk494mmEL/ED1fgZ4rKRhnGIu'); -- 7862
-INSERT INTO card VALUES(3, 3, 3, '33333333', 0, 0, '$2a$10$mc1ePdHkcL.zfG/dTJm9OuKPZSg0tAYJnfnDli728agkzIBCAFlbG'); -- 5671
-INSERT INTO card VALUES(4, 4, 4, '44444444', 0, 0, '$2a$10$pBknN6IdN5dFbTqVvsKx7.3BHtM7lbig407AX0I1U9sazPGvMfEXq'); -- 7225
-INSERT INTO card VALUES(5, 5, 5, '55555555', 0, 0, '$2a$10$tIx1gnLDCE22Me3GXSKSmOl.4xwTTCjxfNqoc3rYHpxDiAdyzo/hS'); -- 2012
-INSERT INTO card VALUES(6, 1, 2, '10101010', 0, 0, '$2a$10$PJRniMuycRkjBJ6svRtWj.eJE9gfeHXg75k1WBgjHYlLmkNAGEdry'); -- 4078
+INSERT INTO card VALUES(1, 1, 1, '11111111', DEFAULT, 0, '$2a$10$HcdMFpD7dc1iMXjraAO6LucN/duerFdGpOSSJZ/E02gGs5Ty06WqK'); -- 9599
+INSERT INTO card VALUES(2, 2, 2, '22222222', DEFAULT, 0, '$2a$10$/8brIP8WQemls9sdo2QvHeLcqHmRhk494mmEL/ED1fgZ4rKRhnGIu'); -- 7862
+INSERT INTO card VALUES(3, 3, 3, '33333333', DEFAULT, 0, '$2a$10$mc1ePdHkcL.zfG/dTJm9OuKPZSg0tAYJnfnDli728agkzIBCAFlbG'); -- 5671
+INSERT INTO card VALUES(4, 4, 4, '44444444', DEFAULT, 0, '$2a$10$pBknN6IdN5dFbTqVvsKx7.3BHtM7lbig407AX0I1U9sazPGvMfEXq'); -- 7225
+INSERT INTO card VALUES(5, 5, 5, '55555555', DEFAULT, 0, '$2a$10$tIx1gnLDCE22Me3GXSKSmOl.4xwTTCjxfNqoc3rYHpxDiAdyzo/hS'); -- 2012
+INSERT INTO card VALUES(6, 1, 2, '10101010', DEFAULT, 0, '$2a$10$PJRniMuycRkjBJ6svRtWj.eJE9gfeHXg75k1WBgjHYlLmkNAGEdry'); -- 4078
 
 
 -- transaction

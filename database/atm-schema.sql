@@ -32,7 +32,7 @@ CREATE TABLE bankdb.card (
   customerId INT NOT NULL,
   accountId INT NOT NULL,
   cardNumber VARCHAR(10) UNIQUE NOT NULL,
-  locked TINYINT NOT NULL,
+  attempts TINYINT DEFAULT 3 NOT NULL,
   credit TINYINT NOT NULL,
   pin VARCHAR(255) NOT NULL,
 
