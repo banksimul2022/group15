@@ -38,7 +38,7 @@ router.delete("/:id", (req, res) => {
 
 router.put("/:id", (req, res) => {
     permCheck(req)
-        .then(async _ => res.json(await card.update(req.params.id, req.body)))
+        .then(async _ => res.json(await card.update(req.params.id, req.body, false)))
         .catch(error => butil.handleQueryError(error, res));
 });
 
