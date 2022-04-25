@@ -1,0 +1,36 @@
+#ifndef PAGEMAINACCOUNTVIEW_H
+#define PAGEMAINACCOUNTVIEW_H
+
+#include "page/abstract/pagewithuserbar.h"
+
+#include <QWidget>
+#include <restinfodata.h>
+
+namespace Ui {
+    class PageMainAccountView;
+}
+
+class PageMainAccountView : public PageWithUserBar {
+    Q_OBJECT
+
+    public:
+        explicit PageMainAccountView(StateManager *stateManager, QWidget *parent = nullptr);
+        ~PageMainAccountView();
+
+        bool keepLoadingPageOnNavigate() override;
+
+    protected slots:
+        void onRestData(RestReturnData *data) override;
+
+    private slots:
+        void on_btnWidthdraw_clicked();
+        void on_btnBalance_clicked();
+        void on_btnTransactions_clicked();
+        void on_btnDeposit_clicked();
+
+    private:
+            RestInfoData *userInfo;
+            Ui::PageMainAccountView *ui;
+};
+
+#endif // PAGEMAINACCOUNTVIEW_H
