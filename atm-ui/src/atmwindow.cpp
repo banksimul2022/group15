@@ -67,12 +67,6 @@ QVariant ATMWindow::navigateToPage(QWidget *page) {
     QWidget *currentPage = this->pageStack.isEmpty() ? nullptr : this->pageStack.top();
     PageBase *pageCast = qobject_cast<PageBase*>(page);
 
-    qDebug() << "----BEF--------";
-    foreach(QWidget *p, this->pageStack) {
-        qDebug() << p;
-    }
-    qDebug() << "----------------";
-
     QVariant result;
     result = pageCast == nullptr ? false : pageCast->onNaviagte(page->metaObject(), false, &result);
     Q_ASSERT_X(result.userType() == qMetaTypeId<StateManager::PageReturnAction>(), "ATMWindow::leaveCurrentPage", "Unknown return type from page");
@@ -95,12 +89,6 @@ QVariant ATMWindow::navigateToPage(QWidget *page) {
 
     this->setPage(newPage, currentPage);
 
-    qDebug() << "---AFT----------";
-    foreach(QWidget *p, this->pageStack) {
-        qDebug() << p;
-    }
-    qDebug() << "----------------";
-
     if(pageCast != nullptr) {
         pageCast->onShown();
     }
@@ -112,12 +100,6 @@ bool ATMWindow::leaveCurrentPage(QVariant result) {
     if(this->pageStack.length() < 2) {
         return false; // There must be atleast one page on the stack (PageInsertCard)
     }
-
-    qDebug() << "--BEF-----------";
-    foreach(QWidget *p, this->pageStack) {
-        qDebug() << p;
-    }
-    qDebug() << "----------------";
 
     bool pushToTop = true;
     PageBase *base;
@@ -163,12 +145,6 @@ bool ATMWindow::leaveCurrentPage(QVariant result) {
     if(base != nullptr) {
         base->onShown();
     }
-
-    qDebug() << "--AFT-----------";
-    foreach(QWidget *p, this->pageStack) {
-        qDebug() << p;
-    }
-    qDebug() << "----------------";
 
     return true;
 }

@@ -1,6 +1,9 @@
 #include "page/abstract/pagebase.h"
 
-PageBase::PageBase(StateManager *stateManager, QWidget *parent) : QWidget{parent} {
+PageBase::PageBase(StateManager *stateManager, QWidget *parent) :
+    QWidget{parent},
+    hasBeenShown(false)
+{
     this->setVisible(false); // Prevent pages from randomly opening in their own windows when deparented
     this->stateManager = stateManager;
     this->connect(this->stateManager->getRESTInterface(false), &RESTInterface::dataReturn, this, &PageBase::onRestData);
