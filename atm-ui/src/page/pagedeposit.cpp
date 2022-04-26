@@ -5,6 +5,7 @@
 
 PageDeposit::PageDeposit(RestInfoData *userInfo, StateManager *stateManager, QWidget *parent) :
     PageWithUserBar(UserStatusBarWidget::leaveAndOk, stateManager, userInfo, parent),
+    amountDeposited(0),
     userInfo(userInfo),
     ui(new Ui::PageDeposit)
 {
@@ -27,7 +28,8 @@ QVariant PageDeposit::onNaviagte(const QMetaObject *oldPage, bool closed, QVaria
             return QVariant::fromValue(StateManager::Leave);
         }
 
-        this->stateManager->getRESTInterface(false)->deposit(result->toDouble());
+        this->amountDeposited = result->toDouble();
+        this->stateManager->getRESTInterface(false)->deposit(this->amountDeposited);
         return QVariant::fromValue(StateManager::KeepLoading);
     }
 
@@ -40,12 +42,32 @@ void PageDeposit::onRestData(RestReturnData *data) {
     }
 
     if(data->error() != -1) {
-        // TODO: Replace with prompt
-        qDebug() << "ERROR depositing sum" << data->error();
+        this->stateManager->leaveCurrentPage(
+            QVariant::fromValue(
+                this->stateManager->createPrompt(
+                    tr("Sisäinen virhe!"),
+                    tr("Virhe talletettessa! (%1)").arg(data->error()),
+                    PromptEnum::error,
+                    0
+                )
+            )
+        );
+
+        delete data;
+        return;
     }
 
     delete data;
-    this->stateManager->leaveCurrentPage(QVariant::fromValue(StateManager::Leave));
+    this->stateManager->leaveCurrentPage(
+        QVariant::fromValue(
+            this->stateManager->createPrompt(
+                tr("Talletus Onnistui"),
+                tr("Talletit %1€").arg(this->amountDeposited),
+                PromptEnum::info,
+                0
+            )
+        )
+    );
 }
 
 PageDeposit::~PageDeposit() {

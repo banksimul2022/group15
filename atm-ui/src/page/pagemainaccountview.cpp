@@ -36,7 +36,17 @@ void PageMainAccountView::onRestData(RestReturnData *data) {
     }
 
     if(data->error() != -1) {
-        qDebug() << "ERROR getting user info..." << data->error();
+        this->stateManager->leaveCurrentPage(
+            QVariant::fromValue(
+                this->stateManager->createPrompt(
+                    tr("Verkko virhe!"),
+                    tr("Virhe haettaessa käyttäjän tietoja! (%1)").arg(data->error()),
+                    PromptEnum::error,
+                    0
+                )
+            )
+        );
+
         delete data;
         this->stateManager->leaveAllPages(QVariant());
         return;

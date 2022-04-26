@@ -58,7 +58,22 @@ void PageKeypad::onOk() {
 
     bool ok = false;
     double sum = sumStr.toDouble(&ok);
-    Q_ASSERT(ok); // TODO: Temporary until i get the error page setup
+
+    if(!ok) {
+        this->stateManager->leaveCurrentPage(
+            QVariant::fromValue(
+                this->stateManager->createPrompt(
+                    tr("Sisäinen virhe!"),
+                    tr("Summan muuntaminen epäonnistui!"),
+                    PromptEnum::error,
+                    0
+                )
+            )
+        );
+
+        return;
+    }
+
     this->stateManager->leaveCurrentPage(QVariant(sum));
 }
 

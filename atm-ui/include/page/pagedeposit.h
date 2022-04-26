@@ -21,6 +21,7 @@ class PageDeposit : public PageWithUserBar {
         void onRestData(RestReturnData *data) override;
 
     private:
+        double amountDeposited;
         RestInfoData *userInfo;
         Ui::PageDeposit *ui;
 };

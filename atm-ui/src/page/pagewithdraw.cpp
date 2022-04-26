@@ -10,6 +10,7 @@
 PageWithdraw::PageWithdraw(RestInfoData *userInfo, StateManager *stateManager, QWidget *parent) :
     PageWithUserBar(UserStatusBarWidget::leaveOnly, stateManager, userInfo, parent),
     useCredit(false),
+    amountWithdrawn(0),
     ui(new Ui::PageWithdraw)
 {
     ui->setupUi(this);
@@ -33,7 +34,8 @@ QVariant PageWithdraw::onNaviagte(const QMetaObject *oldPage, bool closed, QVari
 
     if(oldPage->inherits(&PageKeypad::staticMetaObject)) {
         if(result->type() == QVariant::Double) {
-            this->stateManager->getRESTInterface(false)->withdraw(result->toDouble(), this->useCredit);
+            this->amountWithdrawn = result->toDouble();
+            this->stateManager->getRESTInterface(false)->withdraw(this->amountWithdrawn, this->useCredit);
         } else if(result->type() != QVariant::Bool) {
             return QVariant::fromValue(StateManager::Leave);
         }
@@ -67,14 +69,37 @@ void PageWithdraw::onRestData(RestReturnData *data) {
     }
 
     if(data->error() != -1) {
-        // TODO: Replace with error dialog
-        qDebug() << "ERROR witdrawing money" << data->error();
+        this->stateManager->leaveCurrentPage(
+            QVariant::fromValue(
+                this->stateManager->createPrompt(
+                    tr("Verkko virhe!"),
+                    tr("Rahan nostamisessa tapahtui virhe! (%1)").arg(data->error()),
+                    PromptEnum::error,
+                    0
+                )
+            )
+        );
+
+        delete data;
+        return;
     }
 
     delete data;
 
-    // TODO: Replace with notification
-    this->stateManager->leaveCurrentPage(QVariant::fromValue(StateManager::Leave));
+    this->stateManager->leaveCurrentPage(
+        QVariant::fromValue(
+            this->stateManager->createPrompt(
+                tr("Nosto Onnistui"),
+                (
+                    this->userInfo->credit() ?
+                    tr(this->useCredit ? "Nostettu %1€ credittiä" : "Nostettu %1€ debittiä").arg(this->amountWithdrawn) :
+                    tr("Nostettu %1€").arg(this->amountWithdrawn)
+                ),
+                PromptEnum::info,
+                0
+            )
+        )
+    );
 }
 
 void PageWithdraw::onAmountButtonPress() {
@@ -82,9 +107,9 @@ void PageWithdraw::onAmountButtonPress() {
 
     if(name.startsWith("btnAmount")) {
         bool ok;
-        uint val = name.remove(0, 9).toUInt(&ok);
+        this->amountWithdrawn = name.remove(0, 9).toDouble(&ok);
         Q_ASSERT(ok);
-        this->stateManager->getRESTInterface()->withdraw(val, this->useCredit);
+        this->stateManager->getRESTInterface()->withdraw(this->amountWithdrawn, this->useCredit);
     } else if(name == "btnOther") {
         this->navigate<PageKeypad>(PageKeypad::Withdraw, this->userInfo);
     } else {

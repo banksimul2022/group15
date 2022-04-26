@@ -35,8 +35,18 @@ void PageWithUserBar::onRestData(RestReturnData *data) {
     delete data;
 
     if(error != -1) {
-        //TODO: Replace with prompt
-        qDebug() << "ERROR during logout:" << error;
+        this->stateManager->leaveCurrentPage(
+            QVariant::fromValue(
+                this->stateManager->createPrompt(
+                    tr("Sisäinen virhe!"),
+                    tr("Virhe uloskirjautuessa! (%1)").arg(error),
+                    PromptEnum::error,
+                    0
+                )
+            )
+        );
+
+        return;
     }
 
     this->stateManager->leaveAllPages(QVariant());
