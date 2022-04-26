@@ -20,7 +20,9 @@ class StateManager {
         virtual RESTInterface *getRESTInterface(bool displayLoadingPage = true) = 0;
 
         // Convenience method for displayting messages
-        virtual void displayPrompt(QObject *ctx, const char *title, const char *message, PromptEnum::Icon icon, int btnCount, ...) = 0;
+        virtual QWidget *createPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, ...) = 0;
+        virtual QWidget *createPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, va_list args) = 0;
+        virtual void displayPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, ...) = 0;
 
         virtual void leaveLoadingPage() = 0;
 

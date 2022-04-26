@@ -22,7 +22,9 @@ class ATMWindow : public QMainWindow, public StateManager {
         RFIDInterface *getRFIDInterface() override;
         RESTInterface *getRESTInterface(bool displayLoadingPage = true) override;
 
-        void displayPrompt(QObject *ctx, const char *title, const char *message, PromptEnum::Icon icon, int btnCount, ...) override;
+        QWidget *createPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, ...) override;
+        QWidget *createPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, va_list args) override;
+        void displayPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, ...) override;
 
         void leaveLoadingPage() override;
 

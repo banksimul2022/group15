@@ -35,10 +35,21 @@ RESTInterface *ATMWindow::getRESTInterface(bool displayLoadingPage) {
     return this->restInterface;
 }
 
-void ATMWindow::displayPrompt(QObject *ctx, const char *title, const char *message, PromptEnum::Icon icon, int btnCount, ...) {
+QWidget *ATMWindow::createPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, ...) {
     va_list args;
     va_start(args, btnCount);
-    this->navigateToPage(new PagePrompt(ctx->metaObject()->className(), title, message, icon, btnCount, args, this));
+    return this->createPrompt(title, message, icon, btnCount, args);
+    va_end(args);
+}
+
+QWidget *ATMWindow::createPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, va_list args) {
+    return new PagePrompt(title, message, icon, btnCount, args, this);
+}
+
+void ATMWindow::displayPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, ...) {
+    va_list args;
+    va_start(args, btnCount);
+    this->navigateToPage(this->createPrompt(title, message, icon, btnCount, args));
     va_end(args);
 }
 

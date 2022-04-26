@@ -48,7 +48,7 @@ void PageInsertCard::onRestData(RestReturnData *data) {
     delete data;
 
     if(error != -1) {
-        this->stateManager->displayPrompt(this, "Virhe!", QString::number(data->error()).toUtf8().data(), PromptEnum::error, 0);
+        this->stateManager->displayPrompt(tr("Virhe!"), QString::number(data->error()), PromptEnum::error, 0);
         return;
     }
 

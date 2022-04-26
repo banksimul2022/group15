@@ -51,7 +51,13 @@ QVariant PageWithdraw::onNaviagte(const QMetaObject *oldPage, bool closed, QVari
 
 void PageWithdraw::onReady() {
     if(this->userInfo->credit()) {
-        this->stateManager->displayPrompt(this, "Valitse nosto tapa", "Haluatko käyttää credit vai debit korttia?", PromptEnum::question, 3, nullptr, "Debit", "Credit");
+        QString debit = tr("Debit"), credit = tr("Credit");
+        this->stateManager->displayPrompt(
+            tr("Valitse nosto tapa"),
+            tr("Haluatko käyttää credit vai debit korttia?"),
+            PromptEnum::question,
+            3, nullptr, &debit, &credit
+        );
     }
 }
 
