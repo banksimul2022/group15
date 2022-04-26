@@ -26,29 +26,33 @@ PageWithdraw::PageWithdraw(RestInfoData *userInfo, StateManager *stateManager, Q
     this->userInfo = userInfo;
 }
 
-void PageWithdraw::onNavigate() {
+QVariant PageWithdraw::onNaviagte(const QMetaObject *oldPage, bool closed, QVariant *result) {
+    if(!closed) {
+        return QVariant::fromValue(StateManager::Stay);
+    }
+
+    if(oldPage->inherits(&PageKeypad::staticMetaObject)) {
+        if(result->type() == QVariant::Double) {
+            this->stateManager->getRESTInterface(false)->withdraw(result->toDouble(), this->useCredit);
+        } else if(result->type() != QVariant::Bool) {
+            return QVariant::fromValue(StateManager::Leave);
+        }
+
+        return QVariant::fromValue(StateManager::KeepLoading);
+    } else if(oldPage->inherits(&PagePrompt::staticMetaObject)) {
+        if(result->type() == QVariant::Int) {
+            this->useCredit = result->toInt(); // Store the user answer in useCredit
+            return QVariant::fromValue(StateManager::Stay);
+        }
+    }
+
+    return QVariant::fromValue(StateManager::Leave);
+}
+
+void PageWithdraw::onReady() {
     if(this->userInfo->credit()) {
         this->stateManager->displayPrompt(this, "Valitse nosto tapa", "Haluatko käyttää credit vai debit korttia?", PromptEnum::question, 3, nullptr, "Debit", "Credit");
     }
-}
-
-bool PageWithdraw::processResult(QWidget *page, QVariant result) {
-    if(Utility::isOfType<PageKeypad>(page)) {
-        if(result.type() == QVariant::Double) {
-            this->stateManager->getRESTInterface()->withdraw(result.toDouble(), this->useCredit);
-        } else if(result.type() != QVariant::Bool) {
-            return true;
-        }
-
-        return false;
-    } else if(Utility::isOfType<PagePrompt>(page)) {
-        if(result.type() == QVariant::Int) {
-            this->useCredit = result.toInt(); // Store the user answer in useCredit
-            return false;
-        }
-    }
-
-    return true;
 }
 
 void PageWithdraw::onRestData(RestReturnData *data) {
@@ -64,7 +68,7 @@ void PageWithdraw::onRestData(RestReturnData *data) {
     delete data;
 
     // TODO: Replace with notification
-    this->stateManager->leaveCurrentPage(QVariant());
+    this->stateManager->leaveCurrentPage(QVariant::fromValue(StateManager::Leave));
 }
 
 void PageWithdraw::onAmountButtonPress() {

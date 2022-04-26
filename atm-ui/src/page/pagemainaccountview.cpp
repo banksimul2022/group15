@@ -12,7 +12,6 @@ PageMainAccountView::PageMainAccountView(StateManager *stateManager, QWidget *pa
 {
     ui->setupUi(this);
     this->setupUserBar(this->ui->widgetRootLayout);
-    this->stateManager->getRESTInterface()->getInfo();
 }
 
 PageMainAccountView::~PageMainAccountView() {
@@ -20,7 +19,14 @@ PageMainAccountView::~PageMainAccountView() {
     delete ui;
 }
 
-bool PageMainAccountView::keepLoadingPageOnNavigate() { return true; }
+QVariant PageMainAccountView::onNaviagte(const QMetaObject *oldPage, bool closed, QVariant *result) {
+    Q_UNUSED(oldPage) Q_UNUSED(result)
+    return closed ? QVariant::fromValue(StateManager::Stay) : QVariant::fromValue(StateManager::KeepLoading);
+}
+
+void PageMainAccountView::onReady() {
+    this->stateManager->getRESTInterface()->getInfo();
+}
 
 void PageMainAccountView::onRestData(RestReturnData *data) {
     PageWithUserBar::onRestData(data); // Call parent data processor

@@ -37,18 +37,23 @@ PageAccountInfo::PageAccountInfo(Action action, RestInfoData *userInfo, StateMan
                 .arg(userInfo->getfName(), userInfo->getlName(), userInfo->getAccountNumber())
         );
     }
-
-    this->stateManager->getRESTInterface()->getBalance();
 }
 
-bool PageAccountInfo::keepLoadingPageOnNavigate() { return true; }
+QVariant PageAccountInfo::onNaviagte(const QMetaObject *oldPage, bool closed, QVariant *result) {
+    Q_UNUSED(oldPage) Q_UNUSED(result)
+    return closed ? QVariant::fromValue(StateManager::Stay) : QVariant::fromValue(StateManager::KeepLoading);
+}
+
+void PageAccountInfo::onReady() {
+    this->stateManager->getRESTInterface()->getBalance();
+}
 
 void PageAccountInfo::onRestData(RestReturnData *data) {
     if(data->type() == RestReturnData::typeBalance) {
         if(data->error() != -1) {
             // TODO: Add error prompt
             qDebug() << "ERROR getting balance" << data->error();
-            this->stateManager->leaveCurrentPage(QVariant());
+            this->stateManager->leaveCurrentPage(QVariant::fromValue(StateManager::Leave));
             return;
         }
 
@@ -70,7 +75,7 @@ void PageAccountInfo::onRestData(RestReturnData *data) {
         if(data->error() != -1) {
             // TODO: Add error prompt
             qDebug() << "ERROR getting transactions" << data->error();
-            this->stateManager->leaveCurrentPage(QVariant());
+            this->stateManager->leaveCurrentPage(QVariant::fromValue(StateManager::Leave));
             return;
         }
 

@@ -13,22 +13,23 @@ class PageBase : public QWidget {
         explicit PageBase(StateManager *stateManager, QWidget *parent = nullptr);
         virtual ~PageBase() = 0;
 
-        virtual void onNavigate();
-
-        // Return true if this page should be closed
-        virtual bool processResult(QWidget *page, QVariant result);
-
-        virtual bool keepLoadingPageOnNavigate();
+        virtual QVariant onNaviagte(const QMetaObject *oldPage, bool closed, QVariant *result);
+        virtual void onShown(); // Called everytime this page is show
 
     protected slots:
         virtual void onRestData(RestReturnData *data);
 
     protected:
+        virtual void onReady(); // Called when page is shown for the first time
+
         template <class PageClass, class ...Args> inline void navigate(Args &&... args) {
             this->stateManager->navigateToPage(new PageClass(args..., this->stateManager));
         };
 
         StateManager *stateManager;
+
+    private:
+        bool hasBeenShown;
 };
 
 #endif // PAGEBASE_H

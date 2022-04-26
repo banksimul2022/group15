@@ -8,7 +8,14 @@
 #include "page/pageprompt_enum.h"
 
 class StateManager {
+    Q_GADGET
+
     public:
+        enum PageReturnAction {
+            Stay, Leave, KeepLoading
+        };
+        Q_ENUM(PageReturnAction);
+
         virtual RFIDInterface *getRFIDInterface() = 0;
         virtual RESTInterface *getRESTInterface(bool displayLoadingPage = true) = 0;
 
@@ -17,7 +24,7 @@ class StateManager {
 
         virtual void leaveLoadingPage() = 0;
 
-        virtual void navigateToPage(QWidget *page) = 0;
+        virtual QVariant navigateToPage(QWidget *page) = 0;
         virtual bool leaveCurrentPage(QVariant result) = 0;
         virtual void leaveAllPages(QVariant result) = 0;
 };

@@ -17,7 +17,8 @@ class PageMainAccountView : public PageWithUserBar {
         explicit PageMainAccountView(StateManager *stateManager, QWidget *parent = nullptr);
         ~PageMainAccountView();
 
-        bool keepLoadingPageOnNavigate() override;
+        QVariant onNaviagte(const QMetaObject *oldPage, bool closed, QVariant *result) override;
+        void onReady() override;
 
     protected slots:
         void onRestData(RestReturnData *data) override;

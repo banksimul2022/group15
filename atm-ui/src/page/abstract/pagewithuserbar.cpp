@@ -48,7 +48,7 @@ void PageWithUserBar::onLeave() {
     if(this->userStatusBar->mode() == UserStatusBarWidget::Mode::logout) {
         this->stateManager->getRESTInterface()->logout();
     } else {
-        this->stateManager->leaveCurrentPage(QVariant());
+        this->stateManager->leaveCurrentPage(QVariant::fromValue(StateManager::Leave));
     }
 }
 

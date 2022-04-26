@@ -21,7 +21,8 @@ class PageAccountInfo : public PageWithUserBar {
         explicit PageAccountInfo(Action action, RestInfoData *userInfo, StateManager *stateManager, QWidget *parent = nullptr);
         ~PageAccountInfo();
 
-        bool keepLoadingPageOnNavigate() override;
+        QVariant onNaviagte(const QMetaObject *oldPage, bool closed, QVariant *result) override;
+        void onReady() override;
 
     protected slots:
         void onRestData(RestReturnData *data) override;

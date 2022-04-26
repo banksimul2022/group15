@@ -19,16 +19,16 @@ PageInsertCard::~PageInsertCard() {
     delete ui;
 }
 
-bool PageInsertCard::processResult(QWidget *page, QVariant result) {
-    Q_UNUSED(result);
+QVariant PageInsertCard::onNaviagte(const QMetaObject *oldPage, bool closed, QVariant *result) {
+    Q_UNUSED(closed) Q_UNUSED(result)
 
-    if(qobject_cast<PageMainAccountView*>(page) == nullptr) { // Check that the page was PageMainAccountView
-        return false;
+    if(!closed || !oldPage->inherits(&PageMainAccountView::staticMetaObject)) { // Check that the page was PageMainAccountView
+        return QVariant::fromValue(StateManager::Stay);
     }
 
     this->processReads = true;
 
-    return false;
+    return QVariant::fromValue(StateManager::Stay);
 }
 
 void PageInsertCard::onCardRead(QString number) {

@@ -6,15 +6,20 @@ PageBase::PageBase(StateManager *stateManager, QWidget *parent) : QWidget{parent
     this->connect(this->stateManager->getRESTInterface(false), &RESTInterface::dataReturn, this, &PageBase::onRestData);
 }
 
-void PageBase::onNavigate() { /* Unused in base class */ }
-
-bool PageBase::processResult(QWidget *page, QVariant result) {
-    Q_UNUSED(page) Q_UNUSED(result)
-    return false;
+QVariant PageBase::onNaviagte(const QMetaObject *oldPage, bool closed, QVariant *result) {
+    Q_UNUSED(oldPage) Q_UNUSED(closed) Q_UNUSED(result)
+    return QVariant::fromValue(StateManager::Stay);
 }
 
-bool PageBase::keepLoadingPageOnNavigate() { return false; }
+void PageBase::onShown() {
+    if(!this->hasBeenShown) {
+        this->hasBeenShown = true;
+        this->onReady();
+    }
+}
 
 void PageBase::onRestData(RestReturnData *data) { Q_UNUSED(data) }
+
+void PageBase::onReady() { /* Not used in base class */ }
 
 PageBase::~PageBase() { }

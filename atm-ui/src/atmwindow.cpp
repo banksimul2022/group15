@@ -51,28 +51,50 @@ void ATMWindow::leaveLoadingPage() {
     this->setPage(this->pageStack.top(), loadingPage);
 }
 
-void ATMWindow::navigateToPage(QWidget *page) {
+QVariant ATMWindow::navigateToPage(QWidget *page) {
     Q_ASSERT(page != nullptr);
     QWidget *currentPage = this->pageStack.isEmpty() ? nullptr : this->pageStack.top();
     PageBase *pageCast = qobject_cast<PageBase*>(page);
-    bool keep = pageCast == nullptr ? false : pageCast->keepLoadingPageOnNavigate();
 
-    if(currentPage == this->loadingPage) {
-        if(keep) {
-            pageStack.insert(pageStack.length() - 1, page); // Add page before loading page
-            return;
-        } else {
-            this->pageStack.pop();
-        }
-    } else if(keep) {
-        this->displayLoadingPage();
-        pageStack.insert(pageStack.length() - 1, page); // Add page before loading page
-        return;
+    qDebug() << "----BEF--------";
+    foreach(QWidget *p, this->pageStack) {
+        qDebug() << p;
+    }
+    qDebug() << "----------------";
+
+    QVariant result;
+    result = pageCast == nullptr ? false : pageCast->onNaviagte(page->metaObject(), false, &result);
+    Q_ASSERT_X(result.userType() == qMetaTypeId<StateManager::PageReturnAction>(), "ATMWindow::leaveCurrentPage", "Unknown return type from page");
+
+    QWidget *newPage = page;
+
+    if(this->pageStack.length() > 0 && this->pageStack.top() == this->loadingPage) {
+        this->pageStack.pop();
     }
 
-    this->pageStack.push(page);
-    this->setPage(page, currentPage);
-    if(pageCast != nullptr) pageCast->onNavigate();
+    PageReturnAction action = result.value<StateManager::PageReturnAction>();
+
+    if(!this->processPageReturnAction(action, &newPage)) {
+        return result;
+    }
+
+    if(action != StateManager::KeepLoading) {
+        this->pageStack.push(page);
+    }
+
+    this->setPage(newPage, currentPage);
+
+    qDebug() << "---AFT----------";
+    foreach(QWidget *p, this->pageStack) {
+        qDebug() << p;
+    }
+    qDebug() << "----------------";
+
+    if(pageCast != nullptr) {
+        pageCast->onShown();
+    }
+
+    return QVariant();
 }
 
 bool ATMWindow::leaveCurrentPage(QVariant result) {
@@ -80,27 +102,68 @@ bool ATMWindow::leaveCurrentPage(QVariant result) {
         return false; // There must be atleast one page on the stack (PageInsertCard)
     }
 
-    QWidget *oldPage = nullptr;
-    QWidget *actualPage = nullptr;
+    qDebug() << "--BEF-----------";
+    foreach(QWidget *p, this->pageStack) {
+        qDebug() << p;
+    }
+    qDebug() << "----------------";
 
+    bool pushToTop = true;
+    PageBase *base;
+    const QMetaObject *returningPage;
+    QWidget *oldPage, *actualPage, *newPage;
     this->popTopPage(&oldPage, &actualPage);
+    returningPage = actualPage->metaObject();
+    newPage = actualPage;
 
-    QWidget *newPage = this->pageStack.top();
+    do {
+        if(result.userType() == qMetaTypeId<StateManager::PageReturnAction>()) {
+            PageReturnAction action = result.value<StateManager::PageReturnAction>();
+            if(newPage != actualPage && this->processPageReturnAction(action, &newPage)) {
+                pushToTop = action != PageReturnAction::KeepLoading;
+                break;
+            }
+        } else if(result.canConvert<QWidget*>()) {
+            this->pageStack.push(result.value<QWidget*>());
+        }
 
-    PageBase *page;
-    while((page = qobject_cast<PageBase*>(newPage)) != nullptr && page->processResult(actualPage, result) && this->pageStack.length() > 1) {
-        this->pageStack.pop();
-        this->deletePage(newPage);
-        newPage = this->pageStack.top();
+        if(newPage != actualPage) {
+            newPage->deleteLater();
+        }
+
+        newPage = this->pageStack.pop();
+        base = qobject_cast<PageBase*>(newPage);
+
+        if(base == nullptr) {
+            break;
+        }
+
+        result = base->onNaviagte(returningPage, true, &result);
+        returningPage = newPage->metaObject();
+    } while(1);
+
+    if(pushToTop) {
+        this->pageStack.push(newPage);
     }
 
     this->setPage(newPage, oldPage);
-    this->deletePage(oldPage, actualPage);
+    this->deletePage(actualPage, oldPage);
+
+    if(base != nullptr) {
+        base->onShown();
+    }
+
+    qDebug() << "--AFT-----------";
+    foreach(QWidget *p, this->pageStack) {
+        qDebug() << p;
+    }
+    qDebug() << "----------------";
 
     return true;
 }
 
 void ATMWindow::leaveAllPages(QVariant result) {
+    Q_UNUSED(result);
     Q_ASSERT(this->pageStack.length() > 1);
     QWidget *currentPage = nullptr;
     QWidget *actualPage = nullptr;
@@ -115,11 +178,15 @@ void ATMWindow::leaveAllPages(QVariant result) {
     PageBase *newPageCast = qobject_cast<PageBase*>(newPage);
 
     if(newPageCast != nullptr) {
-        newPageCast->processResult(actualPage, result);
+        newPageCast->onNaviagte(actualPage->metaObject(), true, &result);
     }
 
     this->setPage(newPage, currentPage);
     this->deletePage(currentPage, actualPage);
+
+    if(newPageCast != nullptr) {
+        newPageCast->onShown();
+    }
 }
 
 void ATMWindow::fullscreenShortcut() {
@@ -127,6 +194,33 @@ void ATMWindow::fullscreenShortcut() {
         this->showNormal();
     } else {
         this->showFullScreen();
+    }
+}
+
+bool ATMWindow::processPageReturnAction(PageReturnAction action, QWidget **newPage) {
+    switch(action) {
+        case StateManager::Leave:
+            return false;
+        case StateManager::KeepLoading: {
+            bool insert = *newPage != this->pageStack.top();
+
+            if(this->pageStack.top() != this->loadingPage) {
+                this->pageStack.push(this->loadingPage);
+            }
+
+            if(newPage != nullptr) {
+                if(insert) {
+                    this->pageStack.insert(this->pageStack.length() - 1, *newPage);
+                }
+
+                *newPage = this->loadingPage;
+            }
+
+            [[fallthrough]];
+        }
+        default:
+        case StateManager::Stay:
+            return true;
     }
 }
 
@@ -142,7 +236,7 @@ void ATMWindow::popTopPage(QWidget **oldPage, QWidget **actualPage) {
 }
 
 void ATMWindow::setPage(QWidget *page, QWidget *oldPage) {
-    if(!page) {
+    if(!page || page == oldPage) {
         return;
     }
 

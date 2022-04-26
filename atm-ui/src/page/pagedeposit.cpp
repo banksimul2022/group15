@@ -16,19 +16,22 @@ void PageDeposit::onOk() {
     this->navigate<PageKeypad>(PageKeypad::Deposit, this->userInfo);
 }
 
-bool PageDeposit::processResult(QWidget *page, QVariant result) {
-    // If result is bool it will always be false (User canceled action)
-    if(
-           !Utility::isOfType<PageKeypad>(page) ||
-            result.type() == QVariant::Bool ||
-            result.type() != QVariant::Double
-      ) {
-        return true;
+QVariant PageDeposit::onNaviagte(const QMetaObject *oldPage, bool closed, QVariant *result) {
+    if(closed) {
+        // If result is bool it will always be false (User canceled action)
+        if(
+               !oldPage->inherits(&PageKeypad::staticMetaObject) ||
+               result->type() == QVariant::Bool ||
+               result->type() != QVariant::Double
+          ) {
+            return QVariant::fromValue(StateManager::Leave);
+        }
+
+        this->stateManager->getRESTInterface(false)->deposit(result->toDouble());
+        return QVariant::fromValue(StateManager::KeepLoading);
     }
 
-    this->stateManager->getRESTInterface()->deposit(result.toDouble());
-
-    return false;
+    return QVariant::fromValue(StateManager::Stay);
 }
 
 void PageDeposit::onRestData(RestReturnData *data) {
@@ -42,7 +45,7 @@ void PageDeposit::onRestData(RestReturnData *data) {
     }
 
     delete data;
-    this->stateManager->leaveCurrentPage(QVariant());
+    this->stateManager->leaveCurrentPage(QVariant::fromValue(StateManager::Leave));
 }
 
 PageDeposit::~PageDeposit() {
