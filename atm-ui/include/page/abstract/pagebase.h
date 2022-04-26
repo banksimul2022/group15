@@ -20,6 +20,8 @@ class PageBase : public QWidget {
         virtual void onRestData(RestReturnData *data);
 
     protected:
+        bool handleRestError(RestReturnData *data, QString action, bool leave = true);
+
         virtual void onReady(); // Called when page is shown for the first time
 
         template <class PageClass, class ...Args> inline void navigate(Args &&... args) {

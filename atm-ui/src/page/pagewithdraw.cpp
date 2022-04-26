@@ -5,6 +5,7 @@
 #include "page/pageprompt.h"
 #include "utility.h"
 
+#include <resterrorcode.h>
 #include <QDebug>
 
 PageWithdraw::PageWithdraw(RestInfoData *userInfo, StateManager *stateManager, QWidget *parent) :
@@ -55,7 +56,7 @@ void PageWithdraw::onReady() {
     if(this->userInfo->credit()) {
         QString debit = tr("Debit"), credit = tr("Credit");
         this->stateManager->displayPrompt(
-            tr("Valitse nosto tapa"),
+            tr("Valitse nostotapa"),
             tr("Haluatko käyttää credit vai debit korttia?"),
             PromptEnum::question,
             3, nullptr, &debit, &credit
@@ -68,38 +69,32 @@ void PageWithdraw::onRestData(RestReturnData *data) {
         return;
     }
 
-    if(data->error() != -1) {
-        this->stateManager->leaveCurrentPage(
-            QVariant::fromValue(
-                this->stateManager->createPrompt(
-                    tr("Verkko virhe!"),
-                    tr("Rahan nostamisessa tapahtui virhe! (%1)").arg(data->error()),
-                    PromptEnum::error,
-                    0
-                )
-            )
-        );
+    QWidget *prompt = nullptr;
 
-        delete data;
+    if(data->error() == RestErrors::ERR_INSUFFICIENT_FUNDS) {
+        prompt = this->stateManager->createPrompt(
+                     tr("Virhe"),
+                     tr("Tililläsi ei ole katetta %1€ nostamiseen!").arg(this->amountWithdrawn),
+                     PromptEnum::warning,
+                     0
+                );
+    } else if(this->handleRestError(data, tr("nostamisessa"))) {
         return;
+    } else {
+        prompt = this->stateManager->createPrompt(
+                     tr("Nosto onnistui"),
+                     (
+                         this->userInfo->credit() ?
+                         tr(this->useCredit ? "Nostettu %1€ credittiä" : "Nostettu %1€ debittiä").arg(this->amountWithdrawn) :
+                         tr("Nostettu %1€").arg(this->amountWithdrawn)
+                     ),
+                     PromptEnum::info,
+                     0
+                );
     }
 
     delete data;
-
-    this->stateManager->leaveCurrentPage(
-        QVariant::fromValue(
-            this->stateManager->createPrompt(
-                tr("Nosto Onnistui"),
-                (
-                    this->userInfo->credit() ?
-                    tr(this->useCredit ? "Nostettu %1€ credittiä" : "Nostettu %1€ debittiä").arg(this->amountWithdrawn) :
-                    tr("Nostettu %1€").arg(this->amountWithdrawn)
-                ),
-                PromptEnum::info,
-                0
-            )
-        )
-    );
+    this->stateManager->leaveCurrentPage(QVariant::fromValue(prompt));
 }
 
 void PageWithdraw::onAmountButtonPress() {

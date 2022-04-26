@@ -31,24 +31,11 @@ void PageWithUserBar::onRestData(RestReturnData *data) {
         return;
     }
 
-    int error = data->error();
-    delete data;
-
-    if(error != -1) {
-        this->stateManager->leaveCurrentPage(
-            QVariant::fromValue(
-                this->stateManager->createPrompt(
-                    tr("Sisäinen virhe!"),
-                    tr("Virhe uloskirjautuessa! (%1)").arg(error),
-                    PromptEnum::error,
-                    0
-                )
-            )
-        );
-
+    if(this->handleRestError(data, tr("ulos kirjautuessa"))) {
         return;
     }
 
+    delete data;
     this->stateManager->leaveAllPages(QVariant());
 }
 

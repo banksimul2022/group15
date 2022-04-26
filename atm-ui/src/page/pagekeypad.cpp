@@ -63,7 +63,7 @@ void PageKeypad::onOk() {
         this->stateManager->leaveCurrentPage(
             QVariant::fromValue(
                 this->stateManager->createPrompt(
-                    tr("Sisäinen virhe!"),
+                    tr("Sisäinen virhe"),
                     tr("Summan muuntaminen epäonnistui!"),
                     PromptEnum::error,
                     0

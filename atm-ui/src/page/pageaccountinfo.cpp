@@ -50,18 +50,7 @@ void PageAccountInfo::onReady() {
 
 void PageAccountInfo::onRestData(RestReturnData *data) {
     if(data->type() == RestReturnData::typeBalance) {
-        if(data->error() != -1) {
-            this->stateManager->leaveCurrentPage(
-                QVariant::fromValue(
-                    this->stateManager->createPrompt(
-                        tr("Verkko virhe!"),
-                        tr("Virhe haettaessa tilin tietoja! (%1)").arg(data->error()),
-                        PromptEnum::error,
-                        0
-                    )
-                )
-            );
-
+        if(this->handleRestError(data, tr("haettaessa tilin tietoja"))) {
             return;
         }
 
@@ -80,17 +69,7 @@ void PageAccountInfo::onRestData(RestReturnData *data) {
             interface->nextTransactions(10);
         }
     } else if(data->type() == RestReturnData::typeLatestTransaction || data->type() == RestReturnData::typeTransaction) {
-        if(data->error() != -1) {
-            this->stateManager->leaveCurrentPage(
-                QVariant::fromValue(
-                    this->stateManager->createPrompt(
-                        tr("Verkko virhe!"),
-                        tr("Virhe haettaessa tilin tapahtumia! (%1)").arg(data->error()),
-                        PromptEnum::error,
-                        0
-                    )
-                )
-            );
+        if(this->handleRestError(data, tr("haettaessa tilin tapahtumia"))) {
             return;
         }
 

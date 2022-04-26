@@ -1,4 +1,5 @@
 #include "page/abstract/pagebase.h"
+#include "utility.h"
 
 PageBase::PageBase(StateManager *stateManager, QWidget *parent) :
     QWidget{parent},
@@ -22,6 +23,26 @@ void PageBase::onShown() {
 }
 
 void PageBase::onRestData(RestReturnData *data) { Q_UNUSED(data) }
+
+bool PageBase::handleRestError(RestReturnData *data, QString action, bool leave) {
+    if(data->error() == -1) return false;
+
+    QWidget *prompt = this->stateManager->createPrompt(
+                          tr("Verkkovirhe"),
+                          tr("Odottamaton virhe %1!\n%2! (%3)").arg(action, Utility::restErrorToText(data->error()), QString::number(data->error())),
+                          PromptEnum::error, 0
+                      );
+
+    if(leave) {
+        this->stateManager->leaveCurrentPage(QVariant::fromValue(prompt));
+    } else {
+        this->stateManager->navigateToPage(prompt);
+    }
+
+    delete data;
+
+    return true;
+}
 
 void PageBase::onReady() { /* Not used in base class */ }
 

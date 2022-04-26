@@ -41,27 +41,16 @@ void PageDeposit::onRestData(RestReturnData *data) {
         return;
     }
 
-    if(data->error() != -1) {
-        this->stateManager->leaveCurrentPage(
-            QVariant::fromValue(
-                this->stateManager->createPrompt(
-                    tr("Sisäinen virhe!"),
-                    tr("Virhe talletettessa! (%1)").arg(data->error()),
-                    PromptEnum::error,
-                    0
-                )
-            )
-        );
-
-        delete data;
+    if(this->handleRestError(data, tr("talletettaessa"))) {
         return;
     }
 
     delete data;
+
     this->stateManager->leaveCurrentPage(
         QVariant::fromValue(
             this->stateManager->createPrompt(
-                tr("Talletus Onnistui"),
+                tr("Talletus onnistui"),
                 tr("Talletit %1€").arg(this->amountDeposited),
                 PromptEnum::info,
                 0
