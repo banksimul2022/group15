@@ -20,9 +20,15 @@ class PageInsertCard : public PageBase {
 
     private slots:
         void onCardRead(QString number);
+
+        void onPinRead(QString pin);
+        void onPinCancel();
+
         void onRestData(RestReturnData *data) override;
 
     private:
+        QString number;
+        QString pin;
         bool processReads;
 
         Ui::PageInsertCard *ui;

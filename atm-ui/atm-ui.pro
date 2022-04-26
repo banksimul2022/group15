@@ -82,3 +82,12 @@ else:unix: LIBS += -L$$PWD/../atm-dll/rest/build/ -lREST
 INCLUDEPATH += $$PWD/../atm-dll/rest
 DEPENDPATH += $$PWD/../atm-dll/rest
 # ----- REST LIBRARY END -----
+
+# ----- PIN-UI LIBRARY BEGIN -----
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../atm-dll/pin-ui/build/release/ -lPin
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../atm-dll/pin-ui/build/debug/ -lPin
+else:unix: LIBS += -L$$PWD/../atm-dll/pin-ui/build/ -lPin
+
+INCLUDEPATH += $$PWD/../atm-dll/pin-ui
+DEPENDPATH += $$PWD/../atm-dll/pin-ui
+# ----- PIN-UI LIBRARY END -----

@@ -69,7 +69,10 @@ QVariant ATMWindow::navigateToPage(QWidget *page) {
 
     QVariant result;
     result = pageCast == nullptr ? false : pageCast->onNaviagte(page->metaObject(), false, &result);
-    Q_ASSERT_X(result.userType() == qMetaTypeId<StateManager::PageReturnAction>(), "ATMWindow::leaveCurrentPage", "Unknown return type from page");
+    Q_ASSERT_X(
+        pageCast == nullptr || result.userType() == qMetaTypeId<StateManager::PageReturnAction>(),
+        "ATMWindow::leaveCurrentPage", "Unknown return type from page"
+    );
 
     QWidget *newPage = page;
 
@@ -189,9 +192,9 @@ bool ATMWindow::processPageReturnAction(PageReturnAction action, QWidget **newPa
         case StateManager::Leave:
             return false;
         case StateManager::KeepLoading: {
-            bool insert = *newPage != this->pageStack.top();
+            bool insert = this->pageStack.isEmpty() || *newPage != this->pageStack.top();
 
-            if(this->pageStack.top() != this->loadingPage) {
+            if(this->pageStack.isEmpty() || this->pageStack.top() != this->loadingPage) {
                 this->pageStack.push(this->loadingPage);
             }
 

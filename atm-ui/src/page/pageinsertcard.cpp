@@ -1,11 +1,10 @@
 #include "page/pageinsertcard.h"
 #include "ui_pageinsertcard.h"
-
-#include <QDebug>
-#include <resterrorcode.h>
-
 #include "page/pageloading.h"
 #include "page/pagemainaccountview.h"
+
+#include <resterrorcode.h>
+#include <pininterface.h>
 
 PageInsertCard::PageInsertCard(StateManager *stateManager, QWidget *parent) :
     PageBase(stateManager, parent),
@@ -13,6 +12,8 @@ PageInsertCard::PageInsertCard(StateManager *stateManager, QWidget *parent) :
     ui(new Ui::PageInsertCard)
 {
     ui->setupUi(this);
+    this->number = nullptr;
+    this->pin = nullptr;
     this->connect(this->stateManager->getRFIDInterface(), &RFIDInterface::cardRead, this, &PageInsertCard::onCardRead);
 }
 
@@ -23,7 +24,14 @@ PageInsertCard::~PageInsertCard() {
 QVariant PageInsertCard::onNaviagte(const QMetaObject *oldPage, bool closed, QVariant *result) {
     Q_UNUSED(oldPage) Q_UNUSED(closed) Q_UNUSED(result)
 
-    this->processReads = true;
+    if(this->number != nullptr && this->pin != nullptr) {
+        this->stateManager->getRESTInterface(false)->login(this->number, this->pin);
+        this->number = nullptr;
+        this->pin = nullptr;
+        return QVariant::fromValue(StateManager::KeepLoading);
+    } else {
+        this->processReads = true;
+    }
 
     return QVariant::fromValue(StateManager::Stay);
 }
@@ -34,9 +42,23 @@ void PageInsertCard::onCardRead(QString number) {
     }
 
     this->processReads = false;
+    this->number = number;
 
-    // TODO: Replace with pinui page
-    this->stateManager->getRESTInterface()->login(number, "95959");
+    // We don't need to hold a reference to the pin widget instance as it is automatocally dealt with by the StateManager
+    PinInterface *pinWidget = PinInterface::createWidgetInstance(this);
+    this->connect(pinWidget, &PinInterface::pinWidgetUserInput, this, &PageInsertCard::onPinRead);
+    this->connect(pinWidget, &PinInterface::deletePinWidget, this, &PageInsertCard::onPinCancel);
+    this->stateManager->navigateToPage(pinWidget);
+}
+
+void PageInsertCard::onPinRead(QString pin) {
+    this->pin = pin;
+    this->stateManager->leaveCurrentPage(QVariant::fromValue(StateManager::Leave));
+}
+
+void PageInsertCard::onPinCancel() {
+    this->number = nullptr;
+    this->stateManager->leaveCurrentPage(QVariant::fromValue(StateManager::Leave));
 }
 
 void PageInsertCard::onRestData(RestReturnData *data) {
