@@ -193,7 +193,7 @@ void ATMWindow::leaveAllPages(QVariant result) {
     PageBase *newPageCast = qobject_cast<PageBase*>(newPage);
 
     if(newPageCast != nullptr) {
-        newPageCast->onNaviagte(actualPage->metaObject(), true, &result);
+        newPageCast->onNaviagte(actualPage == nullptr ? this->pageStack.at(0)->metaObject() : actualPage->metaObject(), true, &result);
     }
 
     this->setPage(newPage, currentPage);
@@ -254,8 +254,7 @@ void ATMWindow::popTopPage(QWidget **oldPage, QWidget **actualPage) {
     *actualPage = *oldPage;
 
     if(*oldPage == this->loadingPage) {
-        Q_ASSERT(this->pageStack.length() > 1);
-        *actualPage = this->pageStack.pop();
+        *actualPage = this->pageStack.length() > 1 ? this->pageStack.pop() : nullptr;
         (*oldPage)->setVisible(false);
     }
 }
