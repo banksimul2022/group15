@@ -751,6 +751,38 @@
 					"response": []
 				},
 				{
+					"name": "transfer",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "accountNumber",
+									"value": "",
+									"type": "default"
+								},
+								{
+									"key": "sum",
+									"value": "",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api_url}}/transfer",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"withdraw"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "info",
 					"request": {
 						"method": "GET",

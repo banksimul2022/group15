@@ -175,4 +175,56 @@ router.post("/deposit", (req, res) => {
         .catch(error => butil.handleQueryError(error, res));
 });
 
+router.post("/transfer", (req, res) => {
+    account.getById(req.token.accountId)
+        .then(async fromResult => {
+            const sum = Number(req.body.sum);
+
+            if(isNaN(sum) || sum < 0.01) {
+                throw new errors.PublicAPIError("sum not set or invalid", errors.codes.ERR_INVALID_SUM, 400);
+            }
+
+            const fromAccount = fromResult[0];
+
+            if(fromAccount.balance < sum) {
+                throw new errors.PublicAPIError("Insufficient funds", errors.codes.ERR_INSUFFICIENT_FUNDS, 200);
+            }
+
+            let toResult = await account.getByNumber(req.body.accountNumber);
+
+            if(toResult.length < 1) {
+                throw new errors.PublicAPIError("Unknown target account", errors.codes.ERR_UNKNOWN_ACCOUNT, 400);
+            }
+
+            const toAccount = toResult[0];
+
+            fromAccount["balance"] -= sum;
+            toAccount["balance"] += sum;
+
+            const date = new Date();
+
+            await transaction.add({
+                accountId: toAccount.accountId,
+                timestamp: date,
+                toAccount: toAccount["accountNumber"],
+                type: "TRANSFER_TO",
+                sum,
+                cardNumber: req.token.card_number
+            });
+
+            await transaction.add({
+                accountId: fromAccount.accountId,
+                timestamp: date,
+                toAccount: fromAccount["accountNumber"],
+                type: "TRANSFER_FROM",
+                sum,
+                cardNumber: null
+            });
+
+            await account.update(toAccount.accountId, toAccount);
+            res.json(await account.update(fromAccount.accountId, fromAccount));
+        })
+        .catch(error => butil.handleQueryError(error, res))
+});
+
 module.exports = router;
