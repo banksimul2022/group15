@@ -13,7 +13,7 @@ module.exports = {
     add: async (card) => {
         const hash = await bcrypt.hash(card.pin, saltRounds);
         return db.query(
-            "INSERT INTO card (cardId, customerId, accountId, cardNumber, attempts, credit, pin) VALUES(?, ?, ?, ?, ?, ?, ?, ?)",
+            "INSERT INTO card (cardId, customerId, accountId, cardNumber, attempts, credit, pin) VALUES(?, ?, ?, ?, ?, ?, ?)",
             [ card.cardId, card.customerId, card.accountId, card.cardNumber, card.attempts, card.credit, hash ]
         );
     },
