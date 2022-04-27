@@ -1,5 +1,5 @@
-#ifndef STATEMANAGER_H
-#define STATEMANAGER_H
+#ifndef PAGEMANAGER_H
+#define PAGEMANAGER_H
 
 #include <QWidget>
 #include <restinterface.h>
@@ -7,7 +7,7 @@
 
 #include "page/pageprompt_enum.h"
 
-class StateManager {
+class PageManager {
     Q_GADGET
 
     public:
@@ -33,4 +33,4 @@ class StateManager {
         virtual void leaveAllPages(QVariant result) = 0;
 };
 
-#endif // STATEMANAGER_H
+#endif // PAGEMANAGER_H

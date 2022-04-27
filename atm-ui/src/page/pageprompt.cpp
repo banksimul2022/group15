@@ -4,7 +4,7 @@
 
 #include <QSvgRenderer>
 
-PagePrompt::PagePrompt(QString title, QString prompt, PromptEnum::Icon icon, StateManager *stateManager, QWidget *parent, int count, ...) :
+PagePrompt::PagePrompt(QString title, QString prompt, PromptEnum::Icon icon, PageManager *stateManager, QWidget *parent, int count, ...) :
     PageWithUserBar(UserStatusBarWidget::custom, stateManager, nullptr, parent),
     ui(new Ui::PagePrompt)
 {
@@ -14,7 +14,7 @@ PagePrompt::PagePrompt(QString title, QString prompt, PromptEnum::Icon icon, Sta
     va_end(args);
 }
 
-PagePrompt::PagePrompt(QString title, QString prompt, PromptEnum::Icon icon, int count, va_list args, StateManager *stateManager, QWidget *parent) :
+PagePrompt::PagePrompt(QString title, QString prompt, PromptEnum::Icon icon, int count, va_list args, PageManager *stateManager, QWidget *parent) :
     PageWithUserBar(UserStatusBarWidget::custom, stateManager, nullptr, parent),
     ui(new Ui::PagePrompt)
 {
@@ -22,7 +22,7 @@ PagePrompt::PagePrompt(QString title, QString prompt, PromptEnum::Icon icon, int
 }
 
 void PagePrompt::onExtraButton(int id) {
-    this->stateManager->leaveCurrentPage(QVariant(id));
+    this->pageManager->leaveCurrentPage(QVariant(id));
 }
 
 PagePrompt::~PagePrompt() {

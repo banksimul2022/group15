@@ -87,7 +87,7 @@ QVariant ATMWindow::navigateToPage(QWidget *page) {
     QVariant result;
     result = pageCast == nullptr ? false : pageCast->onNaviagte(page->metaObject(), false, &result);
     Q_ASSERT_X(
-        pageCast == nullptr || result.userType() == qMetaTypeId<StateManager::PageReturnAction>(),
+        pageCast == nullptr || result.userType() == qMetaTypeId<PageManager::PageReturnAction>(),
         "ATMWindow::leaveCurrentPage", "Unknown return type from page"
     );
 
@@ -97,13 +97,13 @@ QVariant ATMWindow::navigateToPage(QWidget *page) {
         this->pageStack.pop();
     }
 
-    PageReturnAction action = result.value<StateManager::PageReturnAction>();
+    PageReturnAction action = result.value<PageManager::PageReturnAction>();
 
     if(!this->processPageReturnAction(action, &newPage)) {
         return result;
     }
 
-    if(action != StateManager::KeepLoading) {
+    if(action != PageManager::KeepLoading) {
         this->pageStack.push(page);
     }
 
@@ -130,8 +130,8 @@ bool ATMWindow::leaveCurrentPage(QVariant result) {
     newPage = actualPage;
 
     do {
-        if(result.userType() == qMetaTypeId<StateManager::PageReturnAction>()) {
-            PageReturnAction action = result.value<StateManager::PageReturnAction>();
+        if(result.userType() == qMetaTypeId<PageManager::PageReturnAction>()) {
+            PageReturnAction action = result.value<PageManager::PageReturnAction>();
             if(newPage != actualPage && this->processPageReturnAction(action, &newPage)) {
                 pushToTop = action != PageReturnAction::KeepLoading;
                 break;
@@ -216,9 +216,9 @@ void ATMWindow::onRestDataFromDLL(RestReturnData *data) {
 
 bool ATMWindow::processPageReturnAction(PageReturnAction action, QWidget **newPage) {
     switch(action) {
-        case StateManager::Leave:
+        case PageManager::Leave:
             return false;
-        case StateManager::KeepLoading: {
+        case PageManager::KeepLoading: {
             bool insert = this->pageStack.isEmpty() || *newPage != this->pageStack.top();
 
             if(this->pageStack.isEmpty() || this->pageStack.top() != this->loadingPage) {
@@ -236,7 +236,7 @@ bool ATMWindow::processPageReturnAction(PageReturnAction action, QWidget **newPa
             [[fallthrough]];
         }
         default:
-        case StateManager::Stay:
+        case PageManager::Stay:
             return true;
     }
 }

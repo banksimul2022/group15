@@ -7,7 +7,7 @@
 #include <QTimer>
 #include <QStyle>
 
-PageKeypad::PageKeypad(PageKeypad::Action action, RestInfoData *userInfo, StateManager *stateManager, QWidget *parent) :
+PageKeypad::PageKeypad(PageKeypad::Action action, RestInfoData *userInfo, PageManager *stateManager, QWidget *parent) :
     PageWithUserBar(UserStatusBarWidget::Mode::leaveAndOk, stateManager, userInfo, parent),
     ui(new Ui::PageKeypad),
     flashTimer(new QTimer(this)),
@@ -45,7 +45,7 @@ PageKeypad::PageKeypad(PageKeypad::Action action, RestInfoData *userInfo, StateM
 }
 
 void PageKeypad::onLeave() {
-    this->stateManager->leaveCurrentPage(QVariant(false));
+    this->pageManager->leaveCurrentPage(QVariant(false));
 }
 
 void PageKeypad::onOk() {
@@ -60,9 +60,9 @@ void PageKeypad::onOk() {
     double sum = sumStr.toDouble(&ok);
 
     if(!ok) {
-        this->stateManager->leaveCurrentPage(
+        this->pageManager->leaveCurrentPage(
             QVariant::fromValue(
-                this->stateManager->createPrompt(
+                this->pageManager->createPrompt(
                     tr("Sisäinen virhe"),
                     tr("Summan muuntaminen epäonnistui!"),
                     PromptEnum::error,
@@ -74,7 +74,7 @@ void PageKeypad::onOk() {
         return;
     }
 
-    this->stateManager->leaveCurrentPage(QVariant(sum));
+    this->pageManager->leaveCurrentPage(QVariant(sum));
 }
 
 void PageKeypad::onKeypadButtonPress() {

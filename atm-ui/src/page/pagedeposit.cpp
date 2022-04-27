@@ -3,7 +3,7 @@
 #include "page/pagekeypad.h"
 #include "utility.h"
 
-PageDeposit::PageDeposit(RestInfoData *userInfo, StateManager *stateManager, QWidget *parent) :
+PageDeposit::PageDeposit(RestInfoData *userInfo, PageManager *stateManager, QWidget *parent) :
     PageWithUserBar(UserStatusBarWidget::leaveAndOk, stateManager, userInfo, parent),
     amountDeposited(0),
     userInfo(userInfo),
@@ -25,15 +25,15 @@ QVariant PageDeposit::onNaviagte(const QMetaObject *oldPage, bool closed, QVaria
                result->type() == QVariant::Bool ||
                result->type() != QVariant::Double
           ) {
-            return QVariant::fromValue(StateManager::Leave);
+            return QVariant::fromValue(PageManager::Leave);
         }
 
         this->amountDeposited = result->toDouble();
-        this->stateManager->getRESTInterface(false)->deposit(this->amountDeposited);
-        return QVariant::fromValue(StateManager::KeepLoading);
+        this->pageManager->getRESTInterface(false)->deposit(this->amountDeposited);
+        return QVariant::fromValue(PageManager::KeepLoading);
     }
 
-    return QVariant::fromValue(StateManager::Stay);
+    return QVariant::fromValue(PageManager::Stay);
 }
 
 PageBase::RestDataAction PageDeposit::onRestData(RestReturnData *data) {
@@ -45,9 +45,9 @@ PageBase::RestDataAction PageDeposit::onRestData(RestReturnData *data) {
         return RestDataAction::Delete;
     }
 
-    this->stateManager->leaveCurrentPage(
+    this->pageManager->leaveCurrentPage(
         QVariant::fromValue(
-            this->stateManager->createPrompt(
+            this->pageManager->createPrompt(
                 tr("Talletus onnistui"),
                 tr("Talletit %1€").arg(this->amountDeposited),
                 PromptEnum::info,

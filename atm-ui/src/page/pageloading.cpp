@@ -4,7 +4,7 @@
 
 #include <QSvgRenderer>
 
-PageLoading::PageLoading(StateManager *stateManager, QWidget *parent) :
+PageLoading::PageLoading(PageManager *stateManager, QWidget *parent) :
     PageBase(stateManager, parent),
     ui(new Ui::PageLoading)
 {

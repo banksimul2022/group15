@@ -7,7 +7,7 @@
 #include <transactiontablemodel.h>
 #include <QSvgRenderer>
 
-PageAccountInfo::PageAccountInfo(Action action, RestInfoData *userInfo, StateManager *stateManager, QWidget *parent) :
+PageAccountInfo::PageAccountInfo(Action action, RestInfoData *userInfo, PageManager *stateManager, QWidget *parent) :
     PageWithUserBar(UserStatusBarWidget::Mode::leaveOnly, stateManager, nullptr, parent),
     action(action),
     ui(new Ui::PageAccountInfo)
@@ -41,11 +41,11 @@ PageAccountInfo::PageAccountInfo(Action action, RestInfoData *userInfo, StateMan
 
 QVariant PageAccountInfo::onNaviagte(const QMetaObject *oldPage, bool closed, QVariant *result) {
     Q_UNUSED(oldPage) Q_UNUSED(result)
-    return closed ? QVariant::fromValue(StateManager::Stay) : QVariant::fromValue(StateManager::KeepLoading);
+    return closed ? QVariant::fromValue(PageManager::Stay) : QVariant::fromValue(PageManager::KeepLoading);
 }
 
 void PageAccountInfo::onReady() {
-    this->stateManager->getRESTInterface()->getBalance();
+    this->pageManager->getRESTInterface()->getBalance();
 }
 
 PageBase::RestDataAction PageAccountInfo::onRestData(RestReturnData *data) {
@@ -58,9 +58,9 @@ PageBase::RestDataAction PageAccountInfo::onRestData(RestReturnData *data) {
         this->ui->lblAccBalance->setText(QString::number(balData->getBalance(), 'f', 2));
         this->ui->lblAccCredit->setText(QString::number(balData->getCredit(), 'f', 2));
 
-        this->stateManager->leaveLoadingPage();
+        this->pageManager->leaveLoadingPage();
 
-        RESTInterface *interface = this->stateManager->getRESTInterface(false);
+        RESTInterface *interface = this->pageManager->getRESTInterface(false);
 
         if(this->action == Action::ViewBalance) {
             interface->latestTransactions(5);
@@ -113,12 +113,12 @@ void PageAccountInfo::on_btnPrev_clicked() {
     this->showLoading();
     this->userStatusBar->stopLeaveTimeout();
     this->userStatusBar->resetLeaveTimeout(false);
-    this->stateManager->getRESTInterface(false)->prevTransactions(10);
+    this->pageManager->getRESTInterface(false)->prevTransactions(10);
 }
 
 void PageAccountInfo::on_btnNext_clicked() {
     this->showLoading();
     this->userStatusBar->stopLeaveTimeout();
     this->userStatusBar->resetLeaveTimeout(false);
-    this->stateManager->getRESTInterface(false)->nextTransactions(10);
+    this->pageManager->getRESTInterface(false)->nextTransactions(10);
 }

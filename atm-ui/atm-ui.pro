@@ -37,7 +37,7 @@ HEADERS += \
     include/page/pageprompt_enum.h \
     include/page/pagewithdraw.h \
     include/page/abstract/pagewithuserbar.h \
-    include/statemanager.h \
+    include/pagemanager.h \
     include/userstatusbarwidget.h \
     include/utility.h \
     include/transactiontablemodel.h \

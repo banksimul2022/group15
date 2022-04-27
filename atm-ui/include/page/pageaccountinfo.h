@@ -18,7 +18,7 @@ class PageAccountInfo : public PageWithUserBar {
             ViewTransactions
         };
 
-        explicit PageAccountInfo(Action action, RestInfoData *userInfo, StateManager *stateManager, QWidget *parent = nullptr);
+        explicit PageAccountInfo(Action action, RestInfoData *userInfo, PageManager *stateManager, QWidget *parent = nullptr);
         ~PageAccountInfo();
 
         QVariant onNaviagte(const QMetaObject *oldPage, bool closed, QVariant *result) override;

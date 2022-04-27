@@ -6,7 +6,7 @@
 #include <resterrorcode.h>
 #include <pininterface.h>
 
-PageInsertCard::PageInsertCard(StateManager *stateManager, QWidget *parent) :
+PageInsertCard::PageInsertCard(PageManager *stateManager, QWidget *parent) :
     PageBase(stateManager, parent),
     processReads(true),
     ui(new Ui::PageInsertCard)
@@ -14,7 +14,7 @@ PageInsertCard::PageInsertCard(StateManager *stateManager, QWidget *parent) :
     ui->setupUi(this);
     this->number = nullptr;
     this->pin = nullptr;
-    this->connect(this->stateManager->getRFIDInterface(), &RFIDInterface::cardRead, this, &PageInsertCard::onCardRead);
+    this->connect(this->pageManager->getRFIDInterface(), &RFIDInterface::cardRead, this, &PageInsertCard::onCardRead);
 }
 
 PageInsertCard::~PageInsertCard() {
@@ -25,15 +25,15 @@ QVariant PageInsertCard::onNaviagte(const QMetaObject *oldPage, bool closed, QVa
     Q_UNUSED(oldPage) Q_UNUSED(closed) Q_UNUSED(result)
 
     if(this->number != nullptr && this->pin != nullptr) {
-        this->stateManager->getRESTInterface(false)->login(this->number, this->pin);
+        this->pageManager->getRESTInterface(false)->login(this->number, this->pin);
         this->number = nullptr;
         this->pin = nullptr;
-        return QVariant::fromValue(StateManager::KeepLoading);
+        return QVariant::fromValue(PageManager::KeepLoading);
     } else {
         this->processReads = true;
     }
 
-    return QVariant::fromValue(StateManager::Stay);
+    return QVariant::fromValue(PageManager::Stay);
 }
 
 void PageInsertCard::onCardRead(QString number) {
@@ -48,30 +48,30 @@ void PageInsertCard::onCardRead(QString number) {
     PinInterface *pinWidget = PinInterface::createWidgetInstance(this);
     this->connect(pinWidget, &PinInterface::pinWidgetUserInput, this, &PageInsertCard::onPinRead);
     this->connect(pinWidget, &PinInterface::deletePinWidget, this, &PageInsertCard::onPinCancel);
-    this->stateManager->navigateToPage(pinWidget);
+    this->pageManager->navigateToPage(pinWidget);
 }
 
 void PageInsertCard::onPinRead(QString pin) {
     this->pin = pin;
-    this->stateManager->leaveCurrentPage(QVariant::fromValue(StateManager::Leave));
+    this->pageManager->leaveCurrentPage(QVariant::fromValue(PageManager::Leave));
 }
 
 void PageInsertCard::onPinCancel() {
     this->number = nullptr;
-    this->stateManager->leaveCurrentPage(QVariant::fromValue(StateManager::Leave));
+    this->pageManager->leaveCurrentPage(QVariant::fromValue(PageManager::Leave));
 }
 
 PageBase::RestDataAction PageInsertCard::onRestData(RestReturnData *data) {
     if(data->type() != RestReturnData::typeLogin) return RestDataAction::Skip;
 
     if(data->error() == RestErrors::ERR_CARD_LOCKED) {
-        this->stateManager->displayPrompt(
+        this->pageManager->displayPrompt(
             tr("Kortti lukittu"),
             tr("Korttisi on lukittu liian monen virheellisen kirjautumisen takia!\nOta yhteyttä henkilökuntaan"),
             PromptEnum::warning, 0
         );
     } else if(data->error() == RestErrors::ERR_INVALID_CREDENTIALS) {
-        this->stateManager->displayPrompt(
+        this->pageManager->displayPrompt(
             tr("Virheelliset tunnukset"),
             tr("PIN koodisi tai kortin numero on virhellinen!\nYritä uudelleen..."),
             PromptEnum::warning, 0

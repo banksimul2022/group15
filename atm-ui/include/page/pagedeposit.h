@@ -11,7 +11,7 @@ class PageDeposit : public PageWithUserBar {
     Q_OBJECT
 
     public:
-        explicit PageDeposit(RestInfoData *userInfo, StateManager *stateManager, QWidget *parent = nullptr);
+        explicit PageDeposit(RestInfoData *userInfo, PageManager *stateManager, QWidget *parent = nullptr);
         ~PageDeposit();
 
         QVariant onNaviagte(const QMetaObject *oldPage, bool closed, QVariant *result) override;

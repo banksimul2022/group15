@@ -13,7 +13,7 @@ class PageInsertCard : public PageBase {
     Q_OBJECT
 
     public:
-        explicit PageInsertCard(StateManager *stateManager, QWidget *parent = nullptr);
+        explicit PageInsertCard(PageManager *stateManager, QWidget *parent = nullptr);
         ~PageInsertCard();
 
         QVariant onNaviagte(const QMetaObject *oldPage, bool closed, QVariant *result) override;

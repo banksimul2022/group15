@@ -2,7 +2,7 @@
 #define ATMWINDOW_H
 
 #include "page/pageloading.h"
-#include "statemanager.h"
+#include "pagemanager.h"
 
 #include <QMainWindow>
 #include <QVariant>
@@ -12,7 +12,7 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class ATMWindow; }
 QT_END_NAMESPACE
 
-class ATMWindow : public QMainWindow, public StateManager {
+class ATMWindow : public QMainWindow, public PageManager {
     Q_OBJECT
 
     public:

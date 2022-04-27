@@ -13,7 +13,7 @@ class PageLoading : public PageBase {
     Q_OBJECT
 
     public:
-        explicit PageLoading(StateManager *stateManager, QWidget *parent = nullptr);
+        explicit PageLoading(PageManager *stateManager, QWidget *parent = nullptr);
         ~PageLoading();
 
     private:
