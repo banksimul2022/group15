@@ -32,6 +32,19 @@ PageBase::RestDataAction PageBase::onRestData(RestReturnData *data) { Q_UNUSED(d
 void PageBase::onRestDataFromManager(RestReturnData **data) {
     qDebug() << this << "data";
     if(*data != nullptr) {
+        if((*data)->type() == RestReturnData::typeinternalerror) {
+            this->pageManager->leaveAllPages(
+                QVariant::fromValue(
+                    this->pageManager->createPrompt(
+                        tr("Sisäinen virhe!"),
+                        tr("Odottamaton verkko virhe! (%1)").arg((*data)->error()),
+                        PromptEnum::error, 0
+                    )
+                )
+            );
+            return;
+        }
+
         RestDataAction action = this->onRestData(*data);
 
         if(action == RestDataAction::Skip) {
