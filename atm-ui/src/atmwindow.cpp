@@ -181,7 +181,15 @@ void ATMWindow::leaveAllPages(QVariant result) {
         this->deletePage(this->pageStack.pop());
     }
 
-    QWidget *newPage = this->pageStack.top();
+    QWidget *newPage;
+
+    if(result.canConvert<QWidget*>()) {
+        newPage = result.value<QWidget*>();
+        this->pageStack.push(newPage);
+    } else {
+        newPage = this->pageStack.top();
+    }
+
     PageBase *newPageCast = qobject_cast<PageBase*>(newPage);
 
     if(newPageCast != nullptr) {
