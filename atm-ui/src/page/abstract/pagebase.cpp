@@ -1,5 +1,7 @@
 #include "page/abstract/pagebase.h"
 #include "utility.h"
+#include <QMetaMethod>
+#include <QDebug>
 
 PageBase::PageBase(StateManager *stateManager, QWidget *parent) :
     QWidget{parent},
@@ -7,7 +9,10 @@ PageBase::PageBase(StateManager *stateManager, QWidget *parent) :
 {
     this->setVisible(false); // Prevent pages from randomly opening in their own windows when deparented
     this->stateManager = stateManager;
-    this->connect(this->stateManager->getRESTInterface(false), &RESTInterface::dataReturn, this, &PageBase::onRestData);
+    int slotIndex = this->metaObject()->indexOfSlot("onRestDataFromManager(RestReturnData**)");
+    Q_ASSERT_X(slotIndex != -1, "PageBase::PageBase", "Failed to find onRestDataFromManager slot");
+    this->stateManager->connectRestSignal(this, this->metaObject()->method(slotIndex));
+    qDebug() << "Create: " << this;
 }
 
 QVariant PageBase::onNaviagte(const QMetaObject *oldPage, bool closed, QVariant *result) {
@@ -22,7 +27,26 @@ void PageBase::onShown() {
     }
 }
 
-void PageBase::onRestData(RestReturnData *data) { Q_UNUSED(data) }
+PageBase::RestDataAction PageBase::onRestData(RestReturnData *data) { Q_UNUSED(data) return RestDataAction::Skip; }
+
+void PageBase::onRestDataFromManager(RestReturnData **data) {
+    qDebug() << this << "data";
+    if(*data != nullptr) {
+        RestDataAction action = this->onRestData(*data);
+
+        if(action == RestDataAction::Skip) {
+            return;
+        }
+
+        if(action == RestDataAction::Delete) {
+            qDebug() << "Delete in page";
+            delete *data;
+        }
+
+        qDebug() << "Set to null in page";
+        *data = nullptr;
+    }
+}
 
 bool PageBase::handleRestError(RestReturnData *data, QString action, bool leave) {
     if(data->error() == -1) return false;
@@ -39,11 +63,9 @@ bool PageBase::handleRestError(RestReturnData *data, QString action, bool leave)
         this->stateManager->navigateToPage(prompt);
     }
 
-    delete data;
-
     return true;
 }
 
 void PageBase::onReady() { /* Not used in base class */ }
 
-PageBase::~PageBase() { }
+PageBase::~PageBase() { qDebug() << "Destroy: " << this; }

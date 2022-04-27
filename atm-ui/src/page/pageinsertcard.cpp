@@ -61,8 +61,8 @@ void PageInsertCard::onPinCancel() {
     this->stateManager->leaveCurrentPage(QVariant::fromValue(StateManager::Leave));
 }
 
-void PageInsertCard::onRestData(RestReturnData *data) {
-    if(data->type() != RestReturnData::typeLogin) return;
+PageBase::RestDataAction PageInsertCard::onRestData(RestReturnData *data) {
+    if(data->type() != RestReturnData::typeLogin) return RestDataAction::Skip;
 
     if(data->error() == RestErrors::ERR_CARD_LOCKED) {
         this->stateManager->displayPrompt(
@@ -77,10 +77,10 @@ void PageInsertCard::onRestData(RestReturnData *data) {
             PromptEnum::warning, 0
         );
     } else if(this->handleRestError(data, tr("kirjauduttaessa"), false)) {
-        return;
+        return RestDataAction::Skip;
     } else {
         this->navigate<PageMainAccountView>();
     }
 
-    delete data;
+    return RestDataAction::Delete;
 }

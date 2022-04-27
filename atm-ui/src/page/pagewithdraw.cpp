@@ -64,9 +64,9 @@ void PageWithdraw::onReady() {
     }
 }
 
-void PageWithdraw::onRestData(RestReturnData *data) {
+PageBase::RestDataAction PageWithdraw::onRestData(RestReturnData *data) {
     if(data->type() != RestReturnData::typeWithdraw) {
-        return;
+        return RestDataAction::Skip;
     }
 
     QWidget *prompt = nullptr;
@@ -79,7 +79,7 @@ void PageWithdraw::onRestData(RestReturnData *data) {
                      0
                 );
     } else if(this->handleRestError(data, tr("nostamisessa"))) {
-        return;
+        return RestDataAction::Delete;
     } else {
         prompt = this->stateManager->createPrompt(
                      tr("Nosto onnistui"),
@@ -93,8 +93,8 @@ void PageWithdraw::onRestData(RestReturnData *data) {
                 );
     }
 
-    delete data;
     this->stateManager->leaveCurrentPage(QVariant::fromValue(prompt));
+    return RestDataAction::Delete;
 }
 
 void PageWithdraw::onAmountButtonPress() {

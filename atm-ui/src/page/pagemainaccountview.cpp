@@ -28,22 +28,24 @@ void PageMainAccountView::onReady() {
     this->stateManager->getRESTInterface()->getInfo();
 }
 
-void PageMainAccountView::onRestData(RestReturnData *data) {
+PageBase::RestDataAction PageMainAccountView::onRestData(RestReturnData *data) {
     PageWithUserBar::onRestData(data); // Call parent data processor
 
     if(data->type() != RestReturnData::typeInfo) {
-        return;
+        return RestDataAction::Skip;
     }
 
     if(this->handleRestError(data, tr("haettaessa käyttäjän tietoja"))) {
         this->stateManager->leaveAllPages(QVariant());
-        return;
+        return RestDataAction::Delete;
     }
 
     this->userInfo = static_cast<RestInfoData*>(data);
     this->ui->lblAccountInfo->setText(this->ui->lblAccountInfo->text().arg(this->userInfo->getfName(), this->userInfo->getlName(), this->userInfo->getAccountNumber()));
     this->ui->lblProfilePicture->setPixmap(this->userInfo->getProfile().scaled(this->ui->lblProfilePicture->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
     this->stateManager->leaveLoadingPage();
+
+    return RestDataAction::SetNull;
 }
 
 void PageMainAccountView::on_btnWidthdraw_clicked() {

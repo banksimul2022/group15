@@ -36,16 +36,14 @@ QVariant PageDeposit::onNaviagte(const QMetaObject *oldPage, bool closed, QVaria
     return QVariant::fromValue(StateManager::Stay);
 }
 
-void PageDeposit::onRestData(RestReturnData *data) {
+PageBase::RestDataAction PageDeposit::onRestData(RestReturnData *data) {
     if(data->type() != RestReturnData::typeDeposit) {
-        return;
+        return RestDataAction::Skip;
     }
 
     if(this->handleRestError(data, tr("talletettaessa"))) {
-        return;
+        return RestDataAction::Delete;
     }
-
-    delete data;
 
     this->stateManager->leaveCurrentPage(
         QVariant::fromValue(
@@ -57,6 +55,8 @@ void PageDeposit::onRestData(RestReturnData *data) {
             )
         )
     );
+
+    return RestDataAction::Delete;
 }
 
 PageDeposit::~PageDeposit() {

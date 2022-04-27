@@ -16,10 +16,12 @@ class PageBase : public QWidget {
         virtual QVariant onNaviagte(const QMetaObject *oldPage, bool closed, QVariant *result);
         virtual void onShown(); // Called everytime this page is show
 
-    protected slots:
-        virtual void onRestData(RestReturnData *data);
-
     protected:
+        enum RestDataAction {
+            Delete, SetNull, Skip
+        };
+
+        virtual RestDataAction onRestData(RestReturnData *data);
         bool handleRestError(RestReturnData *data, QString action, bool leave = true);
 
         virtual void onReady(); // Called when page is shown for the first time
@@ -29,6 +31,9 @@ class PageBase : public QWidget {
         };
 
         StateManager *stateManager;
+
+    private slots:
+        virtual void onRestDataFromManager(RestReturnData **data);
 
     private:
         bool hasBeenShown;

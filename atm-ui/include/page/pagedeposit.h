@@ -18,7 +18,7 @@ class PageDeposit : public PageWithUserBar {
 
     protected slots:
         void onOk() override;
-        void onRestData(RestReturnData *data) override;
+        PageBase::RestDataAction onRestData(RestReturnData *data) override;
 
     private:
         double amountDeposited;

@@ -17,7 +17,9 @@ class StateManager {
         Q_ENUM(PageReturnAction);
 
         virtual RFIDInterface *getRFIDInterface() = 0;
+
         virtual RESTInterface *getRESTInterface(bool displayLoadingPage = true) = 0;
+        virtual void connectRestSignal(QObject *receiver, const QMetaMethod slot) = 0;
 
         // Convenience method for displayting messages
         virtual QWidget *createPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, ...) = 0;

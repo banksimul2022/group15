@@ -20,7 +20,9 @@ class ATMWindow : public QMainWindow, public StateManager {
         ~ATMWindow();
 
         RFIDInterface *getRFIDInterface() override;
+
         RESTInterface *getRESTInterface(bool displayLoadingPage = true) override;
+        void connectRestSignal(QObject *receiver, const QMetaMethod slot) override;
 
         QWidget *createPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, ...) override;
         QWidget *createPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, va_list args) override;
@@ -32,8 +34,14 @@ class ATMWindow : public QMainWindow, public StateManager {
         bool leaveCurrentPage(QVariant result) override;
         void leaveAllPages(QVariant result) override;
 
+    signals:
+        void onRestData(RestReturnData **data);
+
     public slots:
         void fullscreenShortcut();
+
+    private slots:
+        void onRestDataFromDLL(RestReturnData *data);
 
     private:
         // Returns true to end processing

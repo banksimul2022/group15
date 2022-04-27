@@ -20,7 +20,7 @@ class PageWithdraw : public PageWithUserBar {
         void onReady() override;
 
     private slots:
-        void onRestData(RestReturnData *data) override;
+        PageBase::RestDataAction onRestData(RestReturnData *data) override;
         void onAmountButtonPress();
 
     private:

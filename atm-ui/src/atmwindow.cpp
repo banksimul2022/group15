@@ -2,7 +2,9 @@
 #include "ui_atmwindow.h"
 #include "page/pageinsertcard.h"
 
+#include <QMetaMethod>
 #include <QShortcut>
+#include <QThread>
 
 #include "page/pageprompt.h"
 
@@ -17,6 +19,7 @@ ATMWindow::ATMWindow(QWidget *parent) :
     new QShortcut(QKeySequence(Qt::Key_F11), this, SLOT(fullscreenShortcut()));
     this->baseTitle = this->windowTitle();
     this->navigateToPage(new PageInsertCard(this));
+    this->connect(this->restInterface, &RESTInterface::dataReturn, this, &ATMWindow::onRestDataFromDLL);
 }
 
 ATMWindow::~ATMWindow() {
@@ -33,6 +36,20 @@ RESTInterface *ATMWindow::getRESTInterface(bool displayLoadingPage) {
     }
 
     return this->restInterface;
+}
+
+void ATMWindow::connectRestSignal(QObject *receiver, const QMetaMethod slot) {
+    const QMetaMethod signal = QMetaMethod::fromSignal(&ATMWindow::onRestData);
+
+    Qt::ConnectionType type = Qt::AutoConnection;
+
+    if(receiver->thread() == QThread::currentThread()) {
+        type = Qt::DirectConnection;
+    } else {
+        type = Qt::BlockingQueuedConnection;
+    }
+
+    this->connect(this, signal, receiver, slot, type);
 }
 
 QWidget *ATMWindow::createPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, ...) {
@@ -184,6 +201,16 @@ void ATMWindow::fullscreenShortcut() {
         this->showNormal();
     } else {
         this->showFullScreen();
+    }
+}
+
+void ATMWindow::onRestDataFromDLL(RestReturnData *data) {
+    RestReturnData **dataPointerPointer = &data;
+    emit onRestData(dataPointerPointer);
+    qDebug() << "delete";
+    if(*dataPointerPointer != nullptr) {
+        delete data;
+        data = nullptr;
     }
 }
 

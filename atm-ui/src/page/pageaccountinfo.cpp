@@ -48,10 +48,10 @@ void PageAccountInfo::onReady() {
     this->stateManager->getRESTInterface()->getBalance();
 }
 
-void PageAccountInfo::onRestData(RestReturnData *data) {
+PageBase::RestDataAction PageAccountInfo::onRestData(RestReturnData *data) {
     if(data->type() == RestReturnData::typeBalance) {
         if(this->handleRestError(data, tr("haettaessa tilin tietoja"))) {
-            return;
+            return RestDataAction::Delete;
         }
 
         RestBalanceData *balData = static_cast<RestBalanceData*>(data);
@@ -68,9 +68,11 @@ void PageAccountInfo::onRestData(RestReturnData *data) {
             interface->resetTransactionPageIndex();
             interface->nextTransactions(10);
         }
+
+        return RestDataAction::Delete;
     } else if(data->type() == RestReturnData::typeLatestTransaction || data->type() == RestReturnData::typeTransaction) {
         if(this->handleRestError(data, tr("haettaessa tilin tapahtumia"))) {
-            return;
+            return RestDataAction::Delete;
         }
 
         RestTransactionData *transactionData = static_cast<RestTransactionData*>(data);
@@ -85,7 +87,10 @@ void PageAccountInfo::onRestData(RestReturnData *data) {
         }
 
         this->showTable();
+        return RestDataAction::SetNull;
     }
+
+    return RestDataAction::Skip;
 }
 
 void PageAccountInfo::showLoading() {

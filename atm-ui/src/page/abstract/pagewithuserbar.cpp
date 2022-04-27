@@ -24,19 +24,17 @@ void PageWithUserBar::setupUserBar(QLayout *layout) {
     layout->addWidget(this->userStatusBar);
 }
 
-void PageWithUserBar::onRestData(RestReturnData *data) {
-    PageBase::onRestData(data); // Call parent class method
-
+PageBase::RestDataAction PageWithUserBar::onRestData(RestReturnData *data) {
     if(this->userStatusBar->mode() != UserStatusBarWidget::Mode::logout || data->type() != RestReturnData::typeLogout) {
-        return;
+        return RestDataAction::Skip;
     }
 
     if(this->handleRestError(data, tr("ulos kirjautuessa"))) {
-        return;
+        return RestDataAction::Delete;
     }
 
-    delete data;
     this->stateManager->leaveAllPages(QVariant());
+    return RestDataAction::Delete;
 }
 
 void PageWithUserBar::onExtraButton(int id) { Q_UNUSED(id) }

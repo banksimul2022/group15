@@ -21,7 +21,7 @@ class PageWithUserBar : public PageBase {
         UserStatusBarWidget * userStatusBar;
 
     protected slots:
-        void onRestData(RestReturnData *data) override;
+        PageBase::RestDataAction onRestData(RestReturnData *data) override;
 
         virtual void onExtraButton(int id);
         virtual void onLeave();

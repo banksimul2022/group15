@@ -21,7 +21,7 @@ class PageMainAccountView : public PageWithUserBar {
         void onReady() override;
 
     protected slots:
-        void onRestData(RestReturnData *data) override;
+        PageBase::RestDataAction onRestData(RestReturnData *data) override;
 
     private slots:
         void on_btnWidthdraw_clicked();

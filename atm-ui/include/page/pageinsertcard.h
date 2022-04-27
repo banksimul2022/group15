@@ -24,7 +24,7 @@ class PageInsertCard : public PageBase {
         void onPinRead(QString pin);
         void onPinCancel();
 
-        void onRestData(RestReturnData *data) override;
+        PageBase::RestDataAction onRestData(RestReturnData *data) override;
 
     private:
         QString number;
