@@ -12,7 +12,7 @@ class REST_EXPORT RestTransactionData : public RestReturnData
 {
 
 public:
-    explicit RestTransactionData(QJsonObject *transactionInfo,int error);
+    explicit RestTransactionData(QJsonObject *transactionInfo,RestReturnData::ReturnType type,int error);
     ~RestTransactionData();
     int getCount();
     BankTransaction *getTransaction(int id);

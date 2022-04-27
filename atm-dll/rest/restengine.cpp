@@ -63,6 +63,14 @@ void RESTEngine::getInfo()
     this->Manager->get(request);
 }
 
+void RESTEngine::latestTransaction(int count)
+{
+    QUrlQuery query;
+    query.addQueryItem("count",QString::number(count));
+    QNetworkRequest request = this->createRequest("/api/transactions/latest",query,RestReturnData::typeLatestTransaction);
+    this->Manager->get(request);
+}
+
 void RESTEngine::nextTransactions(int count)
 {
     QUrlQuery query;
@@ -80,6 +88,12 @@ void RESTEngine::prevTransactions(int count)
     QNetworkRequest request = this->createRequest("/api/transactions/back",query,RestReturnData::typeTransaction);
     this->Manager->get(request);
 
+}
+
+void RESTEngine::resetTransactionPageIndex()
+{
+    this->nextOffset=0;
+    this->prevOffset=0;
 }
 
 
@@ -110,14 +124,14 @@ void RESTEngine::showBalance()
 
     this->Manager->get(request);
 }
-QNetworkRequest RESTEngine::createRequest(QString path,  RestReturnData::ReturnType type, QString contentType) //creates web request
+QNetworkRequest RESTEngine::createRequest(QString path,  RestReturnData::ReturnType type, QString contentType)
 {
-    QUrl url (this->apiEndpoint); //url()
+    QUrl url (this->apiEndpoint);
     url.setPath(QDir::cleanPath(this->apiEndpoint.path()+path)); //+"/"+path
 
     return this->createRequest(url,type,contentType);
 }
-QNetworkRequest RESTEngine::createRequest(QString path, QUrlQuery params, RestReturnData::ReturnType type, QString contentType) //creates web request
+QNetworkRequest RESTEngine::createRequest(QString path, QUrlQuery params, RestReturnData::ReturnType type, QString contentType)
 {
     QUrl url (this->apiEndpoint); //url()
     url.setPath(QDir::cleanPath(this->apiEndpoint.path()+path)); //+"/"+path
@@ -130,7 +144,7 @@ QNetworkRequest RESTEngine::createRequest(QUrl url, RestReturnData::ReturnType t
     QNetworkRequest request(url);
     request.setAttribute(QNetworkRequest::User,QVariant(type));
     if (this->token !=nullptr){
-        request.setRawHeader("Authorization",this->token); //
+        request.setRawHeader("Authorization",this->token);
     }
     if (contentType !=nullptr){
         request.setHeader(QNetworkRequest::ContentTypeHeader,contentType); //post/put
@@ -185,8 +199,11 @@ void RESTEngine::replySlot(QNetworkReply *reply)
        case RestReturnData::typeWithdraw:
         emit dataReturn(new RestReturnData(RestReturnData::typeWithdraw,error));
                 return;
+       case RestReturnData::typeLatestTransaction:
+        emit dataReturn(new RestTransactionData(&jsonObj,RestReturnData::typeLatestTransaction,error));
+                return;
        case RestReturnData::typeTransaction: {
-            RestTransactionData *data = new RestTransactionData(&jsonObj,error);
+            RestTransactionData *data = new RestTransactionData(&jsonObj,RestReturnData::typeTransaction,error);
 
             this->nextOffset=jsonObj.value("nextOffset").toInt(0);
             this->prevOffset=jsonObj.value("prevOffset").toInt(0);

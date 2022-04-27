@@ -18,8 +18,10 @@ public:
     virtual void login(QString cardNumber, QString pin)=0;
     virtual void getInfo() =0;
     virtual void logout() =0;
+    virtual void latestTransaction(int count) =0;
     virtual void nextTransactions(int count) =0;
     virtual void prevTransactions(int count) =0;
+    virtual void resetTransactionPageIndex() =0;
     virtual void withdraw(double sum, bool useCredit) =0;
     virtual void deposit(double sum) =0;
     virtual void showBalance() =0;

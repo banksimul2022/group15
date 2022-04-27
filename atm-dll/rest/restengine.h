@@ -17,8 +17,10 @@ public:
     void login(QString cardNumber, QString pin) override;
     void logout() override;
     void getInfo() override;
+    void latestTransaction(int count) override;
     void nextTransactions(int count) override;
     void prevTransactions(int count) override;
+    void resetTransactionPageIndex() override;
     void withdraw(double sum, bool useCredit)override;
     void deposit(double sum) override;
     void showBalance() override;
