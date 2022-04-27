@@ -37,7 +37,7 @@ QVariant PageWithdraw::onNaviagte(const QMetaObject *oldPage, bool closed, QVari
         if(result->type() == QVariant::Double) {
             this->amountWithdrawn = result->toDouble();
             this->stateManager->getRESTInterface(false)->withdraw(this->amountWithdrawn, this->useCredit);
-        } else if(result->type() != QVariant::Bool) {
+        } else { // result will be a bool on user cancel (always false) and unexpected return values also are a reason to leave
             return QVariant::fromValue(StateManager::Leave);
         }
 
