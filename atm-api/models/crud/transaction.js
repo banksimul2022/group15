@@ -9,8 +9,8 @@ module.exports = {
     },
     add: (transaction) => {
         return db.query(
-            "INSERT INTO transaction (accountId, timestamp, toAccount, type, sum, cardNumber) VALUES(?, ?, ?, ?, ?, ?)",
-            [ transaction.accountId, transaction.timestamp, transaction.toAccount, transaction.type, transaction.sum, transaction.cardNumber ]
+            "INSERT INTO transaction (accountId, timestamp, accountNumber, type, sum, cardNumber) VALUES(?, ?, ?, ?, ?, ?)",
+            [ transaction.accountId, transaction.timestamp, transaction.accountNumber, transaction.type, transaction.sum, transaction.cardNumber ]
         );
     },
     delete: (id) => {
@@ -18,8 +18,8 @@ module.exports = {
     }, 
     update: (id, transaction) => {
         return db.query(
-            "UPDATE transaction SET accountId=?, timestamp=?, toAccount=?, type=?, sum=?, cardNumber=? WHERE transactionId=?",
-            [ transaction.accountId, transaction.timestamp, transaction.toAccount, transaction.type, transaction.sum, transaction.cardNumber, id ]
+            "UPDATE transaction SET accountId=?, timestamp=?, accountNumber=?, type=?, sum=?, cardNumber=? WHERE transactionId=?",
+            [ transaction.accountId, transaction.timestamp, transaction.accountNumber, transaction.type, transaction.sum, transaction.cardNumber, id ]
         ); 
     },
     ascFromOffset: (accountId, offset, max) => {

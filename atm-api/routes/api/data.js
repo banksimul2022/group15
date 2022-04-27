@@ -138,7 +138,7 @@ router.post("/withdraw", (req, res) => {
             await transaction.add({
                 accountId: req.token.accountId,
                 timestamp: new Date(),
-                toAccount: null,
+                accountNumber: accRes["accountNumber"],
                 type: useCredit ? "CREDIT_WITHDRAW" : "WITHDRAW",
                 sum,
                 cardNumber: req.token.card_number
@@ -164,7 +164,7 @@ router.post("/deposit", (req, res) => {
             await transaction.add({
                 accountId: req.token.accountId,
                 timestamp: new Date(),
-                toAccount: accRes["accountNumber"],
+                accountNumber: accRes["accountNumber"],
                 type: "DEPOSIT",
                 sum,
                 cardNumber: req.token.card_number
@@ -206,7 +206,7 @@ router.post("/transfer", (req, res) => {
             await transaction.add({
                 accountId: toAccount.accountId,
                 timestamp: date,
-                toAccount: toAccount["accountNumber"],
+                accountNumber: toAccount["accountNumber"],
                 type: "TRANSFER_TO",
                 sum,
                 cardNumber: req.token.card_number
@@ -215,7 +215,7 @@ router.post("/transfer", (req, res) => {
             await transaction.add({
                 accountId: fromAccount.accountId,
                 timestamp: date,
-                toAccount: fromAccount["accountNumber"],
+                accountNumber: fromAccount["accountNumber"],
                 type: "TRANSFER_FROM",
                 sum,
                 cardNumber: null

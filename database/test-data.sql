@@ -71,7 +71,7 @@ INSERT INTO card VALUES(6, 1, 2, '10101010', DEFAULT, 0, '$2a$10$PJRniMuycRkjBJ6
 -- | type          | enum('DEPOSIT', 'WITHDRAW', 'CREDIT_WITHDRAW', 'TRANSFER_TO', 'TRANSFER_FROM') | NO   |     | NULL    |                |
 -- | sum           | decimal(14,2)                                                                  | NO   |     | NULL    |                |
 -- | cardNumber    | varchar(10)                                                                    | YES  |     | NULL    |                |
--- | toAccount     | varchar(45)                                                                    | YES  |     | NULL    |                |
+-- | accountNumber | varchar(45)                                                                    | YES  |     | NULL    |                |
 -- +---------------+--------------------------------------------------------------------------------+------+-----+---------+----------------+
 INSERT INTO transaction VALUES(1, 1, '2022-03-28 12:32:22', 'DEPOSIT',  20.5, 11111111, 'aaa');
 INSERT INTO transaction VALUES(2, 2, '2022-03-29 12:34:55', 'WITHDRAW', 8.9,  11111111, 'bbb');
