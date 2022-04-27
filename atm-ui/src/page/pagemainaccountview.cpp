@@ -42,6 +42,7 @@ void PageMainAccountView::onRestData(RestReturnData *data) {
 
     this->userInfo = static_cast<RestInfoData*>(data);
     this->ui->lblAccountInfo->setText(this->ui->lblAccountInfo->text().arg(this->userInfo->getfName(), this->userInfo->getlName(), this->userInfo->getAccountNumber()));
+    this->ui->lblProfilePicture->setPixmap(this->userInfo->getProfile().scaled(this->ui->lblProfilePicture->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
     this->stateManager->leaveLoadingPage();
 }
 
