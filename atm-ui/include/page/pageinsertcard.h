@@ -16,6 +16,8 @@ class PageInsertCard : public PageBase {
         explicit PageInsertCard(PageManager *stateManager, QWidget *parent = nullptr);
         ~PageInsertCard();
 
+        void onShown() override;
+
         QVariant onNaviagte(const QMetaObject *oldPage, bool closed, QVariant *result) override;
 
     private slots:
