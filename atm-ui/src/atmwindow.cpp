@@ -1,12 +1,12 @@
 #include "atmwindow.h"
 #include "ui_atmwindow.h"
 #include "page/pageinsertcard.h"
+#include "page/pageprompt.h"
+#include "pagereturn.h"
 
 #include <QMetaMethod>
 #include <QShortcut>
 #include <QThread>
-
-#include "page/pageprompt.h"
 
 ATMWindow::ATMWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -125,7 +125,11 @@ bool ATMWindow::leaveCurrentPage(QVariant result) {
     PageBase *base;
     const QMetaObject *returningPage;
     QWidget *oldPage, *actualPage, *newPage;
+    PageReturn *pReturn = nullptr;
+    PageReturn::Action lastAction = PageReturn::LeaveCurrent;
+
     this->popTopPage(&oldPage, &actualPage);
+
     returningPage = actualPage->metaObject();
     newPage = actualPage;
 
@@ -136,15 +140,33 @@ bool ATMWindow::leaveCurrentPage(QVariant result) {
                 pushToTop = action != PageReturnAction::KeepLoading;
                 break;
             }
-        } else if(result.canConvert<QWidget*>()) {
-            this->pageStack.push(result.value<QWidget*>());
+        } else if(result.canConvert<PageReturn*>()) {
+            pReturn = result.value<PageReturn*>();
+
+            if(pReturn->action() == PageReturn::AddOnTop) {
+                this->pageStack.push(newPage);
+            }
+
+            this->pageStack.push(pReturn->page());
         }
 
-        if(newPage != actualPage) {
+        if(newPage != actualPage && (pReturn == nullptr || pReturn->action() != PageReturn::AddOnTop)) {
             newPage->deleteLater();
         }
 
         newPage = this->pageStack.pop();
+
+        if(lastAction == PageReturn::AddOnTop) {
+            this->pageStack.pop(); // Remove older newPage as the page that wanted is leaving
+            lastAction = PageReturn::LeaveCurrent;
+        }
+
+        if(pReturn != nullptr) {
+            lastAction = pReturn->action();
+            delete pReturn;
+            pReturn = nullptr;
+        }
+
         base = qobject_cast<PageBase*>(newPage);
 
         if(base == nullptr) {
@@ -160,7 +182,10 @@ bool ATMWindow::leaveCurrentPage(QVariant result) {
     }
 
     this->setPage(newPage, oldPage);
-    this->deletePage(actualPage, oldPage);
+
+    if(this->pageStack.length() < 2 || this->pageStack.at(this->pageStack.length() - 2) == actualPage) {
+        this->deletePage(actualPage, oldPage);
+    }
 
     if(base != nullptr) {
         base->onShown();
@@ -183,8 +208,10 @@ void ATMWindow::leaveAllPages(QVariant result) {
 
     QWidget *newPage;
 
-    if(result.canConvert<QWidget*>()) {
-        newPage = result.value<QWidget*>();
+    if(result.canConvert<PageReturn*>()) {
+        PageReturn *pReturn = result.value<PageReturn*>();
+        newPage = pReturn->page();
+        delete pReturn;
         this->pageStack.push(newPage);
     } else {
         newPage = this->pageStack.top();

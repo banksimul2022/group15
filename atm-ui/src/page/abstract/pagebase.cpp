@@ -2,6 +2,7 @@
 #include "utility.h"
 #include <QMetaMethod>
 #include <QDebug>
+#include "pagereturn.h"
 
 PageBase::PageBase(PageManager *stateManager, QWidget *parent) :
     QWidget{parent},
@@ -34,13 +35,13 @@ void PageBase::onRestDataFromManager(RestReturnData **data) {
     if(*data != nullptr) {
         if((*data)->type() == RestReturnData::typeinternalerror) {
             this->pageManager->leaveAllPages(
-                QVariant::fromValue(
+                QVariant::fromValue(new PageReturn(
                     this->pageManager->createPrompt(
                         tr("Sisäinen virhe!"),
                         tr("Odottamaton verkko virhe! (%1)").arg((*data)->error()),
                         PromptEnum::error, 0
-                    )
-                )
+                    ), PageReturn::LeaveCurrent
+                ))
             );
             return;
         }
@@ -71,7 +72,7 @@ bool PageBase::handleRestError(RestReturnData *data, QString action, bool leave)
                       );
 
     if(leave) {
-        this->pageManager->leaveCurrentPage(QVariant::fromValue(prompt));
+        this->pageManager->leaveCurrentPage(QVariant::fromValue(new PageReturn(prompt, PageReturn::LeaveCurrent)));
     } else {
         this->pageManager->navigateToPage(prompt);
     }

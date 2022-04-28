@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>PageDeposit</class>
- <widget class="PageWithUserBar" name="PageDeposit">
+ <class>PageBufferGuide</class>
+ <widget class="PageWithUserBar" name="PageBufferGuide">
   <property name="geometry">
    <rect>
     <x>0</x>

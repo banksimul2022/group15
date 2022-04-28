@@ -13,7 +13,7 @@ SOURCES += \
     src/main.cpp \
     src/page/pageaccountinfo.cpp \
     src/page/abstract/pagebase.cpp \
-    src/page/pagedeposit.cpp \
+    src/page/pagebufferguide.cpp \
     src/page/pageinsertcard.cpp \
     src/page/pagekeypad.cpp \
     src/page/pageloading.cpp \
@@ -21,6 +21,7 @@ SOURCES += \
     src/page/pageprompt.cpp \
     src/page/pagewithdraw.cpp \
     src/page/abstract/pagewithuserbar.cpp \
+    src/pagereturn.cpp \
     src/transactiontablemodel.cpp \
     src/userstatusbarwidget.cpp \
     src/utility.cpp
@@ -29,6 +30,7 @@ HEADERS += \
     include/atmwindow.h \
     include/page/pageaccountinfo.h \
     include/page/abstract/pagebase.h \
+    include/page/pagebufferguide.h \
     include/page/pageinsertcard.h \
     include/page/pagekeypad.h \
     include/page/pageloading.h \
@@ -38,24 +40,24 @@ HEADERS += \
     include/page/pagewithdraw.h \
     include/page/abstract/pagewithuserbar.h \
     include/pagemanager.h \
+    include/pagereturn.h \
     include/userstatusbarwidget.h \
     include/utility.h \
-    include/transactiontablemodel.h \
-    include/page/pagedeposit.h
+    include/transactiontablemodel.h
 
 INCLUDEPATH += include
 
 FORMS += \
     form/atmwindow.ui \
     form/page/pageaccountinfo.ui \
+    form/page/pagebufferguide.ui \
     form/page/pageinsertcard.ui \
     form/page/pagekeypad.ui \
     form/page/pageloading.ui \
     form/page/pagemainaccountview.ui \
     form/page/pageprompt.ui \
     form/page/pagewithdraw.ui \
-    form/userstatusbarwidget.ui \
-    form/page/pagedeposit.ui
+    form/userstatusbarwidget.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

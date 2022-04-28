@@ -68,6 +68,10 @@ QString TransactionTableModel::getTypeFrendlyName(QString type) {
         return QStringLiteral("Lainan Nosto");
     } else if(type == "DEPOSIT") {
         return QStringLiteral("Talletus");
+    } else if(type == "TRANSFER_TO") {
+        return QStringLiteral("Siirto tilille");
+    } else if(type == "TRANSFER_FROM") {
+        return QStringLiteral("Siirto tililtä");
     }
 
     return QStringLiteral("UNKNOWN");

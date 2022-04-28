@@ -16,6 +16,8 @@ class PageKeypad : public PageWithUserBar {
     public:
 
         enum Action {
+            AccountNumber,
+            AccountSum,
             Withdraw,
             Deposit
         };

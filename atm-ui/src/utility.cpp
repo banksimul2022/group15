@@ -41,6 +41,8 @@ QString Utility::restErrorToText(uint errorCode) {
             return QStringLiteral("Korttisi ei tue credit ominaisuutta");
         case RestErrors::ERR_CARD_LOCKED:
             return QStringLiteral("Kortti on lukittu");
+        case RestErrors::ERR_UNKNOWN_ACCOUNT:
+            return QStringLiteral("Tuntematon tili");
     }
 
     return QStringLiteral("Virhekoodia ei tunnistettu");

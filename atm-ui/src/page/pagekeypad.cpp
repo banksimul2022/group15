@@ -2,6 +2,7 @@
 #include "ui_pagekeypad.h"
 #include "userstatusbarwidget.h"
 #include "utility.h"
+#include "pagereturn.h"
 
 #include <QDebug>
 #include <QTimer>
@@ -23,13 +24,19 @@ PageKeypad::PageKeypad(PageKeypad::Action action, RestInfoData *userInfo, PageMa
 
     this->setStyleSheet("QLabel[flash=\"true\"] { color: red; }");
 
-    if(action == PageKeypad::Action::Withdraw) {
+    if(action == PageKeypad::Withdraw) {
         this->setWindowTitle(QCoreApplication::translate("PageKeypad", "Nosto - Muu summa", nullptr));
         this->ui->lblAmountText->setText(QCoreApplication::translate("PageKeypad", "Nostettava summa:", nullptr));
         this->ui->btnDot->setVisible(false);
-    } else {
+    } else if(action == PageKeypad::Deposit) {
         this->setWindowTitle(QCoreApplication::translate("PageKeypad", "Talletus - Summan syöttö", nullptr));
         this->ui->lblAmountText->setText(QCoreApplication::translate("PageKeypad", "Talletettava summa:", nullptr));
+    } else if(action == PageKeypad::AccountNumber) {
+        this->setWindowTitle(QCoreApplication::translate("PageKeypad", "Tilisiirto - Tilinumero", nullptr));
+        this->ui->lblAmountText->setText(QCoreApplication::translate("PageKeypad", "Tilinumero:", nullptr));
+    } else {
+        this->setWindowTitle(QCoreApplication::translate("PageKeypad", "Tilisiirto - Summa", nullptr));
+        this->ui->lblAmountText->setText(QCoreApplication::translate("PageKeypad", "Siirrettävä summa:", nullptr));
     }
 
     QList<QPushButton*> gridButtons = this->findChildren<QPushButton*>();
@@ -61,14 +68,14 @@ void PageKeypad::onOk() {
 
     if(!ok) {
         this->pageManager->leaveCurrentPage(
-            QVariant::fromValue(
+            QVariant::fromValue(new PageReturn(
                 this->pageManager->createPrompt(
                     tr("Sisäinen virhe"),
                     tr("Summan muuntaminen epäonnistui!"),
                     PromptEnum::error,
                     0
-                )
-            )
+                ), PageReturn::LeaveCurrent
+            ))
         );
 
         return;

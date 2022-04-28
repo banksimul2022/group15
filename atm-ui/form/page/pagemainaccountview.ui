@@ -43,6 +43,22 @@
      <item>
       <layout class="QVBoxLayout" name="layoutDisplayActions">
        <item>
+        <widget class="QPushButton" name="btnBlank">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>100</height>
+          </size>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QPushButton" name="btnBalance">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
@@ -152,6 +168,30 @@
      </item>
      <item>
       <layout class="QVBoxLayout" name="layoutMoneyActions">
+       <item>
+        <widget class="QPushButton" name="btnTransfer">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>100</height>
+          </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Tilisiirto</string>
+         </property>
+        </widget>
+       </item>
        <item>
         <widget class="QPushButton" name="btnDeposit">
          <property name="sizePolicy">

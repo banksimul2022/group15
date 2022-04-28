@@ -4,6 +4,7 @@
 #include "page/pagekeypad.h"
 #include "page/pageprompt.h"
 #include "utility.h"
+#include "pagereturn.h"
 
 #include <resterrorcode.h>
 #include <QDebug>
@@ -93,7 +94,7 @@ PageBase::RestDataAction PageWithdraw::onRestData(RestReturnData *data) {
                 );
     }
 
-    this->pageManager->leaveCurrentPage(QVariant::fromValue(prompt));
+    this->pageManager->leaveCurrentPage(QVariant::fromValue(new PageReturn(prompt, PageReturn::LeaveCurrent)));
     return RestDataAction::Delete;
 }
 
