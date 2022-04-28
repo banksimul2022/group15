@@ -4,6 +4,9 @@ module.exports = {
     getById: (id) => {
         return db.query("SELECT * FROM account WHERE accountId=?", [ id ]);
     },
+    getByNumber: (accountNumber) => {
+        return db.query("SELECT * FROM account WHERE accountNumber=?", [ accountNumber ]);
+    },
     getAll: () => {
         return db.query("SELECT * FROM account");
     },
