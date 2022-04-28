@@ -2,7 +2,7 @@ QT -= gui
 QT += serialport
 
 TEMPLATE = lib
-DEFINES += SERIALCARDREADER_LIBRARY
+DEFINES += ASYNCSERIALINTERFACE_LIBRARY
 
 CONFIG += c++11
 
@@ -11,13 +11,13 @@ CONFIG += c++11
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-    rfidinterface.cpp \
-    serialcardreader.cpp
+    asyncserialengine.cpp \
+    asyncserialinterface.cpp
 
 HEADERS += \
-    SerialCardReader_global.h \
-    rfidinterface.h \
-    serialcardreader.h
+    AsyncSerialInterface_global.h \
+    asyncserialengine.h \
+    asyncserialinterface.h
 
 # Default rules for deployment.
 unix {
