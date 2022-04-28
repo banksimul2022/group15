@@ -3,7 +3,7 @@
 
 #include <QWidget>
 #include <restinterface.h>
-#include <rfidinterface.h>
+#include <asyncserialinterface.h>
 
 #include "page/pageprompt_enum.h"
 
@@ -16,7 +16,7 @@ class PageManager {
         };
         Q_ENUM(PageReturnAction);
 
-        virtual RFIDInterface *getRFIDInterface() = 0;
+        virtual AsyncSerialInterface *getRFIDInterface() = 0;
 
         virtual RESTInterface *getRESTInterface(bool displayLoadingPage = true) = 0;
         virtual void connectRestSignal(QObject *receiver, const QMetaMethod slot) = 0;

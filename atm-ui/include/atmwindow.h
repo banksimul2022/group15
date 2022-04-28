@@ -19,7 +19,7 @@ class ATMWindow : public QMainWindow, public PageManager {
         ATMWindow(QWidget *parent = nullptr);
         ~ATMWindow();
 
-        RFIDInterface *getRFIDInterface() override;
+        AsyncSerialInterface *getRFIDInterface() override;
 
         RESTInterface *getRESTInterface(bool displayLoadingPage = true) override;
         void connectRestSignal(QObject *receiver, const QMetaMethod slot) override;
@@ -52,7 +52,7 @@ class ATMWindow : public QMainWindow, public PageManager {
         void deletePage(QWidget *page, QWidget *page2 = nullptr); // Protects the loading page from getting deleted
         void displayLoadingPage();
 
-        RFIDInterface *rfidInterface;
+        AsyncSerialInterface *rfidInterface;
         RESTInterface *restInterface;
 
         QStack<QWidget*> pageStack;
