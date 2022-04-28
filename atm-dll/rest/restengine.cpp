@@ -139,6 +139,17 @@ QNetworkRequest RESTEngine::createRequest(QString path, QUrlQuery params, RestRe
     return this->createRequest(url,type,contentType);
 }
 
+void RESTEngine::transfer(QString accountNumber, double sum)
+{
+    QNetworkRequest request = this->createRequest("/api/transfer", RestReturnData::typeTransfer,"application/json"); //post pyyntö käyttää "application/json"
+    QJsonObject Jsonobj;
+    Jsonobj.insert("accountNumber",accountNumber);
+    Jsonobj.insert("sum",sum);
+
+    this->Manager->post(request,QJsonDocument(Jsonobj).toJson());
+
+}
+
 QNetworkRequest RESTEngine::createRequest(QUrl url, RestReturnData::ReturnType type, QString contentType) //creates web request
 {
     QNetworkRequest request(url);
@@ -189,9 +200,18 @@ void RESTEngine::replySlot(QNetworkReply *reply)
                 emit dataReturn(new RestReturnData(RestReturnData::typeLogin,error));
                 return;
         case RestReturnData::typeInfo: {
-                 emit dataReturn(new RestInfoData(&jsonObj,error));
+                 this->lastData = jsonObj;
+                 this->lastError = error;
+                QNetworkRequest request = this->createRequest(jsonObj.value("profile").toString(),RestReturnData::typeProfile);
+                this->Manager->get(request);
 
                 return; }
+    case RestReturnData::typeProfile: {
+        emit dataReturn(new RestInfoData(&this->lastData, reply, this->lastError, error));
+        return;
+
+    }
+
        case RestReturnData::typeDeposit:
 
         emit dataReturn(new RestReturnData(RestReturnData::typeDeposit,error));
@@ -214,6 +234,10 @@ void RESTEngine::replySlot(QNetworkReply *reply)
             emit dataReturn(new RestBalanceData(&jsonObj,error));
                 return;
             }
+    case RestReturnData::typeTransfer: {
+        emit dataReturn(new RestReturnData(RestReturnData::typeTransfer,error));
+        return;
+    }
 
     }
 

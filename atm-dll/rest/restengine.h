@@ -24,6 +24,7 @@ public:
     void withdraw(double sum, bool useCredit)override;
     void deposit(double sum) override;
     void showBalance() override;
+    void transfer(QString accountNumber, double sum) override;
 
 
 
@@ -40,6 +41,8 @@ private:
 
     int nextOffset;
     int prevOffset;
+    int lastError;
+    QJsonObject lastData;
 
 
 signals:
