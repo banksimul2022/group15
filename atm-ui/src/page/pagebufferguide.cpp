@@ -4,6 +4,8 @@
 #include "utility.h"
 #include "pagereturn.h"
 
+#include <resterrorcode.h>
+
 PageBufferGuide::PageBufferGuide(Action action, RestInfoData *userInfo, PageManager *stateManager, QWidget *parent) :
     PageWithUserBar(UserStatusBarWidget::leaveAndOk, stateManager, userInfo, parent),
     action(action),
@@ -65,7 +67,21 @@ PageBase::RestDataAction PageBufferGuide::onRestData(RestReturnData *data) {
         return RestDataAction::Skip;
     }
 
-    if(this->handleRestError(data, tr(action == Action::Deposit ? "talletettaessa" : "siirtäessä"))) {
+    if(data->error() == RestErrors::ERR_UNKNOWN_ACCOUNT) {
+        this->pageManager->displayPrompt(
+            tr("Tunematon tili"),
+            tr("Antamallasi tilinumerolla ei löytynyt tiliä"),
+            PromptEnum::warning, 0
+        );
+        return RestDataAction::Delete;
+    } else if(data->error() == RestErrors::ERR_INSUFFICIENT_FUNDS) {
+        this->pageManager->displayPrompt(
+            tr("Tilillä ei ole katetta"),
+            tr("Tililläsi ei ole tarpeeksi katetta (%1€) tilisiirtoon").arg(QString::number(this->amount, 'f', 2)),
+            PromptEnum::warning, 0
+        );
+        return RestDataAction::Delete;
+    } else if(this->handleRestError(data, tr(action == Action::Deposit ? "talletettaessa" : "siirtäessä"))) {
         return RestDataAction::Delete;
     }
 
