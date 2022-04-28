@@ -76,10 +76,10 @@ CREATE TABLE bankdb.transaction (
   transactionId INT NOT NULL AUTO_INCREMENT,
   accountId INT NOT NULL,
   timestamp DATETIME NOT NULL,
-  type ENUM('DEPOSIT', 'WITHDRAW', 'CREDIT_WITHDRAW') NOT NULL,
+  type ENUM('DEPOSIT', 'WITHDRAW', 'CREDIT_WITHDRAW', 'TRANSFER_TO', 'TRANSFER_FROM') NOT NULL,
   sum DECIMAL(14,2) NOT NULL,
   cardNumber VARCHAR(10),
-  toAccount VARCHAR(45),
+  accountNumber VARCHAR(45),
 
   PRIMARY KEY (transactionId, accountId),
 

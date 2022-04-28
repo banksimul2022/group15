@@ -57,7 +57,9 @@ const codes = {
     ERR_INVALID_SUM: createCode(types.ERR_VALUE),
     ERR_CREDIT_NOT_SUPPORTED: createCode(types.ERR_PERMISSION),
 
-    ERR_CARD_LOCKED: createCode(types.ERR_PERMISSION)
+    ERR_CARD_LOCKED: createCode(types.ERR_PERMISSION),
+
+    ERR_UNKNOWN_ACCOUNT: createCode(types.ERR_VALUE)
 };
 
 module.exports = Object.freeze({
