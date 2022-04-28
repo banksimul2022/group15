@@ -5,6 +5,7 @@
 #include <QWidget>
 #include <QString>
 #include <QDebug>
+#include <QTimer>
 
 class PinInterface : public QWidget
 {
@@ -18,5 +19,7 @@ public:
 signals:
     void pinWidgetUserInput(QString userInput);
     void deletePinWidget();
+
+
 };
 #endif // PININTERFACE_H

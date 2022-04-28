@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>913</width>
+    <height>877</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <item>
+     <layout class="QVBoxLayout" name="BaseVerticalLayout">
+      <item>
+       <layout class="QVBoxLayout" name="buttonLayout" stretch="0,0,0,0,0">
+        <item>
+         <layout class="QHBoxLayout" name="widgetLayout"/>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="MainWindowLineEdit"/>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnOpenPinWidget">
+          <property name="text">
+           <string>Open PIN Widget</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnCorrectPIN">
+          <property name="text">
+           <string>Correct PIN (Close Widget)</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnWrongPIN">
+          <property name="text">
+           <string>Wrong PIN</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>913</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
