@@ -68,9 +68,9 @@ RESOURCES += \
     resources.qrc
 
 # ----- RFID LIBRARY BEGIN -----
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../atm-dll/rfid/build/release/ -lSerialCardReader
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../atm-dll/rfid/build/debug/ -lSerialCardReader
-else:unix: LIBS += -L$$PWD/../atm-dll/rfid/build/ -lSerialCardReader
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../atm-dll/rfid/build/release/ -lAsyncSerialInterface
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../atm-dll/rfid/build/debug/ -lAsyncSerialInterface
+else:unix: LIBS += -L$$PWD/../atm-dll/rfid/build/ -lAsyncSerialInterface
 
 INCLUDEPATH += $$PWD/../atm-dll/rfid
 DEPENDPATH += $$PWD/../atm-dll/rfid

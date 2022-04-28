@@ -45,7 +45,7 @@ QVariant PageAccountInfo::onNaviagte(const QMetaObject *oldPage, bool closed, QV
 }
 
 void PageAccountInfo::onReady() {
-    this->pageManager->getRESTInterface()->getBalance();
+    this->pageManager->getRESTInterface()->showBalance();
 }
 
 PageBase::RestDataAction PageAccountInfo::onRestData(RestReturnData *data) {
@@ -63,7 +63,7 @@ PageBase::RestDataAction PageAccountInfo::onRestData(RestReturnData *data) {
         RESTInterface *interface = this->pageManager->getRESTInterface(false);
 
         if(this->action == Action::ViewBalance) {
-            interface->latestTransactions(5);
+            interface->latestTransaction(5);
         } else {
             interface->resetTransactionPageIndex();
             interface->nextTransactions(10);
