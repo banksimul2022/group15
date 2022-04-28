@@ -10,7 +10,7 @@
 
 ATMWindow::ATMWindow(QWidget *parent) :
     QMainWindow(parent),
-    rfidInterface(new RFIDInterface),
+    rfidInterface(new AsyncSerialInterface),
     restInterface(RESTInterface::createInstance()),
     loadingPage(new PageLoading(this)),
     ui(new Ui::ATMWindow)
@@ -26,7 +26,7 @@ ATMWindow::~ATMWindow() {
     delete ui;
 }
 
-RFIDInterface *ATMWindow::getRFIDInterface() {
+AsyncSerialInterface *ATMWindow::getRFIDInterface() {
     return this->rfidInterface;
 }
 

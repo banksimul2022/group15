@@ -14,7 +14,7 @@ PageInsertCard::PageInsertCard(PageManager *stateManager, QWidget *parent) :
     ui->setupUi(this);
     this->number = nullptr;
     this->pin = nullptr;
-    this->connect(this->pageManager->getRFIDInterface(), &RFIDInterface::cardRead, this, &PageInsertCard::onCardRead);
+    this->connect(this->pageManager->getRFIDInterface(), &AsyncSerialInterface::CardID, this, &PageInsertCard::onCardRead);
 }
 
 PageInsertCard::~PageInsertCard() {
