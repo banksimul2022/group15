@@ -25,6 +25,7 @@ public:
     virtual void withdraw(double sum, bool useCredit) =0;
     virtual void deposit(double sum) =0;
     virtual void showBalance() =0;
+    virtual void transfer(QString accountNumber, double sum) =0;
 
 private:
 
