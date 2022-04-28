@@ -1,7 +1,9 @@
 # group15 - ATM Project
 
+[Setup Guide](SETUP.md)
+
 ## database
-Contains SQL script for creating the bankdb database layout.  
+Contains the SQL script for creating the bankdb database layout.  
 Also contains a script to add test data into the database.
 
 ### The database layout

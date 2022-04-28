@@ -24,8 +24,8 @@ class UserStatusBarWidget : public QWidget {
         explicit UserStatusBarWidget(Mode logout, RestInfoData *userInfo = nullptr, QWidget *parent = nullptr);
         ~UserStatusBarWidget();
 
-        void setButtonTitles(const char *ctx, int count, ...);
-        void setButtonTitles(const char *ctx, int count, va_list args) ;
+        void setButtonTitles(int count, ...);
+        void setButtonTitles(int count, va_list args) ;
 
         void stopLeaveTimeout();
         void startLeaveTimeout();

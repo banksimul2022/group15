@@ -2,12 +2,13 @@
 #include "ui_pagekeypad.h"
 #include "userstatusbarwidget.h"
 #include "utility.h"
+#include "pagereturn.h"
 
 #include <QDebug>
 #include <QTimer>
 #include <QStyle>
 
-PageKeypad::PageKeypad(PageKeypad::Action action, RestInfoData *userInfo, StateManager *stateManager, QWidget *parent) :
+PageKeypad::PageKeypad(PageKeypad::Action action, RestInfoData *userInfo, PageManager *stateManager, QWidget *parent) :
     PageWithUserBar(UserStatusBarWidget::Mode::leaveAndOk, stateManager, userInfo, parent),
     ui(new Ui::PageKeypad),
     flashTimer(new QTimer(this)),
@@ -23,13 +24,19 @@ PageKeypad::PageKeypad(PageKeypad::Action action, RestInfoData *userInfo, StateM
 
     this->setStyleSheet("QLabel[flash=\"true\"] { color: red; }");
 
-    if(action == PageKeypad::Action::Withdraw) {
+    if(action == PageKeypad::Withdraw) {
         this->setWindowTitle(QCoreApplication::translate("PageKeypad", "Nosto - Muu summa", nullptr));
         this->ui->lblAmountText->setText(QCoreApplication::translate("PageKeypad", "Nostettava summa:", nullptr));
         this->ui->btnDot->setVisible(false);
-    } else {
+    } else if(action == PageKeypad::Deposit) {
         this->setWindowTitle(QCoreApplication::translate("PageKeypad", "Talletus - Summan syöttö", nullptr));
         this->ui->lblAmountText->setText(QCoreApplication::translate("PageKeypad", "Talletettava summa:", nullptr));
+    } else if(action == PageKeypad::AccountNumber) {
+        this->setWindowTitle(QCoreApplication::translate("PageKeypad", "Tilisiirto - Tilinumero", nullptr));
+        this->ui->lblAmountText->setText(QCoreApplication::translate("PageKeypad", "Tilinumero:", nullptr));
+    } else {
+        this->setWindowTitle(QCoreApplication::translate("PageKeypad", "Tilisiirto - Summa", nullptr));
+        this->ui->lblAmountText->setText(QCoreApplication::translate("PageKeypad", "Siirrettävä summa:", nullptr));
     }
 
     QList<QPushButton*> gridButtons = this->findChildren<QPushButton*>();
@@ -45,7 +52,7 @@ PageKeypad::PageKeypad(PageKeypad::Action action, RestInfoData *userInfo, StateM
 }
 
 void PageKeypad::onLeave() {
-    this->stateManager->leaveCurrentPage(QVariant(false));
+    this->pageManager->leaveCurrentPage(QVariant(false));
 }
 
 void PageKeypad::onOk() {
@@ -58,8 +65,23 @@ void PageKeypad::onOk() {
 
     bool ok = false;
     double sum = sumStr.toDouble(&ok);
-    Q_ASSERT(ok); // TODO: Temporary until i get the error page setup
-    this->stateManager->leaveCurrentPage(QVariant(sum));
+
+    if(!ok) {
+        this->pageManager->leaveCurrentPage(
+            QVariant::fromValue(new PageReturn(
+                this->pageManager->createPrompt(
+                    tr("Sisäinen virhe"),
+                    tr("Summan muuntaminen epäonnistui!"),
+                    PromptEnum::error,
+                    0
+                ), PageReturn::LeaveCurrent
+            ))
+        );
+
+        return;
+    }
+
+    this->pageManager->leaveCurrentPage(QVariant(sum));
 }
 
 void PageKeypad::onKeypadButtonPress() {

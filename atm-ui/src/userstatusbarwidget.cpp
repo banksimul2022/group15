@@ -51,22 +51,22 @@ UserStatusBarWidget::UserStatusBarWidget(Mode mode, RestInfoData *userInfo, QWid
     }
 }
 
-void UserStatusBarWidget::setButtonTitles(const char *ctx, int count, ...) {
+void UserStatusBarWidget::setButtonTitles(int count, ...) {
     va_list args;
     va_start(args, count);
-    this->setButtonTitles(ctx, count, args);
+    this->setButtonTitles(count, args);
     va_end(args);
 }
 
-void UserStatusBarWidget::setButtonTitles(const char *ctx, int count, va_list args) {
+void UserStatusBarWidget::setButtonTitles(int count, va_list args) {
     if(this->barMode != Mode::custom) {
         return;
     }
 
     if(count-- > 0) {
-        const char *text = va_arg(args, const char*);
+        QString *text = va_arg(args, QString*);
         if(text != nullptr) {
-            this->ui->btnLeave->setText(QCoreApplication::translate(ctx, text, nullptr));
+            this->ui->btnLeave->setText(*text);
         }
     }
 
@@ -78,7 +78,7 @@ void UserStatusBarWidget::setButtonTitles(const char *ctx, int count, va_list ar
 
         this->extraBtnMapper->setMapping(this->ui->btnOk, 0);
         this->connect(this->ui->btnOk, &QPushButton::clicked, extraBtnMapper, QOverload<>::of(&QSignalMapper::map));
-        this->ui->btnOk->setText(QCoreApplication::translate(ctx, va_arg(args, const char*), nullptr));
+        this->ui->btnOk->setText(*va_arg(args, QString*));
     } else {
         this->ui->btnOk->setVisible(false);
         this->ui->buttonsLayout->setDirection(QBoxLayout::RightToLeft);
@@ -92,7 +92,7 @@ void UserStatusBarWidget::setButtonTitles(const char *ctx, int count, va_list ar
         btn->setObjectName(QString("btnExtra%1").arg(i));
         btn->setMinimumSize(QSize(50, 50));
         btn->setFont(font);
-        btn->setText(QCoreApplication::translate(ctx, va_arg(args, const char*), nullptr));
+        btn->setText(*va_arg(args, QString*));
         this->extraBtnMapper->setMapping(btn, i + 1);
         this->connect(btn, &QPushButton::clicked, extraBtnMapper, QOverload<>::of(&QSignalMapper::map));
         this->ui->buttonsLayout->addWidget(btn);

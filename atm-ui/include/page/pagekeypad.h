@@ -16,11 +16,13 @@ class PageKeypad : public PageWithUserBar {
     public:
 
         enum Action {
+            AccountNumber,
+            AccountSum,
             Withdraw,
             Deposit
         };
 
-        explicit PageKeypad(PageKeypad::Action action, RestInfoData *userInfo, StateManager *stateManager, QWidget *parent = nullptr);
+        explicit PageKeypad(PageKeypad::Action action, RestInfoData *userInfo, PageManager *stateManager, QWidget *parent = nullptr);
         ~PageKeypad();
 
     protected slots:

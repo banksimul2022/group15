@@ -1,34 +1,39 @@
 #include "page/pageinsertcard.h"
 #include "ui_pageinsertcard.h"
-
-#include <QDebug>
-
 #include "page/pageloading.h"
 #include "page/pagemainaccountview.h"
 
-PageInsertCard::PageInsertCard(StateManager *stateManager, QWidget *parent) :
+#include <resterrorcode.h>
+#include <pininterface.h>
+
+PageInsertCard::PageInsertCard(PageManager *stateManager, QWidget *parent) :
     PageBase(stateManager, parent),
     processReads(true),
     ui(new Ui::PageInsertCard)
 {
     ui->setupUi(this);
-    this->connect(this->stateManager->getRFIDInterface(), &RFIDInterface::cardRead, this, &PageInsertCard::onCardRead);
+    this->number = nullptr;
+    this->pin = nullptr;
+    this->connect(this->pageManager->getRFIDInterface(), &RFIDInterface::cardRead, this, &PageInsertCard::onCardRead);
 }
 
 PageInsertCard::~PageInsertCard() {
     delete ui;
 }
 
-bool PageInsertCard::processResult(QWidget *page, QVariant result) {
-    Q_UNUSED(result);
+QVariant PageInsertCard::onNaviagte(const QMetaObject *oldPage, bool closed, QVariant *result) {
+    Q_UNUSED(oldPage) Q_UNUSED(closed) Q_UNUSED(result)
 
-    if(qobject_cast<PageMainAccountView*>(page) == nullptr) { // Check that the page was PageMainAccountView
-        return false;
+    if(this->number != nullptr && this->pin != nullptr) {
+        this->pageManager->getRESTInterface(false)->login(this->number, this->pin);
+        this->number = nullptr;
+        this->pin = nullptr;
+        return QVariant::fromValue(PageManager::KeepLoading);
+    } else {
+        this->processReads = true;
     }
 
-    this->processReads = true;
-
-    return false;
+    return QVariant::fromValue(PageManager::Stay);
 }
 
 void PageInsertCard::onCardRead(QString number) {
@@ -37,20 +42,45 @@ void PageInsertCard::onCardRead(QString number) {
     }
 
     this->processReads = false;
+    this->number = number;
 
-    // TODO: Replace with pinui page
-    this->stateManager->getRESTInterface()->login(number, "9599");
+    // We don't need to hold a reference to the pin widget instance as it is automatocally dealt with by the StateManager
+    PinInterface *pinWidget = PinInterface::createWidgetInstance(this);
+    this->connect(pinWidget, &PinInterface::pinWidgetUserInput, this, &PageInsertCard::onPinRead);
+    this->connect(pinWidget, &PinInterface::deletePinWidget, this, &PageInsertCard::onPinCancel);
+    this->pageManager->navigateToPage(pinWidget);
 }
 
-void PageInsertCard::onRestData(RestReturnData *data) {
-    if(data->type() != RestReturnData::typeLogin) return;
-    int error = data->error();
-    delete data;
+void PageInsertCard::onPinRead(QString pin) {
+    this->pin = pin;
+    this->pageManager->leaveCurrentPage(QVariant::fromValue(PageManager::Leave));
+}
 
-    if(error != -1) {
-        this->stateManager->displayPrompt(this, "Virhe!", QString::number(data->error()).toUtf8().data(), PromptEnum::error, 0);
-        return;
+void PageInsertCard::onPinCancel() {
+    this->number = nullptr;
+    this->pageManager->leaveCurrentPage(QVariant::fromValue(PageManager::Leave));
+}
+
+PageBase::RestDataAction PageInsertCard::onRestData(RestReturnData *data) {
+    if(data->type() != RestReturnData::typeLogin) return RestDataAction::Skip;
+
+    if(data->error() == RestErrors::ERR_CARD_LOCKED) {
+        this->pageManager->displayPrompt(
+            tr("Kortti lukittu"),
+            tr("Korttisi on lukittu liian monen virheellisen kirjautumisen takia!\nOta yhteyttä henkilökuntaan"),
+            PromptEnum::warning, 0
+        );
+    } else if(data->error() == RestErrors::ERR_INVALID_CREDENTIALS) {
+        this->pageManager->displayPrompt(
+            tr("Virheelliset tunnukset"),
+            tr("PIN koodisi tai kortin numero on virhellinen!\nYritä uudelleen..."),
+            PromptEnum::warning, 0
+        );
+    } else if(this->handleRestError(data, tr("kirjauduttaessa"), false)) {
+        return RestDataAction::Skip;
+    } else {
+        this->navigate<PageMainAccountView>();
     }
 
-    this->navigate<PageMainAccountView>();
+    return RestDataAction::Delete;
 }

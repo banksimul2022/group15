@@ -10,7 +10,7 @@ class PageWithUserBar : public PageBase {
     Q_OBJECT
 
     public:
-        explicit PageWithUserBar(UserStatusBarWidget::Mode mode, StateManager *stateManager, RestInfoData *infoData = nullptr, QWidget *parent = nullptr);
+        explicit PageWithUserBar(UserStatusBarWidget::Mode mode, PageManager *stateManager, RestInfoData *infoData = nullptr, QWidget *parent = nullptr);
         virtual ~PageWithUserBar() = 0;
 
         void stopTimer();
@@ -21,7 +21,7 @@ class PageWithUserBar : public PageBase {
         UserStatusBarWidget * userStatusBar;
 
     protected slots:
-        void onRestData(RestReturnData *data) override;
+        PageBase::RestDataAction onRestData(RestReturnData *data) override;
 
         virtual void onExtraButton(int id);
         virtual void onLeave();

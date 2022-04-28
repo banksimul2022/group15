@@ -4,12 +4,15 @@
 #include "page/pagekeypad.h"
 #include "page/pageprompt.h"
 #include "utility.h"
+#include "pagereturn.h"
 
+#include <resterrorcode.h>
 #include <QDebug>
 
-PageWithdraw::PageWithdraw(RestInfoData *userInfo, StateManager *stateManager, QWidget *parent) :
+PageWithdraw::PageWithdraw(RestInfoData *userInfo, PageManager *stateManager, QWidget *parent) :
     PageWithUserBar(UserStatusBarWidget::leaveOnly, stateManager, userInfo, parent),
     useCredit(false),
+    amountWithdrawn(0),
     ui(new Ui::PageWithdraw)
 {
     ui->setupUi(this);
@@ -26,45 +29,73 @@ PageWithdraw::PageWithdraw(RestInfoData *userInfo, StateManager *stateManager, Q
     this->userInfo = userInfo;
 }
 
-void PageWithdraw::onNavigate() {
+QVariant PageWithdraw::onNaviagte(const QMetaObject *oldPage, bool closed, QVariant *result) {
+    if(!closed) {
+        return QVariant::fromValue(PageManager::Stay);
+    }
+
+    if(oldPage->inherits(&PageKeypad::staticMetaObject)) {
+        if(result->type() == QVariant::Double) {
+            this->amountWithdrawn = result->toDouble();
+            this->pageManager->getRESTInterface(false)->withdraw(this->amountWithdrawn, this->useCredit);
+        } else { // result will be a bool on user cancel (always false) and unexpected return values also are a reason to leave
+            return QVariant::fromValue(PageManager::Leave);
+        }
+
+        return QVariant::fromValue(PageManager::KeepLoading);
+    } else if(oldPage->inherits(&PagePrompt::staticMetaObject)) {
+        if(result->type() == QVariant::Int) {
+            this->useCredit = result->toInt(); // Store the user answer in useCredit
+            return QVariant::fromValue(PageManager::Stay);
+        }
+    }
+
+    return QVariant::fromValue(PageManager::Leave);
+}
+
+void PageWithdraw::onReady() {
     if(this->userInfo->credit()) {
-        this->stateManager->displayPrompt(this, "Valitse nosto tapa", "Haluatko käyttää credit vai debit korttia?", PromptEnum::question, 3, nullptr, "Debit", "Credit");
+        QString debit = tr("Debit"), credit = tr("Credit");
+        this->pageManager->displayPrompt(
+            tr("Valitse nostotapa"),
+            tr("Haluatko käyttää credit vai debit korttia?"),
+            PromptEnum::question,
+            3, nullptr, &debit, &credit
+        );
     }
 }
 
-bool PageWithdraw::processResult(QWidget *page, QVariant result) {
-    if(Utility::isOfType<PageKeypad>(page)) {
-        if(result.type() == QVariant::Double) {
-            this->stateManager->getRESTInterface()->withdraw(result.toDouble(), this->useCredit);
-        } else if(result.type() != QVariant::Bool) {
-            return true;
-        }
-
-        return false;
-    } else if(Utility::isOfType<PagePrompt>(page)) {
-        if(result.type() == QVariant::Int) {
-            this->useCredit = result.toInt(); // Store the user answer in useCredit
-            return false;
-        }
-    }
-
-    return true;
-}
-
-void PageWithdraw::onRestData(RestReturnData *data) {
+PageBase::RestDataAction PageWithdraw::onRestData(RestReturnData *data) {
     if(data->type() != RestReturnData::typeWithdraw) {
-        return;
+        return RestDataAction::Skip;
     }
 
-    if(data->error() != -1) {
-        // TODO: Replace with error dialog
-        qDebug() << "ERROR witdrawing money" << data->error();
+    QWidget *prompt = nullptr;
+
+    if(data->error() == RestErrors::ERR_INSUFFICIENT_FUNDS) {
+        prompt = this->pageManager->createPrompt(
+                     tr("Virhe"),
+                     tr("Tililläsi ei ole katetta %1€ nostamiseen!").arg(this->amountWithdrawn),
+                     PromptEnum::warning,
+                     0
+                );
+    } else if(this->handleRestError(data, tr("nostamisessa"))) {
+        return RestDataAction::Delete;
+    } else {
+        prompt = this->pageManager->createPrompt(
+                     tr("Nosto onnistui"),
+                     (
+                         this->userInfo->credit() ?
+                         tr(this->useCredit ? "Nostettu %1€ credittiä" : "Nostettu %1€ debittiä").arg(this->amountWithdrawn) :
+                         tr("Nostettu %1€").arg(this->amountWithdrawn)
+                     ),
+                     PromptEnum::info,
+                     0
+                );
     }
 
-    delete data;
-
-    // TODO: Replace with notification
-    this->stateManager->leaveCurrentPage(QVariant());
+    this->pageManager->leaveCurrentPage(QVariant::fromValue(new PageReturn(prompt, PageReturn::LeaveCurrent)));
+    return RestDataAction::Delete;
 }
 
 void PageWithdraw::onAmountButtonPress() {
@@ -72,9 +103,9 @@ void PageWithdraw::onAmountButtonPress() {
 
     if(name.startsWith("btnAmount")) {
         bool ok;
-        uint val = name.remove(0, 9).toUInt(&ok);
+        this->amountWithdrawn = name.remove(0, 9).toDouble(&ok);
         Q_ASSERT(ok);
-        this->stateManager->getRESTInterface()->withdraw(val, this->useCredit);
+        this->pageManager->getRESTInterface()->withdraw(this->amountWithdrawn, this->useCredit);
     } else if(name == "btnOther") {
         this->navigate<PageKeypad>(PageKeypad::Withdraw, this->userInfo);
     } else {

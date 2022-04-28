@@ -13,16 +13,22 @@ class PageInsertCard : public PageBase {
     Q_OBJECT
 
     public:
-        explicit PageInsertCard(StateManager *stateManager, QWidget *parent = nullptr);
+        explicit PageInsertCard(PageManager *stateManager, QWidget *parent = nullptr);
         ~PageInsertCard();
 
-        bool processResult(QWidget *page, QVariant result) override;
+        QVariant onNaviagte(const QMetaObject *oldPage, bool closed, QVariant *result) override;
 
     private slots:
         void onCardRead(QString number);
-        void onRestData(RestReturnData *data) override;
+
+        void onPinRead(QString pin);
+        void onPinCancel();
+
+        PageBase::RestDataAction onRestData(RestReturnData *data) override;
 
     private:
+        QString number;
+        QString pin;
         bool processReads;
 
         Ui::PageInsertCard *ui;

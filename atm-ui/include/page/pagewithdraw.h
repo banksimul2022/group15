@@ -13,18 +13,19 @@ class PageWithdraw : public PageWithUserBar {
     Q_OBJECT
 
     public:
-        explicit PageWithdraw(RestInfoData *userInfo, StateManager *stateManager, QWidget *parent = nullptr);
+        explicit PageWithdraw(RestInfoData *userInfo, PageManager *stateManager, QWidget *parent = nullptr);
         ~PageWithdraw();
 
-        void onNavigate() override;
-        bool processResult(QWidget *page, QVariant result) override;
+        QVariant onNaviagte(const QMetaObject *oldPage, bool closed, QVariant *result) override;
+        void onReady() override;
 
     private slots:
-        void onRestData(RestReturnData *data) override;
+        PageBase::RestDataAction onRestData(RestReturnData *data) override;
         void onAmountButtonPress();
 
     private:
         bool useCredit;
+        double amountWithdrawn;
         RestInfoData *userInfo;
         Ui::PageWithdraw *ui;
 };

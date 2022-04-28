@@ -14,19 +14,21 @@ class PageMainAccountView : public PageWithUserBar {
     Q_OBJECT
 
     public:
-        explicit PageMainAccountView(StateManager *stateManager, QWidget *parent = nullptr);
+        explicit PageMainAccountView(PageManager *stateManager, QWidget *parent = nullptr);
         ~PageMainAccountView();
 
-        bool keepLoadingPageOnNavigate() override;
+        QVariant onNaviagte(const QMetaObject *oldPage, bool closed, QVariant *result) override;
+        void onReady() override;
 
     protected slots:
-        void onRestData(RestReturnData *data) override;
+        PageBase::RestDataAction onRestData(RestReturnData *data) override;
 
     private slots:
         void on_btnWidthdraw_clicked();
         void on_btnBalance_clicked();
         void on_btnTransactions_clicked();
         void on_btnDeposit_clicked();
+        void on_btnTransfer_clicked();
 
     private:
             RestInfoData *userInfo;

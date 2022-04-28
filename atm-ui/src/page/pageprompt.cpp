@@ -4,39 +4,39 @@
 
 #include <QSvgRenderer>
 
-PagePrompt::PagePrompt(const char *ctx, const char *title, const char *prompt, PromptEnum::Icon icon, StateManager *stateManager, QWidget *parent, int count, ...) :
+PagePrompt::PagePrompt(QString title, QString prompt, PromptEnum::Icon icon, PageManager *stateManager, QWidget *parent, int count, ...) :
     PageWithUserBar(UserStatusBarWidget::custom, stateManager, nullptr, parent),
     ui(new Ui::PagePrompt)
 {
     va_list args;
     va_start(args, count);
-    this->construct(ctx, title, prompt, icon, count, args);
+    this->construct(title, prompt, icon, count, args);
     va_end(args);
 }
 
-PagePrompt::PagePrompt(const char *ctx, const char *title, const char *prompt, PromptEnum::Icon icon, int count, va_list args, StateManager *stateManager, QWidget *parent) :
+PagePrompt::PagePrompt(QString title, QString prompt, PromptEnum::Icon icon, int count, va_list args, PageManager *stateManager, QWidget *parent) :
     PageWithUserBar(UserStatusBarWidget::custom, stateManager, nullptr, parent),
     ui(new Ui::PagePrompt)
 {
-    this->construct(ctx, title, prompt, icon, count, args);
+    this->construct(title, prompt, icon, count, args);
 }
 
 void PagePrompt::onExtraButton(int id) {
-    this->stateManager->leaveCurrentPage(QVariant(id));
+    this->pageManager->leaveCurrentPage(QVariant(id));
 }
 
 PagePrompt::~PagePrompt() {
     delete ui;
 }
 
-void PagePrompt::construct(const char *ctx, const char *title, const char *prompt, PromptEnum::Icon icon, int count, va_list args) {
+void PagePrompt::construct(QString title, QString prompt, PromptEnum::Icon icon, int count, va_list args) {
     ui->setupUi(this);
     this->setupUserBar(this->ui->widgetRootLayout);
 
-    this->setWindowTitle(QCoreApplication::translate(ctx, title, nullptr));
-    this->ui->prompt->setText(QCoreApplication::translate(ctx, prompt, nullptr));
+    this->setWindowTitle(title);
+    this->ui->prompt->setText(prompt);
 
-    this->userStatusBar->setButtonTitles(ctx, count, args);
+    this->userStatusBar->setButtonTitles(count, args);
 
     switch(icon) {
         case PromptEnum::info:
