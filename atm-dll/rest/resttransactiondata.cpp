@@ -2,8 +2,9 @@
 
 #include <QJsonArray>
 
-RestTransactionData::RestTransactionData(QJsonObject *transactionInfo,
-    int error):RestReturnData(RestReturnData::typeTransaction,error),transactions(new QList<BankTransaction*>)
+RestTransactionData::RestTransactionData(QJsonObject *transactionInfo, RestReturnData::ReturnType type,
+    int error):RestReturnData(type,error),
+    transactions(new QList<BankTransaction*>)
 {
     if (error != -1) {
         return;
