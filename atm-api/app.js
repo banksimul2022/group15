@@ -1,6 +1,5 @@
 const express = require("express");
-// const path = require("path");
-// const cookieParser = require("cookie-parser");
+const path = require("path");
 const logger = require("morgan");
 const helmet = require("helmet");
 const errors = require("./errors");
@@ -10,6 +9,7 @@ require('dotenv').config();
 
 const crudRouter = require("./routes/crud");
 const apiRouter = require("./routes/api");
+const staticRouter = require("./routes/static");
 
 const app = express();
 
@@ -18,11 +18,10 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-// app.use(cookieParser()); (Not used)
-// app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/crud", crudRouter);
 app.use("/api", apiRouter);
+app.use("/static", staticRouter);
 
 app.use((err, req, res, next) => {
     if(err instanceof errors.PublicAPIError) {
