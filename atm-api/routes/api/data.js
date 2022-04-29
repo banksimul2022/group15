@@ -4,6 +4,7 @@ const account = require("../../models/crud/account");
 const card = require("../../models/crud/card");
 const errors = require("../../errors");
 const butil = require("../../util");
+const { posix } = require ("path");
 
 const router = require("express").Router();
 
@@ -17,7 +18,8 @@ router.get("/info", (req, res) => {
                 fName: custResult[0].firstName,
                 lName: custResult[0].lastName,
                 accountNumber: accResult[0].accountNumber,
-                credit: Boolean(cardResult[0].credit)
+                credit: Boolean(cardResult[0].credit),
+                profile: accResult[0].profile === null || accResult[0].profile === undefined ? "/static/image/unknown_profile.png" : posix.join("/static/image/profile", accResult[0].profile)
             });
         })
         .catch(error => butil.handleQueryError(error, res));
