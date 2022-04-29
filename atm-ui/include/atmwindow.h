@@ -22,7 +22,6 @@ class ATMWindow : public QMainWindow, public PageManager {
         AsyncSerialInterface *getRFIDInterface() override;
 
         RESTInterface *getRESTInterface(bool displayLoadingPage = true) override;
-        void connectRestSignal(QObject *receiver, const QMetaMethod slot) override;
 
         QWidget *createPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, ...) override;
         QWidget *createPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, va_list args) override;
