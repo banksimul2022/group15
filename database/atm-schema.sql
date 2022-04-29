@@ -23,7 +23,8 @@ CREATE TABLE bankdb.account (
   accountId INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   balance DECIMAL(14,2) NOT NULL,
   credit DECIMAL(14,2) NOT NULL,
-  accountNumber VARCHAR(45) UNIQUE NOT NULL
+  accountNumber VARCHAR(45) UNIQUE NOT NULL,
+  profile VARCHAR(20) UNIQUE
 ) ENGINE = InnoDB;
 
 -- Create the card table
