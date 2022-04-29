@@ -10,9 +10,6 @@ PageBase::PageBase(PageManager *stateManager, QWidget *parent) :
 {
     this->setVisible(false); // Prevent pages from randomly opening in their own windows when deparented
     this->pageManager = stateManager;
-    int slotIndex = this->metaObject()->indexOfSlot("onRestDataFromManager(RestReturnData**)");
-    Q_ASSERT_X(slotIndex != -1, "PageBase::PageBase", "Failed to find onRestDataFromManager slot");
-    this->pageManager->connectRestSignal(this, this->metaObject()->method(slotIndex));
     qDebug() << "Create: " << this;
 }
 
@@ -29,38 +26,6 @@ void PageBase::onShown() {
 }
 
 PageBase::RestDataAction PageBase::onRestData(RestReturnData *data) { Q_UNUSED(data) return RestDataAction::Skip; }
-
-void PageBase::onRestDataFromManager(RestReturnData **data) {
-    qDebug() << this << "data";
-    if(*data != nullptr) {
-        if((*data)->type() == RestReturnData::typeinternalerror) {
-            this->pageManager->leaveAllPages(
-                QVariant::fromValue(new PageReturn(
-                    this->pageManager->createPrompt(
-                        tr("Sisäinen virhe!"),
-                        tr("Odottamaton verkko virhe! (%1)").arg((*data)->error()),
-                        PromptEnum::error, 0
-                    ), PageReturn::LeaveCurrent
-                ))
-            );
-            return;
-        }
-
-        RestDataAction action = this->onRestData(*data);
-
-        if(action == RestDataAction::Skip) {
-            return;
-        }
-
-        if(action == RestDataAction::Delete) {
-            qDebug() << "Delete in page";
-            delete *data;
-        }
-
-        qDebug() << "Set to null in page";
-        *data = nullptr;
-    }
-}
 
 bool PageBase::handleRestError(RestReturnData *data, QString action, bool leave) {
     if(data->error() == -1) return false;

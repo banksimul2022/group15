@@ -38,20 +38,6 @@ RESTInterface *ATMWindow::getRESTInterface(bool displayLoadingPage) {
     return this->restInterface;
 }
 
-void ATMWindow::connectRestSignal(QObject *receiver, const QMetaMethod slot) {
-    const QMetaMethod signal = QMetaMethod::fromSignal(&ATMWindow::onRestData);
-
-    Qt::ConnectionType type = Qt::AutoConnection;
-
-    if(receiver->thread() == QThread::currentThread()) {
-        type = Qt::DirectConnection;
-    } else {
-        type = Qt::BlockingQueuedConnection;
-    }
-
-    this->connect(this, signal, receiver, slot, type);
-}
-
 QWidget *ATMWindow::createPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, ...) {
     va_list args;
     va_start(args, btnCount);
@@ -183,7 +169,7 @@ bool ATMWindow::leaveCurrentPage(QVariant result) {
 
     this->setPage(newPage, oldPage);
 
-    if(this->pageStack.length() < 2 || this->pageStack.at(this->pageStack.length() - 2) == actualPage) {
+    if(this->pageStack.length() < 2 || this->pageStack.at(this->pageStack.length() - 2) != actualPage) {
         this->deletePage(actualPage, oldPage);
     }
 
@@ -240,12 +226,44 @@ void ATMWindow::fullscreenShortcut() {
 }
 
 void ATMWindow::onRestDataFromDLL(RestReturnData *data) {
-    RestReturnData **dataPointerPointer = &data;
-    emit onRestData(dataPointerPointer);
-    qDebug() << "delete";
-    if(*dataPointerPointer != nullptr) {
+    if(data->type() == RestReturnData::typeinternalerror) {
+        this->leaveAllPages(
+            QVariant::fromValue(new PageReturn(
+                this->createPrompt(
+                    tr("Sisäinen virhe!"),
+                    tr("Odottamaton verkko virhe! (%1)").arg(data->error()),
+                    PromptEnum::error, 0
+                ), PageReturn::LeaveCurrent
+            ))
+        );
+        return;
+    }
+
+    int i;
+
+    for(i = this->pageStack.size() - 1; i >= 0; i--) {
+        PageBase *page = qobject_cast<PageBase*>(this->pageStack.at(i));
+
+        if(page == nullptr) {
+            continue;
+        }
+
+        switch(page->onRestData(data)) {
+            case PageBase::RestDataAction::Skip:
+                break;
+            case PageBase::RestDataAction::Delete:
+                qDebug() << "Delete in page";
+                delete data;
+                Q_FALLTHROUGH();
+            case PageBase::RestDataAction::SetNull: // Really just means don't delete put stop propagation
+                qDebug() << "Set to null in page";
+                i = -2;
+                break;
+        }
+    }
+
+    if(i > -2) { // Means that the data was not deleted in the loop
         delete data;
-        data = nullptr;
     }
 }
 
@@ -268,7 +286,7 @@ bool ATMWindow::processPageReturnAction(PageReturnAction action, QWidget **newPa
                 *newPage = this->loadingPage;
             }
 
-            [[fallthrough]];
+            Q_FALLTHROUGH();
         }
         default:
         case PageManager::Stay:

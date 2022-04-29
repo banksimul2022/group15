@@ -1,3 +1,6 @@
+build/
+*.pro.user
+.qmake.stash
 atm-api/node_modules/
 atm-api/.env
 atm-dll/*/build/

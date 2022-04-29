@@ -28,5 +28,16 @@ npm start
 
 ## atm-ui
 
-Begin by opening each project in the `atm-dll` directory using Qt Creator and build them.  
-Finally you can open the main `atm-ui` project and build that and then run it.
+### Build using Qt Creator
+
+Just open the `atm-app.pro` file at the root of the repo and hit run.
+
+### Using `qmake` from the terminal (Linux only)
+
+```sh
+mkdir group15/build
+cd group15/build
+qmake ../atm-app.pro && make
+cp -P atm-dll/*/*.so* atm-ui/
+LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./atm-ui ./atm-ui/atm-ui
+```
