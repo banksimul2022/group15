@@ -7,7 +7,7 @@
 #include <QDebug>
 #include <QTimer>
 
-class PinInterface : public QWidget
+class PIN_EXPORT PinInterface : public QWidget
 {
     Q_OBJECT
 public:
