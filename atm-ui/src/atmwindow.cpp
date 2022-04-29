@@ -286,7 +286,7 @@ bool ATMWindow::processPageReturnAction(PageReturnAction action, QWidget **newPa
                 *newPage = this->loadingPage;
             }
 
-            [[fallthrough]];
+            Q_FALLTHROUGH();
         }
         default:
         case PageManager::Stay:
