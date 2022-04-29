@@ -67,29 +67,29 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     resources.qrc
 
-# ----- RFID LIBRARY BEGIN -----
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../atm-dll/rfid/build/release/ -lAsyncSerialInterface
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../atm-dll/rfid/build/debug/ -lAsyncSerialInterface
-else:unix: LIBS += -L$$PWD/../atm-dll/rfid/build/ -lAsyncSerialInterface
+equals(STANDALONE, 1) {
+    win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../atm-dll/rfid/build/release/ -lAsyncSerialInterface
+    else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../atm-dll/rfid/build/debug/ -lAsyncSerialInterface
+    else:unix: LIBS += -L$$PWD/../atm-dll/rfid/build/ -lAsyncSerialInterface
+
+    win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../atm-dll/rest/build/release/ -lREST
+    else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../atm-dll/rest/build/debug/ -lREST
+    else:unix: LIBS += -L$$PWD/../atm-dll/rest/build/ -lREST
+
+    win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../atm-dll/pin-ui/build/release/ -lPin
+    else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../atm-dll/pin-ui/build/debug/ -lPin
+    else:unix: LIBS += -L$$PWD/../atm-dll/pin-ui/build/ -lPin
+} else {
+    unix|win32: LIBS += -L$$PWD/../build/atm-dll/rfid/ -lAsyncSerialInterface
+    unix|win32: LIBS += -L$$PWD/../build/atm-dll/rest/ -lREST
+    unix|win32: LIBS += -L$$PWD/../build/atm-dll/pin-ui/ -lPin
+}
 
 INCLUDEPATH += $$PWD/../atm-dll/rfid
 DEPENDPATH += $$PWD/../atm-dll/rfid
-# ----- RFID LIBRARY END -----
-
-# ----- REST LIBRARY BEGIN -----
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../atm-dll/rest/build/release/ -lREST
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../atm-dll/rest/build/debug/ -lREST
-else:unix: LIBS += -L$$PWD/../atm-dll/rest/build/ -lREST
 
 INCLUDEPATH += $$PWD/../atm-dll/rest
 DEPENDPATH += $$PWD/../atm-dll/rest
-# ----- REST LIBRARY END -----
-
-# ----- PIN-UI LIBRARY BEGIN -----
-win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../atm-dll/pin-ui/build/release/ -lPin
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../atm-dll/pin-ui/build/debug/ -lPin
-else:unix: LIBS += -L$$PWD/../atm-dll/pin-ui/build/ -lPin
 
 INCLUDEPATH += $$PWD/../atm-dll/pin-ui
 DEPENDPATH += $$PWD/../atm-dll/pin-ui
-# ----- PIN-UI LIBRARY END -----
