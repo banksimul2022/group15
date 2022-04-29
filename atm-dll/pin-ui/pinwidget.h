@@ -23,6 +23,7 @@ class PinWidget : public PinInterface
         QTimer pinWidgetTimer;
         void pinTimerReset();
         void pinWidgetHandleNumber(int keyNumber);
+        void updatePinWidgetTimerBar();
 
 private slots:
         void on_pushButton_1_clicked();
@@ -40,7 +41,6 @@ private slots:
         void on_pushButton_cancel_clicked();
         void on_pushButton_enter_clicked();
         void pinWidgetIdleTimeout();
-
 };
 
 #endif // PINWIDGET_H

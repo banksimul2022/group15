@@ -3,17 +3,20 @@
 #include <QTimer>
 
 QString message;
-QRegExp reNumber("^[0-9]+\\,?[0-9]{0,2}$");  // start, numbers, optional comma, maximum two numbers, end
-QRegExp reComma(","); //needs work, see on_pushButton_comma_clicked()
-
+QRegExp reNumber("^[0-9]+,?[0-9]{0,2}$");  // start, numbers, optional comma, maximum two numbers, end
+QRegExp reHasTwoDecimals(",[0-9][0-9]$");
+QRegExp reBeginsWithComma("^[,]");
 
 PinWidget::PinWidget(QWidget *parent) : PinInterface(parent), ui(new Ui::PinWidget)
 {
     qDebug()<<"PinWidget constructorissa";
     ui->setupUi(this);
     pinWidgetTimer.setSingleShot(true);
-    pinWidgetTimer.start(10000);
     connect(&pinWidgetTimer, SIGNAL(timeout()), this, SLOT(pinWidgetIdleTimeout()));
+    pinTimerReset();
+    QTimer *updater = new QTimer;
+    connect(updater, &QTimer::timeout, this, &PinWidget::updatePinWidgetTimerBar);
+    updater->start(100);
 }
 
 PinWidget::~PinWidget()
@@ -25,9 +28,13 @@ PinWidget::~PinWidget()
 
 void PinWidget::pinTimerReset()
 {
-    qDebug()<<"pinWidgetTimer reset";
-    qDebug() << PinWidget::pinWidgetTimer.remainingTime();
+    qDebug()<< "pinWidgetTimer reset at" << PinWidget::pinWidgetTimer.remainingTime() << " ms";
     PinWidget::pinWidgetTimer.start(10000);
+}
+
+void PinWidget::updatePinWidgetTimerBar()
+{
+    ui->timerBar->setValue(pinWidgetTimer.remainingTime());
 }
 
 void PinWidget::pinWidgetIdleTimeout()
@@ -93,9 +100,11 @@ void PinWidget::on_pushButton_0_clicked()
 
 void PinWidget::pinWidgetHandleNumber(int keyNumber)
 {
-    if (!reNumber.exactMatch(ui->pinMessage->text())) ui->pinMessage->clear(); //Jos viestikentässä jotain muuta kuin numeroita tyhjennetään kenttä
-    ui->pinMessage->setText(ui->pinMessage->text() + QString::number(keyNumber));
     PinWidget::pinTimerReset();
+    if (!reNumber.exactMatch(ui->pinMessage->text()))
+        ui->pinMessage->clear(); //Jos viestikentässä jotain muuta kuin numeroita tyhjennetään kenttä
+    if (!ui->pinMessage->text().contains(reHasTwoDecimals))
+        ui->pinMessage->setText(ui->pinMessage->text() + QString::number(keyNumber)); //sallitaan vain kaksi desimaalia
 }
 
 // * disallow comma in pin, allow comma when transferring between accounts
@@ -103,9 +112,11 @@ void PinWidget::pinWidgetHandleNumber(int keyNumber)
 
 void PinWidget::on_pushButton_comma_clicked()
 {
-    if (!reNumber.exactMatch(ui->pinMessage->text())) ui->pinMessage->clear(); //Jos viestikentässä jotain muuta kuin numeroita tyhjennetään kenttä
-    if (!reComma.exactMatch(ui->pinMessage->text())) ui->pinMessage->setText(ui->pinMessage->text() + ","); //Jos on jo pilkku niin ei sallita toista
     PinWidget::pinTimerReset();
+    if (!reNumber.exactMatch(ui->pinMessage->text()))
+        ui->pinMessage->clear(); //Jos viestikentässä jotain muuta kuin numeroita tyhjennetään kenttä
+    if (!ui->pinMessage->text().contains(",")&&ui->pinMessage->text()!="")
+        ui->pinMessage->setText(ui->pinMessage->text() + ","); //Jos tyhjä tai on jo pilkku niin ei sallita pilkkua
 }
 
 void PinWidget::on_pushButton_exit_clicked()
@@ -116,16 +127,20 @@ void PinWidget::on_pushButton_exit_clicked()
 
 void PinWidget::on_pushButton_cancel_clicked()
 {
+    PinWidget::pinTimerReset();
     QString tempText = ui->pinMessage->text();
     tempText.chop(1);
     ui->pinMessage->setText(tempText);
-    PinWidget::pinTimerReset();
 }
 
 void PinWidget::on_pushButton_enter_clicked()
 {
+    PinWidget::pinTimerReset();
     QString userInput = ui->pinMessage->text();
-    qDebug()<<"emitting pinWidgetUserInput \"" + userInput + "\"";
-    if (reNumber.exactMatch(userInput)) emit pinWidgetUserInput(userInput);
+    if (reNumber.exactMatch(userInput))
+    {
+        emit pinWidgetUserInput(userInput); //lähetetään vain numeroita, pilkut sallittu, myös 0 sallittu huom tilisiirto
+        qDebug()<<"emitting pinWidgetUserInput \"" + userInput + "\"";
+    }
 }
 
