@@ -169,7 +169,7 @@ bool ATMWindow::leaveCurrentPage(QVariant result) {
 
     this->setPage(newPage, oldPage);
 
-    if(this->pageStack.length() < 2 || this->pageStack.at(this->pageStack.length() - 2) == actualPage) {
+    if(this->pageStack.length() < 2 || this->pageStack.at(this->pageStack.length() - 2) != actualPage) {
         this->deletePage(actualPage, oldPage);
     }
 
