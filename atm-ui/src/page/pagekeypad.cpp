@@ -34,6 +34,7 @@ PageKeypad::PageKeypad(PageKeypad::Action action, RestInfoData *userInfo, PageMa
     } else if(action == PageKeypad::AccountNumber) {
         this->setWindowTitle(QCoreApplication::translate("PageKeypad", "Tilisiirto - Tilinumero", nullptr));
         this->ui->lblAmountText->setText(QCoreApplication::translate("PageKeypad", "Tilinumero:", nullptr));
+        this->ui->btnDot->setVisible(false);
     } else {
         this->setWindowTitle(QCoreApplication::translate("PageKeypad", "Tilisiirto - Summa", nullptr));
         this->ui->lblAmountText->setText(QCoreApplication::translate("PageKeypad", "Siirrettävä summa:", nullptr));
