@@ -183,10 +183,11 @@ void RESTEngine::replySlot(QNetworkReply *reply)
     QJsonObject jsonObj;
     int type = variant.value<int>();
 
+    if(type != RestReturnData::typeBalance) {
         QByteArray responseData = reply->readAll();
         jsonDoc = QJsonDocument::fromJson(responseData);
-
         jsonObj = jsonDoc.object();
+      }
 
 
     int error = jsonObj.value("error").toInt(-1); //  error oletus arvo -1(kaikki ok)
