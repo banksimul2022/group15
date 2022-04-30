@@ -229,4 +229,26 @@ router.post("/transfer", (req, res) => {
         .catch(error => butil.handleQueryError(error, res))
 });
 
+router.post("/changePin", (req, res) => {
+    card.getByCardNumber(req.token.card_number)
+        .then(async cardResult => {
+            const cardDat = cardResult[0];
+
+            if(typeof(req.body.newPin) !== "string" || req.body.newPin.length !== 4) {
+                throw new errors.PublicAPIError("newPin invalid", errors.codes.ERR_NEW_PIN_INVALID, 400);
+            }
+
+            await butil.checkPin(req.body.pin, cardDat);
+
+            if(req.body.newPin === req.body.pin) {
+                throw new errors.PublicAPIError("newPin can't be the same as the current pin", errors.codes.ERR_NEW_PIN_INVALID, 400);
+            }
+
+            cardDat["pin"] = req.body.newPin;
+
+            res.json(await card.update(cardDat["cardId"], cardDat, false));
+        })
+        .catch(error => butil.handleQueryError(error, res));
+});
+
 module.exports = router;

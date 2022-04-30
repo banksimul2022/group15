@@ -692,6 +692,38 @@
 					"response": []
 				},
 				{
+					"name": "changePin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "pin",
+									"value": "9599",
+									"type": "default"
+								},
+								{
+									"key": "newPin",
+									"value": "8888",
+									"type": "default"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{api_url}}/changePin",
+							"host": [
+								"{{api_url}}"
+							],
+							"path": [
+								"changePin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "deposit",
 					"request": {
 						"method": "POST",
