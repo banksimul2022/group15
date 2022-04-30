@@ -43,7 +43,7 @@
      <item>
       <layout class="QVBoxLayout" name="layoutDisplayActions">
        <item>
-        <widget class="QPushButton" name="btnBlank">
+        <widget class="QPushButton" name="btnChangePin">
          <property name="sizePolicy">
           <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
            <horstretch>0</horstretch>
@@ -55,6 +55,14 @@
            <width>0</width>
            <height>100</height>
           </size>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>12</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Vaihda PIN</string>
          </property>
         </widget>
        </item>

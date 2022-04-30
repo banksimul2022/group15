@@ -27,9 +27,6 @@
        <pointsize>16</pointsize>
       </font>
      </property>
-     <property name="text">
-      <string>Seuraavassa ruudussa voit syöttää telletettavan summan</string>
-     </property>
      <property name="textFormat">
       <enum>Qt::PlainText</enum>
      </property>
