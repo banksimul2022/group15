@@ -107,7 +107,7 @@ void PageWithdraw::onAmountButtonPress() {
         Q_ASSERT(ok);
         this->pageManager->getRESTInterface()->withdraw(this->amountWithdrawn, this->useCredit);
     } else if(name == "btnOther") {
-        this->navigate<PageKeypad>(PageKeypad::Withdraw, this->userInfo);
+        this->navigate<PageKeypad>(false, tr("Nosto - Muu summa"), tr("Nostettava summa:"), this->userInfo);
     } else {
         // Code execution SHOULD not get here
         Q_ASSERT(false);

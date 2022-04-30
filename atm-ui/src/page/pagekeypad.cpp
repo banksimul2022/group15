@@ -8,7 +8,7 @@
 #include <QTimer>
 #include <QStyle>
 
-PageKeypad::PageKeypad(PageKeypad::Action action, RestInfoData *userInfo, PageManager *stateManager, QWidget *parent) :
+PageKeypad::PageKeypad(bool showDot, QString title, QString message, RestInfoData *userInfo, PageManager *stateManager, QWidget *parent) :
     PageWithUserBar(UserStatusBarWidget::Mode::leaveAndOk, stateManager, userInfo, parent),
     ui(new Ui::PageKeypad),
     flashTimer(new QTimer(this)),
@@ -24,21 +24,9 @@ PageKeypad::PageKeypad(PageKeypad::Action action, RestInfoData *userInfo, PageMa
 
     this->setStyleSheet("QLabel[flash=\"true\"] { color: red; }");
 
-    if(action == PageKeypad::Withdraw) {
-        this->setWindowTitle(QCoreApplication::translate("PageKeypad", "Nosto - Muu summa", nullptr));
-        this->ui->lblAmountText->setText(QCoreApplication::translate("PageKeypad", "Nostettava summa:", nullptr));
-        this->ui->btnDot->setVisible(false);
-    } else if(action == PageKeypad::Deposit) {
-        this->setWindowTitle(QCoreApplication::translate("PageKeypad", "Talletus - Summan syöttö", nullptr));
-        this->ui->lblAmountText->setText(QCoreApplication::translate("PageKeypad", "Talletettava summa:", nullptr));
-    } else if(action == PageKeypad::AccountNumber) {
-        this->setWindowTitle(QCoreApplication::translate("PageKeypad", "Tilisiirto - Tilinumero", nullptr));
-        this->ui->lblAmountText->setText(QCoreApplication::translate("PageKeypad", "Tilinumero:", nullptr));
-        this->ui->btnDot->setVisible(false);
-    } else {
-        this->setWindowTitle(QCoreApplication::translate("PageKeypad", "Tilisiirto - Summa", nullptr));
-        this->ui->lblAmountText->setText(QCoreApplication::translate("PageKeypad", "Siirrettävä summa:", nullptr));
-    }
+    this->ui->btnDot->setVisible(showDot);
+    this->setWindowTitle(title);
+    this->ui->lblAmountText->setText(message);
 
     QList<QPushButton*> gridButtons = this->findChildren<QPushButton*>();
 

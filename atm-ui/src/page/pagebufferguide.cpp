@@ -28,9 +28,9 @@ PageBufferGuide::PageBufferGuide(Action action, RestInfoData *userInfo, PageMana
 
 void PageBufferGuide::onOk() {
     if(this->action == Action::Transfer) {
-        this->navigate<PageKeypad>(PageKeypad::AccountNumber, this->userInfo);
+        this->navigate<PageKeypad>(false, tr("Tilisiirto - Tilinumero"), tr("Tilinumero:"), this->userInfo);
     } else {
-        this->navigate<PageKeypad>(PageKeypad::Deposit, this->userInfo);
+        this->navigate<PageKeypad>(true, tr("Talletus - Summan syöttö"), tr("Talletettava summa:"), this->userInfo);
     }
 }
 
@@ -51,7 +51,7 @@ QVariant PageBufferGuide::onNaviagte(const QMetaObject *oldPage, bool closed, QV
             return QVariant::fromValue(PageManager::KeepLoading);
         } else if(this->targetAccount.isNull()) {
             this->targetAccount = QString::number(result->toDouble(), 'f', 0);
-            return QVariant::fromValue(new PageReturn(new PageKeypad(PageKeypad::AccountSum, this->userInfo, this->pageManager), PageReturn::AddOnTop));
+            return QVariant::fromValue(new PageReturn(new PageKeypad(true, tr("Tilisiirto - Summa"), tr("Siirrettävä summa:"), this->userInfo, this->pageManager), PageReturn::AddOnTop));
         } else {
             this->amount = result->toDouble();
             this->pageManager->getRESTInterface(false)->transfer(this->targetAccount, this->amount);
