@@ -1,5 +1,7 @@
+const card = require("./models/crud/card");
 const errors = require("./errors");
 const jwt = require("jsonwebtoken");
+const bcrypt = require('bcryptjs');
 const util = require("util");
 
 const jwtVeifyPromise = util.promisify(jwt.verify);
@@ -91,6 +93,28 @@ module.exports = {
 
     checkPermOnMismatch: (req, perm) => {
         if(req.params.id !== req.token.customerId) throwIfDenied(perm, req.token);
+    },
+
+    checkPin: async (pin, cardDat) => {
+        if(cardDat.attempts < 1) {
+            throw new errors.PublicAPIError("This card is locked", errors.codes.ERR_CARD_LOCKED, 403);
+        }
+
+        if(!await bcrypt.compare(pin, cardDat.pin)) {
+            if(--cardDat["attempts"] < 1) {
+                await card.update(cardDat["cardId"], cardDat, true);
+                throw new errors.PublicAPIError("This card is locked", errors.codes.ERR_CARD_LOCKED, 403);
+            }
+
+            await card.update(cardDat["cardId"], cardDat, true);
+
+            throw new errors.PublicAPIError("Invalid customerId or pin", errors.codes.ERR_INVALID_CREDENTIALS, 401);
+        }
+
+        if(cardDat["attempts"] !== 3) {
+            cardDat["attempts"] = 3;
+            await card.update(cardDat["cardId"], cardDat, true);
+        }
     },
 
     throwIfDenied

@@ -2,7 +2,7 @@ const customer = require("../../models/crud/customer");
 const card = require("../../models/crud/card");
 const errors = require("../../errors");
 const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
+const butil = require("../../util");
 
 const router = require("express").Router();
 
@@ -36,27 +36,7 @@ router.post("/", (req, res) => {
             return data;
         })
         .then(async data => {
-            const match = await bcrypt.compare(req.body.pin, data.pin);
-            data["match"] = match;
-            return data;
-        })
-        .then(async data => {
-            if(!data["match"]) {
-                if(--data["attempts"] < 1) {
-                    await card.update(data["cardId"], data, true);
-                    throw new errors.PublicAPIError("This card is locked", errors.codes.ERR_CARD_LOCKED, 403);
-                }
-
-                await card.update(data["cardId"], data, true);
-
-                // Same as above
-                throw new errors.PublicAPIError("Invalid customerId or pin", errors.codes.ERR_INVALID_CREDENTIALS, 401);
-            }
-
-            if(data["attempts"] !== 3) {
-                data["attempts"] = 3;
-                await card.update(data["cardId"], data, true);
-            }
+            await butil.checkPin(req.body.pin, data);
 
             res.json({
                 "token": jwt.sign({
