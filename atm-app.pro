@@ -2,7 +2,7 @@ TEMPLATE = subdirs
 
 SUBDIRS = atm-ui rfid pin-ui rest
 
-atm_ui.subdir = atm-ui
+atm-ui.subdir = atm-ui
 
 rfid.file = atm-dll/rfid/AsyncSerialInterface.pro
 pin-ui.file = atm-dll/pin-ui/Pin.pro
