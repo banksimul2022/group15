@@ -6,7 +6,7 @@ BankTransaction::BankTransaction(QJsonObject transaction)
     this->type=transaction.value("type").toString();
     this->sum=transaction.value("sum").toDouble(-1);
     this->cardNumber=transaction.value("cardNumber").toString(nullptr);
-    this->toAcount=transaction.value("toAccount").toString(nullptr);
+    this->toAcount=transaction.value("account").toString(nullptr);
 
     this->timestamp=QDateTime::fromString(transaction.value("timestamp").toString(),Qt::ISODate);
 }
