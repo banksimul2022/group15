@@ -183,7 +183,7 @@ void RESTEngine::replySlot(QNetworkReply *reply)
     QJsonObject jsonObj;
     int type = variant.value<int>();
 
-    if(type != RestReturnData::typeBalance) {
+    if(type != RestReturnData::typeProfile) {
         QByteArray responseData = reply->readAll();
         jsonDoc = QJsonDocument::fromJson(responseData);
         jsonObj = jsonDoc.object();
