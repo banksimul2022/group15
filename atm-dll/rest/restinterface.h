@@ -5,13 +5,14 @@
 #include "restreturndata.h"
 
 #include <QObject>
+#include <QSettings>
 
 class REST_EXPORT RESTInterface : public QObject
 {
     Q_OBJECT
 
 public:
-    static RESTInterface *createInstance();
+    static RESTInterface *createInstance(QSettings *settings);
 
     explicit RESTInterface(QObject *parent = nullptr);
     virtual ~RESTInterface() =0;
