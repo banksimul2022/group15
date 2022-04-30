@@ -41,6 +41,8 @@ class ATMWindow : public QMainWindow, public PageManager {
         void deletePage(QWidget *page, QWidget *page2 = nullptr); // Protects the loading page from getting deleted
         void displayLoadingPage();
 
+        QSettings settings;
+
         AsyncSerialInterface *rfidInterface;
         RESTInterface *restInterface;
 

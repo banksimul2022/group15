@@ -9,8 +9,9 @@
 
 ATMWindow::ATMWindow(QWidget *parent) :
     QMainWindow(parent),
+    settings(QSettings::IniFormat, QSettings::UserScope, "group15", "ATM App"),
     rfidInterface(new AsyncSerialInterface),
-    restInterface(RESTInterface::createInstance()),
+    restInterface(RESTInterface::createInstance(&this->settings)),
     loadingPage(new PageLoading(this)),
     ui(new Ui::ATMWindow)
 {
