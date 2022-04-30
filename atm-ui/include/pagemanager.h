@@ -17,7 +17,6 @@ class PageManager {
         Q_ENUM(PageReturnAction);
 
         virtual AsyncSerialInterface *getRFIDInterface() = 0;
-
         virtual RESTInterface *getRESTInterface(bool displayLoadingPage = true) = 0;
 
         // Convenience method for displayting messages

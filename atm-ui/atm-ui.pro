@@ -10,6 +10,7 @@ CONFIG += c++11
 
 SOURCES += \
     src/atmwindow.cpp \
+    src/atmwindow_manager_impl.cpp \
     src/main.cpp \
     src/page/pageaccountinfo.cpp \
     src/page/abstract/pagebase.cpp \
