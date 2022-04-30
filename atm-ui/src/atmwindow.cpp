@@ -23,6 +23,24 @@ ATMWindow::ATMWindow(QWidget *parent) :
 }
 
 ATMWindow::~ATMWindow() {
+    this->setPage(nullptr, this->pageStack.top());
+
+    while(this->pageStack.length() > 0) {
+        QWidget *page = this->pageStack.pop();
+
+        if(page != this->loadingPage) {
+            delete page;
+        }
+    }
+
+    delete this->loadingPage;
+    this->loadingPage = nullptr;
+
+    delete this->restInterface;
+    this->restInterface = nullptr;
+    delete this->rfidInterface;
+    this->rfidInterface = nullptr;
+
     delete ui;
 }
 
@@ -305,11 +323,11 @@ void ATMWindow::popTopPage(QWidget **oldPage, QWidget **actualPage) {
 }
 
 void ATMWindow::setPage(QWidget *page, QWidget *oldPage) {
-    if(!page || page == oldPage) {
+    if(page != nullptr && page == oldPage) {
         return;
     }
 
-    if(oldPage) {
+    if(oldPage != nullptr) {
         PageWithUserBar *pageCast = qobject_cast<PageWithUserBar*>(oldPage);
         if(pageCast != nullptr) pageCast->stopTimer();
         oldPage->setVisible(false); // Prevent page from opening as seperate window
@@ -317,20 +335,22 @@ void ATMWindow::setPage(QWidget *page, QWidget *oldPage) {
         oldPage->setParent(nullptr);
     }
 
-    this->setWindowTitle(QString("%1 - %2").arg(this->baseTitle, page->windowTitle()));
+    if(page != nullptr) {
+        this->setWindowTitle(QString("%1 - %2").arg(this->baseTitle, page->windowTitle()));
 
-    QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
-    sizePolicy.setHorizontalStretch(0);
-    sizePolicy.setVerticalStretch(0);
-    sizePolicy.setHeightForWidth(page->sizePolicy().hasHeightForWidth());
-    page->setSizePolicy(sizePolicy);
+        QSizePolicy sizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(page->sizePolicy().hasHeightForWidth());
+        page->setSizePolicy(sizePolicy);
 
-    page->setParent(this);
-    this->ui->rootLayout->addWidget(page);
-    page->setVisible(true);
+        page->setParent(this);
+        this->ui->rootLayout->addWidget(page);
+        page->setVisible(true);
 
-    PageWithUserBar *pageCast = qobject_cast<PageWithUserBar*>(page);
-    if(pageCast != nullptr) pageCast->startTimer();
+        PageWithUserBar *pageCast = qobject_cast<PageWithUserBar*>(page);
+        if(pageCast != nullptr) pageCast->startTimer();
+    }
 }
 
 void ATMWindow::deletePage(QWidget *page, QWidget *page2) {
