@@ -56,6 +56,7 @@ class ATMWindow : public QMainWindow, public PageManager {
         void onRestData(RestReturnData **data);
 
     public slots:
+        void showCursorShortcut();
         void fullscreenShortcut();
 
     private slots:
