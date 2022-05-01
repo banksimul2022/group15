@@ -1,8 +1,8 @@
 #include "page/util/pagereturn.h"
 
-PageReturn::PageReturn(QWidget *page, Action action) : pageWidget(page), navigateAction(action) {}
+PageReturn::PageReturn(PageBase *page, Action action) : pageWidget(page), navigateAction(action) {}
 
-QWidget *PageReturn::page() {
+PageBase *PageReturn::page() {
     return this->pageWidget;
 }
 

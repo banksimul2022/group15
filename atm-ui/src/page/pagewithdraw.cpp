@@ -70,7 +70,7 @@ PageBase::RestDataAction PageWithdraw::onRestData(RestReturnData *data) {
         return RestDataAction::Skip;
     }
 
-    QWidget *prompt = nullptr;
+    PageBase *prompt = nullptr;
 
     if(data->error() == RestErrors::ERR_INSUFFICIENT_FUNDS) {
         prompt = this->pageManager->createPrompt(

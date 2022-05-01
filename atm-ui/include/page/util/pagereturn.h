@@ -1,6 +1,8 @@
 #ifndef PAGERETURN_H
 #define PAGERETURN_H
 
+#include "page/abstract/pagebase.h"
+
 #include <QWidget>
 
 class PageReturn {
@@ -11,13 +13,13 @@ class PageReturn {
             LeaveCurrent, AddOnTop
         };
 
-        PageReturn(QWidget *page, Action action);
+        PageReturn(PageBase *page, Action action);
 
-        QWidget *page();
+        PageBase *page();
         Action action();
 
     private:
-        QWidget *pageWidget;
+        PageBase *pageWidget;
         const Action navigateAction;
 };
 

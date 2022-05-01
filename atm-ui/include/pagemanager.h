@@ -7,6 +7,8 @@
 
 #include "page/dialog/pageprompt_enum.h"
 
+class PageBase; // Stub to avoid recursive include
+
 class PageManager {
     Q_GADGET
 
@@ -20,13 +22,13 @@ class PageManager {
         virtual RESTInterface *getRESTInterface(bool displayLoadingPage = true) = 0;
 
         // Convenience method for displayting messages
-        virtual QWidget *createPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, ...) = 0;
-        virtual QWidget *createPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, va_list args) = 0;
+        virtual PageBase *createPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, ...) = 0;
+        virtual PageBase *createPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, va_list args) = 0;
         virtual void displayPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, ...) = 0;
 
         virtual void leaveLoadingPage() = 0;
 
-        virtual QVariant navigateToPage(QWidget *page) = 0;
+        virtual QVariant navigateToPage(PageBase *page) = 0;
         virtual bool leaveCurrentPage(QVariant result) = 0;
         virtual void leaveAllPages(QVariant result) = 0;
 };

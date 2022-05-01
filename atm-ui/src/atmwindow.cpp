@@ -40,13 +40,7 @@ void ATMWindow::onRestDataFromDLL(RestReturnData *data) {
     int i;
 
     for(i = this->pageStack.size() - 1; i >= 0; i--) {
-        PageBase *page = qobject_cast<PageBase*>(this->pageStack.at(i));
-
-        if(page == nullptr) {
-            continue;
-        }
-
-        switch(page->onRestData(data)) {
+        switch(this->pageStack.at(i)->onRestData(data)) {
             case PageBase::RestDataAction::Skip:
                 break;
             case PageBase::RestDataAction::Delete:
@@ -65,7 +59,7 @@ void ATMWindow::onRestDataFromDLL(RestReturnData *data) {
     }
 }
 
-void ATMWindow::setPage(QWidget *page, QWidget *oldPage) {
+void ATMWindow::setPage(PageBase *page, PageBase *oldPage) {
     if(page != nullptr && page == oldPage) {
         return;
     }
@@ -96,7 +90,7 @@ void ATMWindow::setPage(QWidget *page, QWidget *oldPage) {
     }
 }
 
-bool ATMWindow::processPageReturnAction(PageReturnAction action, QWidget **newPage) {
+bool ATMWindow::processPageReturnAction(PageReturnAction action, PageBase **newPage) {
     switch(action) {
         case PageManager::Leave:
             return false;
@@ -123,7 +117,7 @@ bool ATMWindow::processPageReturnAction(PageReturnAction action, QWidget **newPa
     }
 }
 
-void ATMWindow::popTopPage(QWidget **oldPage, QWidget **actualPage) {
+void ATMWindow::popTopPage(PageBase **oldPage, PageBase **actualPage) {
     *oldPage = this->pageStack.pop();
     *actualPage = *oldPage;
 
@@ -133,7 +127,7 @@ void ATMWindow::popTopPage(QWidget **oldPage, QWidget **actualPage) {
     }
 }
 
-void ATMWindow::deletePage(QWidget *page, QWidget *page2) {
+void ATMWindow::deletePage(PageBase *page, PageBase *page2) {
     if(page2 != nullptr && page2 != this->loadingPage && page2 != page) page2->deleteLater();
     if(page != this->loadingPage) page->deleteLater();
 }
@@ -156,7 +150,7 @@ ATMWindow::~ATMWindow() {
     this->setPage(nullptr, this->pageStack.top());
 
     while(this->pageStack.length() > 0) {
-        QWidget *page = this->pageStack.pop();
+        PageBase *page = this->pageStack.pop();
 
         if(page != this->loadingPage) {
             delete page;
