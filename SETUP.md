@@ -30,7 +30,11 @@ npm start
 
 ### Build using Qt Creator
 
-Just open the `atm-app.pro` file at the root of the repo and hit run.
+🔴 **IMPORTANT!** 🔴 You need to change the build directory path *before opening the project*. Otherwise the build will fail at the linking phase.  
+To do this open Qt Creator and go to `Tools > Options > Build & Run (On the side) > Default Build Properties (Tab on top)`.  
+Once you are there change `Default build directory` to `./build/`
+
+Then you can open the `atm-app.pro` file at the root of the repo and hit run.
 
 ### Using `qmake` from the terminal
 
