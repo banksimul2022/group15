@@ -14,7 +14,7 @@ class PageBase : public QWidget {
             Delete, SetNull, Skip
         };
 
-        explicit PageBase(PageManager *stateManager, QWidget *parent = nullptr);
+        explicit PageBase(PageManager *pageManager, QWidget *parent = nullptr);
         virtual ~PageBase() = 0;
 
         virtual QVariant onNaviagte(const QMetaObject *oldPage, bool closed, QVariant *result);

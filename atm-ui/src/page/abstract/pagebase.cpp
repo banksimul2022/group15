@@ -2,14 +2,14 @@
 #include "utility.h"
 #include <QMetaMethod>
 #include <QDebug>
-#include "pagereturn.h"
+#include "page/util/pagereturn.h"
 
-PageBase::PageBase(PageManager *stateManager, QWidget *parent) :
+PageBase::PageBase(PageManager *pageManager, QWidget *parent) :
     QWidget{parent},
     hasBeenShown(false)
 {
     this->setVisible(false); // Prevent pages from randomly opening in their own windows when deparented
-    this->pageManager = stateManager;
+    this->pageManager = pageManager;
     qDebug() << "Create: " << this;
 }
 

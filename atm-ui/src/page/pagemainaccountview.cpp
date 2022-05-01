@@ -1,12 +1,12 @@
 #include "page/pagemainaccountview.h"
 #include "ui_pagemainaccountview.h"
-#include "userstatusbarwidget.h"
+#include "page/util/userstatusbarwidget.h"
 #include "page/pageaccountinfo.h"
 #include "page/pagewithdraw.h"
 #include "page/pagebufferguide.h"
 
-PageMainAccountView::PageMainAccountView(PageManager *stateManager, QWidget *parent) :
-    PageWithUserBar(UserStatusBarWidget::Mode::logout, stateManager, nullptr, parent),
+PageMainAccountView::PageMainAccountView(PageManager *pageManager, QWidget *parent) :
+    PageWithUserBar(UserStatusBarWidget::Mode::logout, pageManager, nullptr, parent),
     userInfo(nullptr),
     ui(new Ui::PageMainAccountView)
 {

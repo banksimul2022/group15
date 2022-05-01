@@ -1,16 +1,16 @@
 #include "page/pagewithdraw.h"
 #include "ui_pagewithdraw.h"
-#include "userstatusbarwidget.h"
-#include "page/pagekeypad.h"
-#include "page/pageprompt.h"
+#include "page/util/userstatusbarwidget.h"
+#include "page/util/pagereturn.h"
+#include "page/dialog/pagekeypad.h"
+#include "page/dialog/pageprompt.h"
 #include "utility.h"
-#include "pagereturn.h"
 
 #include <resterrorcode.h>
 #include <QDebug>
 
-PageWithdraw::PageWithdraw(RestInfoData *userInfo, PageManager *stateManager, QWidget *parent) :
-    PageWithUserBar(UserStatusBarWidget::leaveOnly, stateManager, userInfo, parent),
+PageWithdraw::PageWithdraw(RestInfoData *userInfo, PageManager *pageManager, QWidget *parent) :
+    PageWithUserBar(UserStatusBarWidget::leaveOnly, pageManager, userInfo, parent),
     useCredit(false),
     amountWithdrawn(0),
     ui(new Ui::PageWithdraw)

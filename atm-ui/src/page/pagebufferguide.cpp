@@ -1,13 +1,13 @@
 #include "page/pagebufferguide.h"
 #include "ui_pagebufferguide.h"
-#include "page/pagekeypad.h"
+#include "page/dialog/pagekeypad.h"
+#include "page/util/pagereturn.h"
 #include "utility.h"
-#include "pagereturn.h"
 
 #include <resterrorcode.h>
 
-PageBufferGuide::PageBufferGuide(Action action, RestInfoData *userInfo, PageManager *stateManager, QWidget *parent) :
-    PageWithUserBar(UserStatusBarWidget::leaveAndOk, stateManager, userInfo, parent),
+PageBufferGuide::PageBufferGuide(Action action, RestInfoData *userInfo, PageManager *pageManager, QWidget *parent) :
+    PageWithUserBar(UserStatusBarWidget::leaveAndOk, pageManager, userInfo, parent),
     action(action),
     inputStr1(),
     inputStr2(),

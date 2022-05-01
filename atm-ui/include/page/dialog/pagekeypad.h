@@ -2,7 +2,7 @@
 #define PAGEKEYPAD_H
 
 #include "page/abstract/pagewithuserbar.h"
-#include "userstatusbarwidget.h"
+#include "page/util/userstatusbarwidget.h"
 
 #include <QWidget>
 
@@ -14,7 +14,7 @@ class PageKeypad : public PageWithUserBar {
     Q_OBJECT
 
     public:
-        explicit PageKeypad(bool showDot, QString title, QString message, RestInfoData *userInfo, PageManager *stateManager, QWidget *parent = nullptr);
+        explicit PageKeypad(bool showDot, QString title, QString message, RestInfoData *userInfo, PageManager *pageManager, QWidget *parent = nullptr);
         ~PageKeypad();
 
     protected slots:

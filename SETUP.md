@@ -30,7 +30,11 @@ npm start
 
 ### Build using Qt Creator
 
-Just open the `atm-app.pro` file at the root of the repo and hit run.
+🔴 **IMPORTANT!** 🔴 You need to change the build directory path *before opening the project*. Otherwise the build will fail at the linking phase.  
+To do this open Qt Creator and go to `Tools > Options > Build & Run (On the side) > Default Build Properties (Tab on top)`.  
+Once you are there change `Default build directory` to `./build/`
+
+Then you can open the `atm-app.pro` file at the root of the repo and hit run.
 
 ### Using `qmake` from the terminal
 
@@ -55,4 +59,15 @@ qmake -spec win32-g++ ../atm-app.pro
 mingw32-make
 FOR /R atm-dll %f IN (*.dll) DO COPY /Y %f atm-ui\release
 atm-ui\release\atm-ui.exe
+```
+### Specifying a different API endpoint URL
+
+By default the `atm-ui` app tries to connect to `http://localhost:3000`.  
+This can be changed by creating a new directory called `group15` in the same place as the executable.  
+  
+Then within this folder create a file called `ATM App.ini` and add the following contents:
+
+```ini
+[General]
+endpoint-url=http://<IP/Domain>:<Port>/
 ```

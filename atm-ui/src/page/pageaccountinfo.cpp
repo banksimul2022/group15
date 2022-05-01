@@ -1,14 +1,14 @@
 #include "page/pageaccountinfo.h"
 #include "ui_pageaccountinfo.h"
-#include "userstatusbarwidget.h"
+#include "page/util/userstatusbarwidget.h"
+#include "page/util/transactiontablemodel.h"
 
 #include <restbalancedata.h>
 #include <resttransactiondata.h>
-#include <transactiontablemodel.h>
 #include <QSvgRenderer>
 
-PageAccountInfo::PageAccountInfo(Action action, RestInfoData *userInfo, PageManager *stateManager, QWidget *parent) :
-    PageWithUserBar(UserStatusBarWidget::Mode::leaveOnly, stateManager, nullptr, parent),
+PageAccountInfo::PageAccountInfo(Action action, RestInfoData *userInfo, PageManager *pageManager, QWidget *parent) :
+    PageWithUserBar(UserStatusBarWidget::Mode::leaveOnly, pageManager, nullptr, parent),
     action(action),
     ui(new Ui::PageAccountInfo)
 {

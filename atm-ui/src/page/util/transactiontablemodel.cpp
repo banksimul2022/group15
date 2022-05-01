@@ -1,4 +1,4 @@
-#include "transactiontablemodel.h"
+#include "page/util/transactiontablemodel.h"
 
 TransactionTableModel::TransactionTableModel(RestTransactionData *transactionData, QObject *parent) :
     QAbstractTableModel{parent},

@@ -1,7 +1,7 @@
 #include "atmwindow.h"
 #include "ui_atmwindow.h"
 #include "page/pageinsertcard.h"
-#include "pagereturn.h"
+#include "page/util/pagereturn.h"
 #include "page/abstract/pagewithuserbar.h"
 
 #include <QShortcut>
@@ -16,6 +16,7 @@ ATMWindow::ATMWindow(QWidget *parent) :
     ui(new Ui::ATMWindow)
 {
     ui->setupUi(this);
+    new QShortcut(QKeySequence(Qt::Key_F10), this, SLOT(showCursorShortcut()));
     new QShortcut(QKeySequence(Qt::Key_F11), this, SLOT(fullscreenShortcut()));
     this->baseTitle = this->windowTitle();
     this->navigateToPage(new PageInsertCard(this));
@@ -137,11 +138,17 @@ void ATMWindow::deletePage(QWidget *page, QWidget *page2) {
     if(page != this->loadingPage) page->deleteLater();
 }
 
+void ATMWindow::showCursorShortcut() {
+    QApplication::restoreOverrideCursor();
+}
+
 void ATMWindow::fullscreenShortcut() {
     if(this->isFullScreen()) {
         this->showNormal();
+        QApplication::restoreOverrideCursor();
     } else {
         this->showFullScreen();
+        QApplication::setOverrideCursor(QCursor(Qt::BlankCursor));
     }
 }
 
