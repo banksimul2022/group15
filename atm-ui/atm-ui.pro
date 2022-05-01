@@ -62,6 +62,8 @@ FORMS += \
     form/page/pagewithdraw.ui \
     form/userstatusbarwidget.ui
 
+RC_ICONS = files/icons/icon.ico
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin

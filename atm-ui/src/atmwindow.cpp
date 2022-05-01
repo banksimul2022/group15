@@ -16,6 +16,7 @@ ATMWindow::ATMWindow(QWidget *parent) :
     ui(new Ui::ATMWindow)
 {
     ui->setupUi(this);
+    this->setWindowIcon(QIcon(":/files/icons/icon.ico"));
     new QShortcut(QKeySequence(Qt::Key_F10), this, SLOT(showCursorShortcut()));
     new QShortcut(QKeySequence(Qt::Key_F11), this, SLOT(fullscreenShortcut()));
     this->baseTitle = this->windowTitle();
