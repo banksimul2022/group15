@@ -4,8 +4,8 @@
 
 #include <QSvgRenderer>
 
-PagePrompt::PagePrompt(QString title, QString prompt, PromptEnum::Icon icon, PageManager *stateManager, QWidget *parent, int count, ...) :
-    PageWithUserBar(UserStatusBarWidget::custom, stateManager, nullptr, parent),
+PagePrompt::PagePrompt(QString title, QString prompt, PromptEnum::Icon icon, PageManager *pageManager, QWidget *parent, int count, ...) :
+    PageWithUserBar(UserStatusBarWidget::custom, pageManager, nullptr, parent),
     ui(new Ui::PagePrompt)
 {
     va_list args;
@@ -14,8 +14,8 @@ PagePrompt::PagePrompt(QString title, QString prompt, PromptEnum::Icon icon, Pag
     va_end(args);
 }
 
-PagePrompt::PagePrompt(QString title, QString prompt, PromptEnum::Icon icon, int count, va_list args, PageManager *stateManager, QWidget *parent) :
-    PageWithUserBar(UserStatusBarWidget::custom, stateManager, nullptr, parent),
+PagePrompt::PagePrompt(QString title, QString prompt, PromptEnum::Icon icon, int count, va_list args, PageManager *pageManager, QWidget *parent) :
+    PageWithUserBar(UserStatusBarWidget::custom, pageManager, nullptr, parent),
     ui(new Ui::PagePrompt)
 {
     this->construct(title, prompt, icon, count, args);

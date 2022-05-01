@@ -13,7 +13,7 @@ class PageWithdraw : public PageWithUserBar {
     Q_OBJECT
 
     public:
-        explicit PageWithdraw(RestInfoData *userInfo, PageManager *stateManager, QWidget *parent = nullptr);
+        explicit PageWithdraw(RestInfoData *userInfo, PageManager *pageManager, QWidget *parent = nullptr);
         ~PageWithdraw();
 
         QVariant onNaviagte(const QMetaObject *oldPage, bool closed, QVariant *result) override;

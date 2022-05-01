@@ -13,7 +13,7 @@ class PageInsertCard : public PageBase {
     Q_OBJECT
 
     public:
-        explicit PageInsertCard(PageManager *stateManager, QWidget *parent = nullptr);
+        explicit PageInsertCard(PageManager *pageManager, QWidget *parent = nullptr);
         ~PageInsertCard();
 
         void onShown() override;

@@ -9,8 +9,8 @@
 #include <resterrorcode.h>
 #include <QDebug>
 
-PageWithdraw::PageWithdraw(RestInfoData *userInfo, PageManager *stateManager, QWidget *parent) :
-    PageWithUserBar(UserStatusBarWidget::leaveOnly, stateManager, userInfo, parent),
+PageWithdraw::PageWithdraw(RestInfoData *userInfo, PageManager *pageManager, QWidget *parent) :
+    PageWithUserBar(UserStatusBarWidget::leaveOnly, pageManager, userInfo, parent),
     useCredit(false),
     amountWithdrawn(0),
     ui(new Ui::PageWithdraw)

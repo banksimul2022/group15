@@ -2,7 +2,7 @@
 
 #include <QDebug>
 
-PageWithUserBar::PageWithUserBar(UserStatusBarWidget::Mode mode, PageManager *stateManager, RestInfoData *infoData, QWidget *parent) : PageBase{stateManager, parent} {
+PageWithUserBar::PageWithUserBar(UserStatusBarWidget::Mode mode, PageManager *pageManager, RestInfoData *infoData, QWidget *parent) : PageBase{pageManager, parent} {
     this->userStatusBar = new UserStatusBarWidget(mode, infoData, this);
     this->connect(this->userStatusBar, &UserStatusBarWidget::extraButton, this, &PageWithUserBar::onExtraButton);
     this->connect(this->userStatusBar, &UserStatusBarWidget::leave, this, &PageWithUserBar::onLeave);

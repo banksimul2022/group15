@@ -6,8 +6,8 @@
 #include <resterrorcode.h>
 #include <pininterface.h>
 
-PageInsertCard::PageInsertCard(PageManager *stateManager, QWidget *parent) :
-    PageBase(stateManager, parent),
+PageInsertCard::PageInsertCard(PageManager *pageManager, QWidget *parent) :
+    PageBase(pageManager, parent),
     processReads(true),
     ui(new Ui::PageInsertCard)
 {

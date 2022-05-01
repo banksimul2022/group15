@@ -6,8 +6,8 @@
 
 #include <resterrorcode.h>
 
-PageBufferGuide::PageBufferGuide(Action action, RestInfoData *userInfo, PageManager *stateManager, QWidget *parent) :
-    PageWithUserBar(UserStatusBarWidget::leaveAndOk, stateManager, userInfo, parent),
+PageBufferGuide::PageBufferGuide(Action action, RestInfoData *userInfo, PageManager *pageManager, QWidget *parent) :
+    PageWithUserBar(UserStatusBarWidget::leaveAndOk, pageManager, userInfo, parent),
     action(action),
     inputStr1(),
     inputStr2(),

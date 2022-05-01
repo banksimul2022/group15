@@ -14,7 +14,7 @@ class PageMainAccountView : public PageWithUserBar {
     Q_OBJECT
 
     public:
-        explicit PageMainAccountView(PageManager *stateManager, QWidget *parent = nullptr);
+        explicit PageMainAccountView(PageManager *pageManager, QWidget *parent = nullptr);
         ~PageMainAccountView();
 
         QVariant onNaviagte(const QMetaObject *oldPage, bool closed, QVariant *result) override;

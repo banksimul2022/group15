@@ -7,8 +7,8 @@
 #include <transactiontablemodel.h>
 #include <QSvgRenderer>
 
-PageAccountInfo::PageAccountInfo(Action action, RestInfoData *userInfo, PageManager *stateManager, QWidget *parent) :
-    PageWithUserBar(UserStatusBarWidget::Mode::leaveOnly, stateManager, nullptr, parent),
+PageAccountInfo::PageAccountInfo(Action action, RestInfoData *userInfo, PageManager *pageManager, QWidget *parent) :
+    PageWithUserBar(UserStatusBarWidget::Mode::leaveOnly, pageManager, nullptr, parent),
     action(action),
     ui(new Ui::PageAccountInfo)
 {
