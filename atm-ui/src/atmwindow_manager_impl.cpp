@@ -1,6 +1,6 @@
 #include "atmwindow.h"
 #include "ui_atmwindow.h"
-#include "page/pageprompt.h"
+#include "page/dialog/pageprompt.h"
 #include "pagereturn.h"
 
 // ---------- INTERFACE GETTERS START ----------

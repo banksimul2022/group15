@@ -1,7 +1,7 @@
 #ifndef PAGEPROMPT_H
 #define PAGEPROMPT_H
 
-#include "page/pageprompt_enum.h"
+#include "page/dialog/pageprompt_enum.h"
 #include "page/abstract/pagewithuserbar.h"
 #include <QWidget>
 

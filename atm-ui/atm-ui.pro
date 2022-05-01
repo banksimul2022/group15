@@ -16,10 +16,10 @@ SOURCES += \
     src/page/abstract/pagebase.cpp \
     src/page/pagebufferguide.cpp \
     src/page/pageinsertcard.cpp \
-    src/page/pagekeypad.cpp \
+    src/page/dialog/pagekeypad.cpp \
     src/page/pageloading.cpp \
     src/page/pagemainaccountview.cpp \
-    src/page/pageprompt.cpp \
+    src/page/dialog/pageprompt.cpp \
     src/page/pagewithdraw.cpp \
     src/page/abstract/pagewithuserbar.cpp \
     src/pagereturn.cpp \
@@ -33,11 +33,11 @@ HEADERS += \
     include/page/abstract/pagebase.h \
     include/page/pagebufferguide.h \
     include/page/pageinsertcard.h \
-    include/page/pagekeypad.h \
+    include/page/dialog/pagekeypad.h \
     include/page/pageloading.h \
     include/page/pagemainaccountview.h \
-    include/page/pageprompt.h \
-    include/page/pageprompt_enum.h \
+    include/page/dialog/pageprompt.h \
+    include/page/dialog/pageprompt_enum.h \
     include/page/pagewithdraw.h \
     include/page/abstract/pagewithuserbar.h \
     include/pagemanager.h \

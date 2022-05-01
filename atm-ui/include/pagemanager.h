@@ -5,7 +5,7 @@
 #include <restinterface.h>
 #include <asyncserialinterface.h>
 
-#include "page/pageprompt_enum.h"
+#include "page/dialog/pageprompt_enum.h"
 
 class PageManager {
     Q_GADGET

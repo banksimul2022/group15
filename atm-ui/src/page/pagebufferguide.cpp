@@ -1,6 +1,6 @@
 #include "page/pagebufferguide.h"
 #include "ui_pagebufferguide.h"
-#include "page/pagekeypad.h"
+#include "page/dialog/pagekeypad.h"
 #include "utility.h"
 #include "pagereturn.h"
 

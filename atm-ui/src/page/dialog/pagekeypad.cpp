@@ -1,4 +1,4 @@
-#include "page/pagekeypad.h"
+#include "page/dialog/pagekeypad.h"
 #include "ui_pagekeypad.h"
 #include "userstatusbarwidget.h"
 #include "utility.h"

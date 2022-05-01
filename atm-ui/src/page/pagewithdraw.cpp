@@ -1,8 +1,8 @@
 #include "page/pagewithdraw.h"
 #include "ui_pagewithdraw.h"
 #include "userstatusbarwidget.h"
-#include "page/pagekeypad.h"
-#include "page/pageprompt.h"
+#include "page/dialog/pagekeypad.h"
+#include "page/dialog/pageprompt.h"
 #include "utility.h"
 #include "pagereturn.h"
 
