@@ -29,6 +29,7 @@ class PageMainAccountView : public PageWithUserBar {
         void on_btnTransactions_clicked();
         void on_btnDeposit_clicked();
         void on_btnTransfer_clicked();
+        void on_btnChangePin_clicked();
 
     private:
             RestInfoData *userInfo;

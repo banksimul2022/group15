@@ -10,6 +10,7 @@ CONFIG += c++11
 
 SOURCES += \
     src/atmwindow.cpp \
+    src/atmwindow_manager_impl.cpp \
     src/main.cpp \
     src/page/pageaccountinfo.cpp \
     src/page/abstract/pagebase.cpp \
@@ -67,23 +68,24 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     resources.qrc
 
-equals(STANDALONE, 1) {
-    win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../atm-dll/rfid/build/release/ -lAsyncSerialInterface
-    else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../atm-dll/rfid/build/debug/ -lAsyncSerialInterface
-    else:unix: LIBS += -L$$PWD/../atm-dll/rfid/build/ -lAsyncSerialInterface
+equals(STANDALONE, 1): MODULE_BASE_PATH = ../atm-dll/_MODULE_/build/
+else: MODULE_BASE_PATH = ../build/atm-dll/_MODULE_
 
-    win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../atm-dll/rest/build/release/ -lREST
-    else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../atm-dll/rest/build/debug/ -lREST
-    else:unix: LIBS += -L$$PWD/../atm-dll/rest/build/ -lREST
-
-    win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../atm-dll/pin-ui/build/release/ -lPin
-    else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../atm-dll/pin-ui/build/debug/ -lPin
-    else:unix: LIBS += -L$$PWD/../atm-dll/pin-ui/build/ -lPin
-} else {
-    unix|win32: LIBS += -L$$PWD/../build/atm-dll/rfid/ -lAsyncSerialInterface
-    unix|win32: LIBS += -L$$PWD/../build/atm-dll/rest/ -lREST
-    unix|win32: LIBS += -L$$PWD/../build/atm-dll/pin-ui/ -lPin
+defineReplace(modulePath) {
+  return($$PWD/$$replace(MODULE_BASE_PATH, _MODULE_, $$1))
 }
+
+win32:CONFIG(release, debug|release): LIBS += -L$$modulePath(rfid)/release/ -lAsyncSerialInterface
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$modulePath(rfid)/debug/ -lAsyncSerialInterface
+else:unix: LIBS += -L$$modulePath(rfid) -lAsyncSerialInterface
+
+win32:CONFIG(release, debug|release): LIBS += -L$$modulePath(rest)/release/ -lREST
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$modulePath(rest)/debug/ -lREST
+else:unix: LIBS += -L$$modulePath(rest) -lREST
+
+win32:CONFIG(release, debug|release): LIBS += -L$$modulePath(pin-ui)/release/ -lPin
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$modulePath(pin-ui)/debug/ -lPin
+else:unix: LIBS += -L$$modulePath(pin-ui) -lPin
 
 INCLUDEPATH += $$PWD/../atm-dll/rfid
 DEPENDPATH += $$PWD/../atm-dll/rfid

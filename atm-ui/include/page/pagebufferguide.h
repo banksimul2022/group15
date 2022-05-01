@@ -12,7 +12,7 @@ class PageBufferGuide : public PageWithUserBar {
 
     public:
         enum Action {
-            Deposit, Transfer
+            Deposit, Transfer, ChangePIN
         };
 
         explicit PageBufferGuide(Action action, RestInfoData *userInfo, PageManager *pageManager, QWidget *parent = nullptr);
@@ -26,7 +26,8 @@ class PageBufferGuide : public PageWithUserBar {
 
     private:
         Action action;
-        QString targetAccount;
+        QString inputStr1; // targetAccount in Transfer mode and currentPin in ChangePIN mode
+        QString inputStr2; // newPin in ChangePIN mode
         double amount;
         RestInfoData *userInfo;
         Ui::PageBufferGuide *ui;

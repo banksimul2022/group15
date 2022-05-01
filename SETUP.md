@@ -32,7 +32,9 @@ npm start
 
 Just open the `atm-app.pro` file at the root of the repo and hit run.
 
-### Using `qmake` from the terminal (Linux only)
+### Using `qmake` from the terminal
+
+#### Linux
 
 ```sh
 mkdir group15/build
@@ -40,4 +42,17 @@ cd group15/build
 qmake ../atm-app.pro && make
 cp -P atm-dll/*/*.so* atm-ui/
 LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./atm-ui ./atm-ui/atm-ui
+```
+
+#### Windows
+
+Run these commands using the Qt provided MinGW CMD shortcut. (Search for MinGW)
+
+```cmd
+mkdir group15\build
+cd group15\build
+qmake -spec win32-g++ ../atm-app.pro
+mingw32-make
+FOR /R atm-dll %f IN (*.dll) DO COPY /Y %f atm-ui\release
+atm-ui\release\atm-ui.exe
 ```

@@ -68,3 +68,7 @@ void PageMainAccountView::on_btnTransfer_clicked() {
     this->navigate<PageBufferGuide>(PageBufferGuide::Transfer, this->userInfo);
 }
 
+void PageMainAccountView::on_btnChangePin_clicked() {
+    this->navigate<PageBufferGuide>(PageBufferGuide::ChangePIN, this->userInfo);
+}
+
