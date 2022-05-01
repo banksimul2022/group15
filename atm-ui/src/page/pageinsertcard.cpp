@@ -22,10 +22,6 @@ PageInsertCard::~PageInsertCard() {
     delete ui;
 }
 
-void PageInsertCard::onShown() {
-    this->pageManager->getRFIDInterface()->StartReadingSerial();
-}
-
 QVariant PageInsertCard::onNaviagte(const QMetaObject *oldPage, bool closed, QVariant *result) {
     Q_UNUSED(oldPage) Q_UNUSED(closed) Q_UNUSED(result)
 
