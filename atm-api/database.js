@@ -1,12 +1,16 @@
-const butil = require("./util");
 const util = require("util");
 
-const dbConnection = require("mysql").createPool({
-    host: butil.nshcl(process.env.SQL_HOST, "localhost"),
-    database: butil.nshcl(process.env.SQL_DATABASE, "bankdb"),
+// :( The util.js file provides this function but this causes an recursive require with card.js as utiljs needs card.js 
+const nshcl = (value, default_value) => {
+    return value === null || value === undefined ? default_value : value;
+};
 
-    user: butil.nshcl(process.env.SQL_USER, "bankuser"),
-    password: butil.nshcl(process.env.SQL_PASSWORD, "bankpass"),
+const dbConnection = require("mysql").createPool({
+    host: nshcl(process.env.SQL_HOST, "localhost"),
+    database: nshcl(process.env.SQL_DATABASE, "bankdb"),
+
+    user: nshcl(process.env.SQL_USER, "bankuser"),
+    password: nshcl(process.env.SQL_PASSWORD, "bankpass"),
 });
 
 const originalQueryFunction = dbConnection.query;

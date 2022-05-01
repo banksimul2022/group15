@@ -59,7 +59,10 @@ const codes = {
 
     ERR_CARD_LOCKED: createCode(types.ERR_PERMISSION),
 
-    ERR_UNKNOWN_ACCOUNT: createCode(types.ERR_VALUE)
+    ERR_UNKNOWN_ACCOUNT: createCode(types.ERR_VALUE),
+
+    ERR_NEW_PIN_INVALID: createCode(types.ERR_VALUE),
+    ERR_SAME_PIN: createCode(types.ERR_VALUE)
 };
 
 module.exports = Object.freeze({
