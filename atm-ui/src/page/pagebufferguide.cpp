@@ -47,7 +47,7 @@ void PageBufferGuide::onOk() {
             break;
 
         case Action::ChangePIN:
-            this->navigate<PageKeypad>(true, tr("PIN Vaihto - Nykyinen PIN"), tr("Nykyinen PIN:"), this->userInfo);
+            this->navigate<PageKeypad>(false, tr("PIN Vaihto - Nykyinen PIN"), tr("Nykyinen PIN:"), this->userInfo);
             break;
     }
 }
@@ -82,10 +82,10 @@ QVariant PageBufferGuide::onNaviagte(const QMetaObject *oldPage, bool closed, QV
             case Action::ChangePIN:
                 if(this->inputStr1.isNull()) { // inputStr1 = currentPin
                     this->inputStr1 = QString::number(result->toDouble(), 'f', 0);
-                    return QVariant::fromValue(new PageReturn(new PageKeypad(true, tr("PIN Vaihto - Uusi PIN"), tr("Uusi PIN:"), this->userInfo, this->pageManager), PageReturn::AddOnTop));
+                    return QVariant::fromValue(new PageReturn(new PageKeypad(false, tr("PIN Vaihto - Uusi PIN"), tr("Uusi PIN:"), this->userInfo, this->pageManager), PageReturn::AddOnTop));
                 } else if(this->inputStr2.isNull()) { // inputStr2 = newPin
                     this->inputStr2 = QString::number(result->toDouble(), 'f', 0);
-                    return QVariant::fromValue(new PageReturn(new PageKeypad(true, tr("PIN Vaihto - Uusi PIN"), tr("Uusi PIN uudelleen:"), this->userInfo, this->pageManager), PageReturn::AddOnTop));
+                    return QVariant::fromValue(new PageReturn(new PageKeypad(false, tr("PIN Vaihto - Uusi PIN"), tr("Uusi PIN uudelleen:"), this->userInfo, this->pageManager), PageReturn::AddOnTop));
                 } else if(this->inputStr2 != QString::number(result->toDouble(), 'f', 0)) { // check that inputStr2 (newPin) equals the second new pin input round
                     return QVariant::fromValue(
                                 new PageReturn(
