@@ -1,6 +1,6 @@
 #include "page/pageloading.h"
 #include "ui_pageloading.h"
-#include "userstatusbarwidget.h"
+#include "page/util/userstatusbarwidget.h"
 
 #include <QSvgRenderer>
 

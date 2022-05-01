@@ -22,9 +22,9 @@ SOURCES += \
     src/page/dialog/pageprompt.cpp \
     src/page/pagewithdraw.cpp \
     src/page/abstract/pagewithuserbar.cpp \
-    src/pagereturn.cpp \
-    src/transactiontablemodel.cpp \
-    src/userstatusbarwidget.cpp \
+    src/page/util/pagereturn.cpp \
+    src/page/util/transactiontablemodel.cpp \
+    src/page/util/userstatusbarwidget.cpp \
     src/utility.cpp
 
 HEADERS += \
@@ -41,10 +41,10 @@ HEADERS += \
     include/page/pagewithdraw.h \
     include/page/abstract/pagewithuserbar.h \
     include/pagemanager.h \
-    include/pagereturn.h \
-    include/userstatusbarwidget.h \
+    include/page/util/pagereturn.h \
+    include/page/util/userstatusbarwidget.h \
     include/utility.h \
-    include/transactiontablemodel.h
+    include/page/util/transactiontablemodel.h
 
 INCLUDEPATH += include
 

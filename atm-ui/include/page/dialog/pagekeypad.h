@@ -2,7 +2,7 @@
 #define PAGEKEYPAD_H
 
 #include "page/abstract/pagewithuserbar.h"
-#include "userstatusbarwidget.h"
+#include "page/util/userstatusbarwidget.h"
 
 #include <QWidget>
 

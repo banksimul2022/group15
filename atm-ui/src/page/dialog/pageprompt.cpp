@@ -1,6 +1,6 @@
 #include "page/dialog/pageprompt.h"
 #include "ui_pageprompt.h"
-#include "userstatusbarwidget.h"
+#include "page/util/userstatusbarwidget.h"
 
 #include <QSvgRenderer>
 

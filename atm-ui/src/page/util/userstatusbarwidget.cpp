@@ -1,4 +1,4 @@
-#include "userstatusbarwidget.h"
+#include "page/util/userstatusbarwidget.h"
 #include "ui_userstatusbarwidget.h"
 #include "utility.h"
 

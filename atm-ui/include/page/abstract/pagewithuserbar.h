@@ -2,7 +2,7 @@
 #define PAGEWITHUSERBAR_H
 
 #include "pagebase.h"
-#include "userstatusbarwidget.h"
+#include "page/util/userstatusbarwidget.h"
 
 #include <QHBoxLayout>
 

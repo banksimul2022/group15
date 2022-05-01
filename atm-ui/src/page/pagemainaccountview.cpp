@@ -1,6 +1,6 @@
 #include "page/pagemainaccountview.h"
 #include "ui_pagemainaccountview.h"
-#include "userstatusbarwidget.h"
+#include "page/util/userstatusbarwidget.h"
 #include "page/pageaccountinfo.h"
 #include "page/pagewithdraw.h"
 #include "page/pagebufferguide.h"

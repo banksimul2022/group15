@@ -1,8 +1,8 @@
 #include "page/pagebufferguide.h"
 #include "ui_pagebufferguide.h"
 #include "page/dialog/pagekeypad.h"
+#include "page/util/pagereturn.h"
 #include "utility.h"
-#include "pagereturn.h"
 
 #include <resterrorcode.h>
 

@@ -1,8 +1,8 @@
 #include "page/dialog/pagekeypad.h"
 #include "ui_pagekeypad.h"
-#include "userstatusbarwidget.h"
+#include "page/util/userstatusbarwidget.h"
+#include "page/util/pagereturn.h"
 #include "utility.h"
-#include "pagereturn.h"
 
 #include <QDebug>
 #include <QTimer>
