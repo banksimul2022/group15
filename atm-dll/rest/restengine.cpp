@@ -56,6 +56,17 @@ void RESTEngine::logout()
 
 }
 
+void RESTEngine::changePin(QString pin, QString newPin)
+{
+    QNetworkRequest request = this->createRequest("/api/changePin", RestReturnData::typePinChange,"application/json");
+    QJsonObject Jsonobj;
+    Jsonobj.insert("pin",pin);
+    Jsonobj.insert("newPin",newPin);
+
+    this->Manager->post(request,QJsonDocument(Jsonobj).toJson());
+
+}
+
 void RESTEngine::getInfo()
 {
     QNetworkRequest request = this->createRequest("/api/info",RestReturnData::typeInfo);
@@ -239,8 +250,12 @@ void RESTEngine::replySlot(QNetworkReply *reply)
         emit dataReturn(new RestReturnData(RestReturnData::typeTransfer,error));
         return;
     }
+    case RestReturnData::typePinChange: {
 
+      emit dataReturn(new RestReturnData(RestReturnData::typePinChange,error));
     }
+
+ }
 
 
     emit dataReturn(new RestReturnData(RestReturnData::typeinternalerror, RestErrors::ERR_UNKNOW_REPLY));

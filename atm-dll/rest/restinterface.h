@@ -19,6 +19,7 @@ public:
     virtual void login(QString cardNumber, QString pin)=0;
     virtual void getInfo() =0;
     virtual void logout() =0;
+    virtual void changePin(QString pin, QString newPin) =0;
     virtual void latestTransaction(int count) =0;
     virtual void nextTransactions(int count) =0;
     virtual void prevTransactions(int count) =0;

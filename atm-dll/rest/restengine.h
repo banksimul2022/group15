@@ -16,6 +16,7 @@ public:
     explicit RESTEngine(QUrl endpointurl, QObject *parent = nullptr);   
     void login(QString cardNumber, QString pin) override;
     void logout() override;
+    void changePin(QString pin, QString newPin) override;
     void getInfo() override;
     void latestTransaction(int count) override;
     void nextTransactions(int count) override;
