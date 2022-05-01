@@ -23,6 +23,7 @@ SOURCES += \
     src/page/pagewithdraw.cpp \
     src/page/abstract/pagewithuserbar.cpp \
     src/page/util/pagereturn.cpp \
+    src/page/util/pagewidgetwrapper.cpp \
     src/page/util/transactiontablemodel.cpp \
     src/page/util/userstatusbarwidget.cpp \
     src/utility.cpp
@@ -40,6 +41,7 @@ HEADERS += \
     include/page/dialog/pageprompt_enum.h \
     include/page/pagewithdraw.h \
     include/page/abstract/pagewithuserbar.h \
+    include/page/util/pagewidgetwrapper.h \
     include/pagemanager.h \
     include/page/util/pagereturn.h \
     include/page/util/userstatusbarwidget.h \
