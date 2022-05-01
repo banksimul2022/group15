@@ -23,22 +23,22 @@ class ATMWindow : public QMainWindow, public PageManager {
         RESTInterface *getRESTInterface(bool displayLoadingPage = true) override;
 
         void displayPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, ...) override;
-        QWidget *createPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, ...) override;
-        QWidget *createPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, va_list args) override;
+        PageBase *createPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, ...) override;
+        PageBase *createPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, va_list args) override;
 
         void leaveLoadingPage() override;
 
-        QVariant navigateToPage(QWidget *page) override;
+        QVariant navigateToPage(PageBase *page) override;
         bool leaveCurrentPage(QVariant result) override;
         void leaveAllPages(QVariant result) override;
 
     private:
         // Returns true to end processing
-        bool processPageReturnAction(PageReturnAction action, QWidget **newPage);
+        bool processPageReturnAction(PageReturnAction action, PageBase **newPage);
 
-        void popTopPage(QWidget **oldPage, QWidget **actualPage); // Pops the actual top page (Check for loading page at top of stack)
-        void setPage(QWidget *page, QWidget *oldPage = nullptr);
-        void deletePage(QWidget *page, QWidget *page2 = nullptr); // Protects the loading page from getting deleted
+        void popTopPage(PageBase **oldPage, PageBase **actualPage); // Pops the actual top page (Check for loading page at top of stack)
+        void setPage(PageBase *page, PageBase *oldPage = nullptr);
+        void deletePage(PageBase *page, PageBase *page2 = nullptr); // Protects the loading page from getting deleted
         void displayLoadingPage();
 
         QSettings settings;
@@ -46,7 +46,7 @@ class ATMWindow : public QMainWindow, public PageManager {
         AsyncSerialInterface *rfidInterface;
         RESTInterface *restInterface;
 
-        QStack<QWidget*> pageStack;
+        QStack<PageBase*> pageStack;
         PageLoading *loadingPage;
 
         Ui::ATMWindow *ui;

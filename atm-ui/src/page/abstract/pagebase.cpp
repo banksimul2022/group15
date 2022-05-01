@@ -30,7 +30,7 @@ PageBase::RestDataAction PageBase::onRestData(RestReturnData *data) { Q_UNUSED(d
 bool PageBase::handleRestError(RestReturnData *data, QString action, bool leave) {
     if(data->error() == -1) return false;
 
-    QWidget *prompt = this->pageManager->createPrompt(
+    PageBase *prompt = this->pageManager->createPrompt(
                           tr("Verkkovirhe"),
                           tr("Odottamaton virhe %1!\n%2! (%3)").arg(action, Utility::restErrorToText(data->error()), QString::number(data->error())),
                           PromptEnum::error, 0

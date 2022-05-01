@@ -2,6 +2,7 @@
 #include "ui_pageinsertcard.h"
 #include "page/pageloading.h"
 #include "page/pagemainaccountview.h"
+#include "page/util/pagewidgetwrapper.h"
 
 #include <resterrorcode.h>
 #include <pininterface.h>
@@ -19,10 +20,6 @@ PageInsertCard::PageInsertCard(PageManager *pageManager, QWidget *parent) :
 
 PageInsertCard::~PageInsertCard() {
     delete ui;
-}
-
-void PageInsertCard::onShown() {
-    this->pageManager->getRFIDInterface()->StartReadingSerial();
 }
 
 QVariant PageInsertCard::onNaviagte(const QMetaObject *oldPage, bool closed, QVariant *result) {
@@ -49,10 +46,10 @@ void PageInsertCard::onCardRead(QString number) {
     this->number = number;
 
     // We don't need to hold a reference to the pin widget instance as it is automatocally dealt with by the StateManager
-    PinInterface *pinWidget = PinInterface::createWidgetInstance(this);
+    PinInterface *pinWidget = PinInterface::createWidgetInstance();
     this->connect(pinWidget, &PinInterface::pinWidgetUserInput, this, &PageInsertCard::onPinRead);
     this->connect(pinWidget, &PinInterface::deletePinWidget, this, &PageInsertCard::onPinCancel);
-    this->pageManager->navigateToPage(pinWidget);
+    this->navigate<PageWidgetWrapper>(pinWidget);
 }
 
 void PageInsertCard::onPinRead(QString pin) {

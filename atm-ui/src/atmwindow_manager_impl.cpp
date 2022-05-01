@@ -26,14 +26,14 @@ void ATMWindow::displayPrompt(QString title, QString message, PromptEnum::Icon i
     va_end(args);
 }
 
-QWidget *ATMWindow::createPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, ...) {
+PageBase *ATMWindow::createPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, ...) {
     va_list args;
     va_start(args, btnCount);
     return this->createPrompt(title, message, icon, btnCount, args);
     va_end(args);
 }
 
-QWidget *ATMWindow::createPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, va_list args) {
+PageBase *ATMWindow::createPrompt(QString title, QString message, PromptEnum::Icon icon, int btnCount, va_list args) {
     return new PagePrompt(title, message, icon, btnCount, args, this);
 }
 
@@ -45,9 +45,8 @@ bool ATMWindow::leaveCurrentPage(QVariant result) {
     }
 
     bool pushToTop = true;
-    PageBase *base;
     const QMetaObject *returningPage;
-    QWidget *oldPage, *actualPage, *newPage;
+    PageBase *oldPage, *actualPage, *newPage;
     PageReturn *pReturn = nullptr;
     PageReturn::Action lastAction = PageReturn::LeaveCurrent;
 
@@ -90,13 +89,7 @@ bool ATMWindow::leaveCurrentPage(QVariant result) {
             pReturn = nullptr;
         }
 
-        base = qobject_cast<PageBase*>(newPage);
-
-        if(base == nullptr) {
-            break;
-        }
-
-        result = base->onNaviagte(returningPage, true, &result);
+        result = newPage->onNaviagte(returningPage, true, &result);
         returningPage = newPage->metaObject();
     } while(1);
 
@@ -110,9 +103,7 @@ bool ATMWindow::leaveCurrentPage(QVariant result) {
         this->deletePage(actualPage, oldPage);
     }
 
-    if(base != nullptr) {
-        base->onShown();
-    }
+    newPage->onShown();
 
     return true;
 }
@@ -120,8 +111,8 @@ bool ATMWindow::leaveCurrentPage(QVariant result) {
 void ATMWindow::leaveAllPages(QVariant result) {
     Q_UNUSED(result);
     Q_ASSERT(this->pageStack.length() > 1);
-    QWidget *currentPage = nullptr;
-    QWidget *actualPage = nullptr;
+    PageBase *currentPage = nullptr;
+    PageBase *actualPage = nullptr;
 
     this->popTopPage(&currentPage, &actualPage);
 
@@ -129,7 +120,7 @@ void ATMWindow::leaveAllPages(QVariant result) {
         this->deletePage(this->pageStack.pop());
     }
 
-    QWidget *newPage;
+    PageBase *newPage;
 
     if(result.canConvert<PageReturn*>()) {
         PageReturn *pReturn = result.value<PageReturn*>();
@@ -154,9 +145,9 @@ void ATMWindow::leaveAllPages(QVariant result) {
     }
 }
 
-QVariant ATMWindow::navigateToPage(QWidget *page) {
+QVariant ATMWindow::navigateToPage(PageBase *page) {
     Q_ASSERT(page != nullptr);
-    QWidget *currentPage = this->pageStack.isEmpty() ? nullptr : this->pageStack.top();
+    PageBase *currentPage = this->pageStack.isEmpty() ? nullptr : this->pageStack.top();
     PageBase *pageCast = qobject_cast<PageBase*>(page);
 
     QVariant result;
@@ -166,7 +157,7 @@ QVariant ATMWindow::navigateToPage(QWidget *page) {
         "ATMWindow::leaveCurrentPage", "Unknown return type from page"
     );
 
-    QWidget *newPage = page;
+    PageBase *newPage = page;
 
     if(this->pageStack.length() > 0 && this->pageStack.top() == this->loadingPage) {
         this->pageStack.pop();
@@ -196,7 +187,7 @@ void ATMWindow::leaveLoadingPage() {
         return;
     }
 
-    QWidget* loadingPage = this->pageStack.pop();
+    PageBase* loadingPage = this->pageStack.pop();
     this->setPage(this->pageStack.top(), loadingPage);
 }
 
