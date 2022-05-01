@@ -39,11 +39,11 @@ PageBufferGuide::PageBufferGuide(Action action, RestInfoData *userInfo, PageMana
 void PageBufferGuide::onOk() {
     switch (this->action) {
         case Action::Deposit:
-            this->navigate<PageKeypad>(false, tr("Tilisiirto - Tilinumero"), tr("Tilinumero:"), this->userInfo);
+            this->navigate<PageKeypad>(true, tr("Talletus - Summan syöttö"), tr("Talletettava summa:"), this->userInfo);
             break;
 
         case Action::Transfer:
-            this->navigate<PageKeypad>(true, tr("Talletus - Summan syöttö"), tr("Talletettava summa:"), this->userInfo);
+            this->navigate<PageKeypad>(false, tr("Tilisiirto - Tilinumero"), tr("Tilinumero:"), this->userInfo);
             break;
 
         case Action::ChangePIN:
