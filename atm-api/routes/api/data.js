@@ -206,7 +206,7 @@ router.post("/transfer", (req, res) => {
             const date = new Date();
 
             await transaction.add({
-                accountId: toAccount.accountId,
+                accountId: fromAccount.accountId,
                 timestamp: date,
                 accountNumber: toAccount["accountNumber"],
                 type: "TRANSFER_TO",
@@ -215,7 +215,7 @@ router.post("/transfer", (req, res) => {
             });
 
             await transaction.add({
-                accountId: fromAccount.accountId,
+                accountId: toAccount.accountId,
                 timestamp: date,
                 accountNumber: fromAccount["accountNumber"],
                 type: "TRANSFER_FROM",
