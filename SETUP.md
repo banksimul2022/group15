@@ -60,3 +60,14 @@ mingw32-make
 FOR /R atm-dll %f IN (*.dll) DO COPY /Y %f atm-ui\release
 atm-ui\release\atm-ui.exe
 ```
+### Specifying a different API endpoint URL
+
+By default the `atm-ui` app tries to connect to `http://localhost:3000`.  
+This can be changed by creating a new directory called `group15` in the same place as the executable.  
+  
+Then within this folder create a file called `ATM App.ini` and add the following contents:
+
+```ini
+[General]
+endpoint-url=http://<IP/Domain>:<Port>/
+```
