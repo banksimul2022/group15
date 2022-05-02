@@ -253,6 +253,8 @@ void RESTEngine::replySlot(QNetworkReply *reply)
     case RestReturnData::typePinChange: {
 
       emit dataReturn(new RestReturnData(RestReturnData::typePinChange,error));
+        return;
+
     }
 
  }
