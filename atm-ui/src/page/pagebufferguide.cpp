@@ -117,7 +117,7 @@ PageBase::RestDataAction PageBufferGuide::onRestData(RestReturnData *data) {
     switch(data->error()) {
         case RestErrors::ERR_UNKNOWN_ACCOUNT:
             this->pageManager->displayPrompt(
-                tr("Tunematon tili"),
+                tr("Tilisiirto - Tunematon tili"),
                 tr("Antamallasi tilinumerolla ei löytynyt tiliä"),
                 PromptEnum::warning, 0
             );
@@ -125,15 +125,23 @@ PageBase::RestDataAction PageBufferGuide::onRestData(RestReturnData *data) {
 
         case RestErrors::ERR_INSUFFICIENT_FUNDS:
             this->pageManager->displayPrompt(
-                tr("Tilillä ei ole katetta"),
+                tr("Tilisiirto - Tilillä ei ole katetta"),
                 tr("Tililläsi ei ole tarpeeksi katetta (%1€) tilisiirtoon").arg(QString::number(this->amount, 'f', 2)),
+                PromptEnum::warning, 0
+            );
+            return RestDataAction::Delete;
+
+        case RestErrors::ERR_INVALID_CREDENTIALS:
+            this->pageManager->displayPrompt(
+                tr("PIN Vaihto - Nykyinen PIN väärä"),
+                tr("Antamsi nykyinen PIN on väärin"),
                 PromptEnum::warning, 0
             );
             return RestDataAction::Delete;
 
         case RestErrors::ERR_NEW_PIN_INVALID:
             this->pageManager->displayPrompt(
-                tr("Uusi PIN virheelinen"),
+                tr("PIN Vaihto - Uusi PIN virheelinen"),
                 tr("Antamasi uusi PIN on virheelinen! (Pitää olla 4 numeroa)"),
                 PromptEnum::warning, 0
             );
@@ -141,7 +149,7 @@ PageBase::RestDataAction PageBufferGuide::onRestData(RestReturnData *data) {
 
         case RestErrors::ERR_SAME_PIN:
             this->pageManager->displayPrompt(
-                tr("Uusi PIN sama"),
+                tr("PIN Vaihto - Uusi PIN sama"),
                 tr("Antamasi PIN on sama kuin vanha"),
                 PromptEnum::warning, 0
             );
