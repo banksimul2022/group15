@@ -131,6 +131,14 @@ PageBase::RestDataAction PageBufferGuide::onRestData(RestReturnData *data) {
             );
             return RestDataAction::Delete;
 
+        case RestErrors::ERR_INVALID_CREDENTIALS:
+            this->pageManager->displayPrompt(
+                tr("PIN Vaihto - Nykyinen PIN väärä"),
+                tr("Antamsi nykyinen PIN on väärin"),
+                PromptEnum::warning, 0
+            );
+            return RestDataAction::Delete;
+
         case RestErrors::ERR_NEW_PIN_INVALID:
             this->pageManager->displayPrompt(
                 tr("Uusi PIN virheelinen"),
