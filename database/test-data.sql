@@ -16,13 +16,14 @@ DELETE FROM account;
 -- | lastName   | varchar(45)  | NO   |     | NULL    |                |
 -- | address    | varchar(45)  | NO   |     | NULL    |                |
 -- | phone      | varchar(45)  | YES  |     | NULL    |                |
+-- | profile    | varchar(20)  | YES  |     | NULL    |                |
 -- +------------+--------------+------+-----+---------+----------------+
-INSERT INTO customer VALUES(1, 4294967295, 'Roope', 'Ankka', 'Rahasäiliö 1',    10000);
-INSERT INTO customer VALUES(2, 0,          'Aku',   'Ankka', 'Paratiisitie 13', 43738);
-INSERT INTO customer VALUES(3, 1,          'Iines', 'Ankka', 'Lepolahti 8',     12464);
-INSERT INTO customer VALUES(4, 0,          'Hupu',  'Ankka', 'Paratiisitie 13', 43738);
-INSERT INTO customer VALUES(5, 0,          'Tupu',  'Ankka', 'Paratiisitie 13', 43738);
-INSERT INTO customer VALUES(6, 0,          'Lupu',  'Ankka', 'Paratiisitie 13', 43738);
+INSERT INTO customer VALUES(1, 4294967295, 'Roope', 'Ankka', 'Rahasäiliö 1',    10000, NULL);
+INSERT INTO customer VALUES(2, 0,          'Aku',   'Ankka', 'Paratiisitie 13', 43738, '2.png');
+INSERT INTO customer VALUES(3, 1,          'Iines', 'Ankka', 'Lepolahti 8',     12464, NULL);
+INSERT INTO customer VALUES(4, 0,          'Hupu',  'Ankka', 'Paratiisitie 13', 43738, NULL);
+INSERT INTO customer VALUES(5, 0,          'Tupu',  'Ankka', 'Paratiisitie 13', 43738, NULL);
+INSERT INTO customer VALUES(6, 0,          'Lupu',  'Ankka', 'Paratiisitie 13', 43738, NULL);
 
 
 -- account
@@ -33,13 +34,12 @@ INSERT INTO customer VALUES(6, 0,          'Lupu',  'Ankka', 'Paratiisitie 13', 
 -- | balance       | decimal(14,2) | NO   |     | NULL    |                |
 -- | credit        | decimal(14,2) | NO   |     | NULL    |                |
 -- | accountNumber | varchar(45)   | NO   |     | NULL    |                |
--- | profile       | varchar(20)   | YES  |     | NULL    |                |
 -- +---------------+---------------+------+-----+---------+----------------+
-INSERT INTO account VALUES(1, 845.89,    60.0,   111111, NULL);
-INSERT INTO account VALUES(2, 788852.00, 0,      222222, '2.png');
-INSERT INTO account VALUES(3, -18.78,    180.08, 333333, NULL);
-INSERT INTO account VALUES(4, 313.00,    18.24,  444444, NULL);
-INSERT INTO account VALUES(5, 878451.87, 0,      555555, NULL);
+INSERT INTO account VALUES(1, 845.89,    60.0,   111111);
+INSERT INTO account VALUES(2, 788852.00, 0,      222222);
+INSERT INTO account VALUES(3, -18.78,    180.08, 333333);
+INSERT INTO account VALUES(4, 313.00,    18.24,  444444);
+INSERT INTO account VALUES(5, 878451.87, 0,      555555);
 
 
 -- card

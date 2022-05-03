@@ -19,7 +19,7 @@ router.get("/info", (req, res) => {
                 lName: custResult[0].lastName,
                 accountNumber: accResult[0].accountNumber,
                 credit: Boolean(cardResult[0].credit),
-                profile: accResult[0].profile === null || accResult[0].profile === undefined ? "/static/image/unknown_profile.png" : posix.join("/static/image/profile", accResult[0].profile)
+                profile: custResult[0].profile === null || custResult[0].profile === undefined ? "/static/image/unknown_profile.png" : posix.join("/static/image/profile", custResult[0].profile)
             });
         })
         .catch(error => butil.handleQueryError(error, res));
@@ -241,7 +241,7 @@ router.post("/changePin", (req, res) => {
             await butil.checkPin(req.body.pin, cardDat);
 
             if(req.body.newPin === req.body.pin) {
-                throw new errors.PublicAPIError("newPin can't be the same as the current pin", errors.codes.ERR_NEW_PIN_INVALID, 400);
+                throw new errors.PublicAPIError("newPin can't be the same as the current pin", errors.codes.ERR_SAME_PIN, 400);
             }
 
             cardDat["pin"] = req.body.newPin;
