@@ -8,6 +8,7 @@ PageWidgetWrapper::PageWidgetWrapper(QWidget *widget, PageManager *pageManager, 
     this->rootLayout->setObjectName("layout");
     this->heldWidget->setParent(this); // No need to delete in destructor as the widget is set as a child of this page
     this->rootLayout->addWidget(this->heldWidget);
+    this->setWindowTitle(this->heldWidget->windowTitle());
 }
 
 QWidget *PageWidgetWrapper::widget() {
