@@ -1,4 +1,4 @@
-const account = require("../models/crud/account");
+const customer = require("../models/crud/customer");
 const express = require("express");
 const butil = require("../util");
 const path = require("path");
@@ -13,16 +13,16 @@ const unknownProfile = (res) => {
 router.use("/image/profile", butil.permissionChecker(null));
 
 router.use("/image/profile", (req, res, next) => {
-    account.getById(req.token.accountId)
+    customer.getById(req.token.accountId)
         .then(dbRes => {
-            const acc = dbRes[0];
+            const cust = dbRes[0];
 
-            if(acc.profile === null || acc.profile === undefined) {
+            if(cust.profile === null || cust.profile === undefined) {
                 unknownProfile(res);
                 return;
             }
 
-            const profile = acc.profile.indexOf("/") !== -1 ? acc.profile.substring(1) : acc.profile;
+            const profile = cust.profile.indexOf("/") !== -1 ? cust.profile.substring(1) : cust.profile;
             const path = req.path.indexOf("/") !== -1 ? req.path.substring(1) : req.path;
 
             if(profile !== path) {

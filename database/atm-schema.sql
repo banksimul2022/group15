@@ -15,7 +15,8 @@ CREATE TABLE bankdb.customer (
   firstName VARCHAR(45) NOT NULL,
   lastName VARCHAR(45) NOT NULL,
   address VARCHAR(45) NOT NULL,
-  phone VARCHAR(45)
+  phone VARCHAR(45),
+  profile VARCHAR(20) UNIQUE
 ) ENGINE = InnoDB;
 
 -- Create the account table
@@ -23,8 +24,7 @@ CREATE TABLE bankdb.account (
   accountId INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
   balance DECIMAL(14,2) NOT NULL,
   credit DECIMAL(14,2) NOT NULL,
-  accountNumber VARCHAR(45) UNIQUE NOT NULL,
-  profile VARCHAR(20) UNIQUE
+  accountNumber VARCHAR(45) UNIQUE NOT NULL
 ) ENGINE = InnoDB;
 
 -- Create the card table
