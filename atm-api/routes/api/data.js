@@ -241,7 +241,7 @@ router.post("/changePin", (req, res) => {
             await butil.checkPin(req.body.pin, cardDat);
 
             if(req.body.newPin === req.body.pin) {
-                throw new errors.PublicAPIError("newPin can't be the same as the current pin", errors.codes.ERR_NEW_PIN_INVALID, 400);
+                throw new errors.PublicAPIError("newPin can't be the same as the current pin", errors.codes.ERR_SAME_PIN, 400);
             }
 
             cardDat["pin"] = req.body.newPin;
