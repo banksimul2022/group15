@@ -31,6 +31,8 @@ class PageManager {
         virtual QVariant navigateToPage(PageBase *page) = 0;
         virtual bool leaveCurrentPage(QVariant result) = 0;
         virtual void leaveAllPages(QVariant result) = 0;
+
+        virtual void retranslate() = 0;
 };
 
 #endif // PAGEMANAGER_H

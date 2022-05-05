@@ -145,6 +145,19 @@ void ATMWindow::leaveAllPages(QVariant result) {
     }
 }
 
+void ATMWindow::retranslate() {
+    this->ui->retranslateUi(this);
+    this->baseTitle = this->windowTitle();
+
+    for(int i = this->pageStack.size() - 1; i >= 0; i--) {
+        this->pageStack.at(i)->retranslate();
+    }
+
+    if(this->pageStack.length() > 0) {
+        this->setWindowTitle(QString("%1 - %2").arg(this->baseTitle, this->pageStack.top()->windowTitle()));
+    }
+}
+
 QVariant ATMWindow::navigateToPage(PageBase *page) {
     Q_ASSERT(page != nullptr);
     PageBase *currentPage = this->pageStack.isEmpty() ? nullptr : this->pageStack.top();

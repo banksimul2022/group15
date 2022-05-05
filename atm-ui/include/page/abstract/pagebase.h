@@ -22,6 +22,8 @@ class PageBase : public QWidget {
 
         virtual RestDataAction onRestData(RestReturnData *data);
 
+        virtual void retranslate();
+
     protected:
         bool handleRestError(RestReturnData *data, QString action, bool leave = true);
 
