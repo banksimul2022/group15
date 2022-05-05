@@ -128,6 +128,10 @@ router.post("/withdraw", (req, res) => {
             const accRes = results[0];
 
             if(useCredit) {
+                if(accRes["credit"] + sum > accRes["maxCredit"]) {
+                    throw new errors.PublicAPIError("Not enough credit available", errors.codes.ERR_INSUFFICIENT_FUNDS, 200);
+                }
+
                 accRes["credit"] += sum;
             } else {
                 if(accRes.balance < sum) {
