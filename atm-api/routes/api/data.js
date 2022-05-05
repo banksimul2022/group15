@@ -19,6 +19,7 @@ router.get("/info", (req, res) => {
                 lName: custResult[0].lastName,
                 accountNumber: accResult[0].accountNumber,
                 credit: Boolean(cardResult[0].credit),
+                maxCredit: accResult["maxCredit"],
                 profile: custResult[0].profile === null || custResult[0].profile === undefined ? "/static/image/unknown_profile.png" : posix.join("/static/image/profile", custResult[0].profile)
             });
         })
@@ -128,6 +129,10 @@ router.post("/withdraw", (req, res) => {
             const accRes = results[0];
 
             if(useCredit) {
+                if(accRes["credit"] + sum > accRes["maxCredit"]) {
+                    throw new errors.PublicAPIError("Not enough credit available", errors.codes.ERR_INSUFFICIENT_FUNDS, 200);
+                }
+
                 accRes["credit"] += sum;
             } else {
                 if(accRes.balance < sum) {
