@@ -13,8 +13,11 @@
   <property name="windowTitle">
    <string>Syötä kortti</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
-   <item>
+  <layout class="QGridLayout" name="gridLayout" rowstretch="1,0" columnstretch="0,0,0">
+   <item row="0" column="2">
+    <widget class="QSvgWidget" name="svgCard" native="true"/>
+   </item>
+   <item row="1" column="1">
     <widget class="QLabel" name="lblInsertCard">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -38,6 +41,22 @@
      </property>
     </widget>
    </item>
+   <item row="1" column="0">
+    <spacer name="spacerInsertLabel">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeType">
+      <enum>QSizePolicy::Fixed</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>30</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
   </layout>
  </widget>
  <customwidgets>
@@ -46,6 +65,11 @@
    <extends>QWidget</extends>
    <header>page/abstract/pagebase.h</header>
    <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QSvgWidget</class>
+   <extends>QWidget</extends>
+   <header>qsvgwidget.h</header>
   </customwidget>
  </customwidgets>
  <resources/>

@@ -5,6 +5,7 @@
         <file>files/icons/question.svg</file>
         <file>files/icons/warning.svg</file>
         <file>files/icons/error.svg</file>
+        <file>files/icons/card.svg</file>
         <file>files/icons/icon.ico</file>
     </qresource>
 </RCC>

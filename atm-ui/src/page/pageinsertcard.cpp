@@ -6,6 +6,7 @@
 
 #include <resterrorcode.h>
 #include <pininterface.h>
+#include <QSvgRenderer>
 
 PageInsertCard::PageInsertCard(PageManager *pageManager, QWidget *parent) :
     PageBase(pageManager, parent),
@@ -13,8 +14,13 @@ PageInsertCard::PageInsertCard(PageManager *pageManager, QWidget *parent) :
     ui(new Ui::PageInsertCard)
 {
     ui->setupUi(this);
+
+    this->ui->svgCard->load(QString(":files/icons/card.svg"));
+    this->ui->svgCard->renderer()->setAspectRatioMode(Qt::KeepAspectRatio);
+
     this->number = nullptr;
     this->pin = nullptr;
+
     this->connect(this->pageManager->getRFIDInterface(), &AsyncSerialInterface::CardID, this, &PageInsertCard::onCardRead);
 }
 
