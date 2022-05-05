@@ -62,6 +62,8 @@ FORMS += \
     form/page/pagewithdraw.ui \
     form/userstatusbarwidget.ui
 
+TRANSLATIONS = lang/atm-ui_en-GB.ts
+
 RC_ICONS = files/icons/icon.ico
 
 # Default rules for deployment.
