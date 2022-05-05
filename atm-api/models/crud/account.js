@@ -12,8 +12,8 @@ module.exports = {
     },
     add: (account) => {
         return db.query(
-            "INSERT INTO account (balance, credit, accountNumber) VALUES(?, ?)",
-            [ account.balance, account.credit, account.accountNumber ]
+            "INSERT INTO account (balance, credit, maxCredit, accountNumber) VALUES(?, ?, ?, ?)",
+            [ account.balance, account.credit, account.maxCredit, account.accountNumber ]
         );
     },
     delete: (id) => {
@@ -21,8 +21,8 @@ module.exports = {
     },
     update: (id, account) => {
         return db.query(
-            "UPDATE account SET balance=?, credit=?, accountNumber=? WHERE accountId=?",
-            [ account.balance, account.credit, account.accountNumber, id ]
+            "UPDATE account SET balance=?, credit=?, maxCredit=?, accountNumber=? WHERE accountId=?",
+            [ account.balance, account.credit, account.maxCredit, account.accountNumber, id ]
         );
     }
 };

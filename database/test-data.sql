@@ -33,13 +33,14 @@ INSERT INTO customer VALUES(6, 0,          'Lupu',  'Ankka', 'Paratiisitie 13', 
 -- | accountId     | int           | NO   | PRI | NULL    | auto_increment |
 -- | balance       | decimal(14,2) | NO   |     | NULL    |                |
 -- | credit        | decimal(14,2) | NO   |     | NULL    |                |
+-- | maxCredit     | decimal(14,2) | NO   |     | 3000.00 |                |
 -- | accountNumber | varchar(45)   | NO   |     | NULL    |                |
 -- +---------------+---------------+------+-----+---------+----------------+
-INSERT INTO account VALUES(1, 845.89,    60.0,   111111);
-INSERT INTO account VALUES(2, 788852.00, 0,      222222);
-INSERT INTO account VALUES(3, -18.78,    180.08, 333333);
-INSERT INTO account VALUES(4, 313.00,    18.24,  444444);
-INSERT INTO account VALUES(5, 878451.87, 0,      555555);
+INSERT INTO account VALUES(1, 845.89,    60.0,   DEFAULT, 111111);
+INSERT INTO account VALUES(2, 788852.00, 0,      DEFAULT, 222222);
+INSERT INTO account VALUES(3, -18.78,    180.08, 0,       333333);
+INSERT INTO account VALUES(4, 313.00,    18.24,  50,      444444);
+INSERT INTO account VALUES(5, 878451.87, 0,      DEFAULT, 555555);
 
 
 -- card
