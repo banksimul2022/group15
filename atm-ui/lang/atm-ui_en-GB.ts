@@ -51,7 +51,7 @@
     <message>
         <location filename="../src/page/pageaccountinfo.cpp" line="28"/>
         <source>%1 %2 tässä saldo tilille %3</source>
-        <translation>%1 %2 heres the balance for account %3</translation>
+        <translation>%1 %2 here is the balance for account %3</translation>
     </message>
     <message>
         <location filename="../src/page/pageaccountinfo.cpp" line="34"/>
@@ -61,7 +61,7 @@
     <message>
         <location filename="../src/page/pageaccountinfo.cpp" line="36"/>
         <source>%1 %2 tässä tapahtumat tilille %3</source>
-        <translation>%1 %2 heres the balance for account %3</translation>
+        <translation>%1 %2 here is the balance for account %3</translation>
     </message>
     <message>
         <location filename="../src/page/pageaccountinfo.cpp" line="53"/>
@@ -161,7 +161,7 @@
         <location filename="../src/page/pagebufferguide.cpp" line="93"/>
         <source>Syöttämäsi uudet PIN koodit eivät täsmänneet!
 Yritä uudelleen...</source>
-        <translation>The inseted PINs don&apos;t match!
+        <translation>The inserted PINs don&apos;t match!
 Please try again...</translation>
     </message>
     <message>
@@ -182,7 +182,7 @@ Please try again...</translation>
     <message>
         <location filename="../src/page/pagebufferguide.cpp" line="129"/>
         <source>Tililläsi ei ole tarpeeksi katetta (%1€) tilisiirtoon</source>
-        <translation>Yout account doesn&apos;t have enough coverage (%1€) for the transfer</translation>
+        <translation>Your account doesn&apos;t have enough coverage (%1€) for the transfer</translation>
     </message>
     <message>
         <location filename="../src/page/pagebufferguide.cpp" line="136"/>
@@ -229,7 +229,7 @@ Please try again...</translation>
         <source>PIN koodisi vaihdettiin onnistuneesti</source>
         <translation>Your PIN code was change successfully</translation>
     </message>
-   <message>
+    <message>
         <location filename="../src/page/pagebufferguide.cpp" line="187"/>
         <source>Talletus onnistui</source>
         <translation>Deposit successful</translation>
@@ -559,7 +559,7 @@ Please try again...</translation>
     <message>
         <location filename="../src/page/pagewithdraw.cpp" line="113"/>
         <source>Nosto - Muu summa</source>
-        <translation>Withdraw -Other amount</translation>
+        <translation>Withdraw - Other amount</translation>
     </message>
     <message>
         <location filename="../src/page/pagewithdraw.cpp" line="113"/>
