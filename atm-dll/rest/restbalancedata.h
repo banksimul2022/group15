@@ -11,10 +11,12 @@ public:
     RestBalanceData(QJsonObject *balance,int error);
     double getBalance();
     double getCredit();
+    double getMaxCredit();
 
 private:
     double balance;
     double credit;
+    double maxCredit;
 
 };
 
