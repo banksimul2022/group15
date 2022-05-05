@@ -47,15 +47,15 @@ Qt::ItemFlags TransactionTableModel::flags(const QModelIndex &index) const {
 QString TransactionTableModel::getHeader(int column) {
     switch (column) {
         case 0:
-            return QStringLiteral("Aika");
+            return tr("Aika");
         case 1:
-            return QStringLiteral("Tyyppi");
+            return tr("Tyyppi");
         case 2:
-            return QStringLiteral("Kortti");
+            return tr("Kortti");
         case 3:
-            return QStringLiteral("Tili");
+            return tr("Tili");
         case 4:
-            return QStringLiteral("Summa");
+            return tr("Summa");
     }
 
     return QStringLiteral("UNKNOWN");
@@ -63,15 +63,15 @@ QString TransactionTableModel::getHeader(int column) {
 
 QString TransactionTableModel::getTypeFrendlyName(QString type) {
     if(type == "WITHDRAW") {
-        return QStringLiteral("Nosto");
+        return tr("Nosto");
     } else if(type == "CREDIT_WITHDRAW") {
-        return QStringLiteral("Lainan Nosto");
+        return tr("Lainan Nosto");
     } else if(type == "DEPOSIT") {
-        return QStringLiteral("Talletus");
+        return tr("Talletus");
     } else if(type == "TRANSFER_TO") {
-        return QStringLiteral("Siirto tilille");
+        return tr("Siirto tilille");
     } else if(type == "TRANSFER_FROM") {
-        return QStringLiteral("Siirto tililtä");
+        return tr("Siirto tililtä");
     }
 
     return QStringLiteral("UNKNOWN");
