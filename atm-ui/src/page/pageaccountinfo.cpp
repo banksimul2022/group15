@@ -56,7 +56,7 @@ PageBase::RestDataAction PageAccountInfo::onRestData(RestReturnData *data) {
 
         RestBalanceData *balData = static_cast<RestBalanceData*>(data);
         this->ui->lblAccBalance->setText(QString::number(balData->getBalance(), 'f', 2));
-        this->ui->lblAccCredit->setText(QString::number(balData->getCredit(), 'f', 2));
+        this->ui->lblAccCredit->setText(QStringLiteral("%1 / %2").arg(QString::number(balData->getCredit(), 'f', 2), QString::number(balData->getMaxCredit(), 'f', 2)));
 
         this->pageManager->leaveLoadingPage();
 
