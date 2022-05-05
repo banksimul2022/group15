@@ -571,67 +571,67 @@ Please try again...</translation>
     <name>PinWidget</name>
     <message>
         <source>Syötä PIN</source>
-        <translation type="vanished">Enter PIN</translation>
+        <translation>Enter PIN</translation>
     </message>
     <message>
         <source>Syötä 4-numeroinen tunnusluku</source>
-        <translation type="vanished">Enter 4 digit PIN</translation>
+        <translation>Enter 4 digit PIN</translation>
     </message>
     <message>
         <source>4</source>
-        <translation type="vanished">4</translation>
+        <translation>4</translation>
     </message>
     <message>
         <source>,</source>
-        <translation type="vanished">,</translation>
+        <translation>,</translation>
     </message>
     <message>
         <source>6</source>
-        <translation type="vanished">6</translation>
+        <translation>6</translation>
     </message>
     <message>
         <source>5</source>
-        <translation type="vanished">5</translation>
+        <translation>5</translation>
     </message>
     <message>
         <source>3</source>
-        <translation type="vanished">3</translation>
+        <translation>3</translation>
     </message>
     <message>
         <source>2</source>
-        <translation type="vanished">2</translation>
+        <translation>2</translation>
     </message>
     <message>
         <source>9</source>
-        <translation type="vanished">9</translation>
+        <translation>9</translation>
     </message>
     <message>
         <source>8</source>
-        <translation type="vanished">8</translation>
+        <translation>8</translation>
     </message>
     <message>
         <source>7</source>
-        <translation type="vanished">7</translation>
+        <translation>7</translation>
     </message>
     <message>
         <source>0</source>
-        <translation type="vanished">0</translation>
+        <translation>0</translation>
     </message>
     <message>
         <source>1</source>
-        <translation type="vanished">1</translation>
+        <translation>1</translation>
     </message>
     <message>
         <source>EXIT</source>
-        <translation type="vanished">EXIT</translation>
+        <translation>EXIT</translation>
     </message>
     <message>
         <source>CANCEL</source>
-        <translation type="vanished">CANCEL</translation>
+        <translation>CANCEL</translation>
     </message>
     <message>
         <source>ENTER</source>
-        <translation type="vanished">ENTER</translation>
+        <translation>ENTER</translation>
     </message>
 </context>
 <context>
