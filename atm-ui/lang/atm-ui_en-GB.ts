@@ -590,4 +590,87 @@ Please try again...</translation>
         <translation>Going back in:</translation>
     </message>
 </context>
+<context>
+    <name>PinWidget</name>
+    <message>
+        <location filename="pinwidget.ui" line="14"/>
+        <source>Syötä PIN</source>
+        <translation>Enter PIN</translation>
+    </message>
+    <message>
+        <location filename="pinwidget.ui" line="74"/>
+        <source>Syötä 4-numeroinen tunnusluku</source>
+        <translation>Enter 4 digit PIN</translation>
+    </message>
+    <message>
+        <location filename="pinwidget.ui" line="118"/>
+        <source>4</source>
+        <translation>4</translation>
+    </message>
+    <message>
+        <location filename="pinwidget.ui" line="139"/>
+        <source>,</source>
+        <translation>,</translation>
+    </message>
+    <message>
+        <location filename="pinwidget.ui" line="181"/>
+        <source>6</source>
+        <translation>6</translation>
+    </message>
+    <message>
+        <location filename="pinwidget.ui" line="202"/>
+        <source>5</source>
+        <translation>5</translation>
+    </message>
+    <message>
+        <location filename="pinwidget.ui" line="223"/>
+        <source>3</source>
+        <translation>3</translation>
+    </message>
+    <message>
+        <location filename="pinwidget.ui" line="244"/>
+        <source>2</source>
+        <translation>2</translation>
+    </message>
+    <message>
+        <location filename="pinwidget.ui" line="265"/>
+        <source>9</source>
+        <translation>9</translation>
+    </message>
+    <message>
+        <location filename="pinwidget.ui" line="286"/>
+        <source>8</source>
+        <translation>8</translation>
+    </message>
+    <message>
+        <location filename="pinwidget.ui" line="307"/>
+        <source>7</source>
+        <translation>7</translation>
+    </message>
+    <message>
+        <location filename="pinwidget.ui" line="328"/>
+        <source>0</source>
+        <translation>0</translation>
+    </message>
+    <message>
+        <location filename="pinwidget.ui" line="349"/>
+        <source>1</source>
+        <translation>1</translation>
+    </message>
+    <message>
+        <location filename="pinwidget.ui" line="388"/>
+        <source>EXIT</source>
+        <translation>EXIT</translation>
+    </message>
+    <message>
+        <location filename="pinwidget.ui" line="407"/>
+        <source>CANCEL</source>
+        <translation>CANCEL</translation>
+    </message>
+    <message>
+        <location filename="pinwidget.ui" line="445"/>
+        <source>ENTER</source>
+        <translation>ENTER</translation>
+    </message>
+</context>
 </TS>
