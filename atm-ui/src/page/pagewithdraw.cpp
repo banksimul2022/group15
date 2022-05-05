@@ -75,7 +75,10 @@ PageBase::RestDataAction PageWithdraw::onRestData(RestReturnData *data) {
     if(data->error() == RestErrors::ERR_INSUFFICIENT_FUNDS) {
         prompt = this->pageManager->createPrompt(
                      tr("Virhe"),
-                     tr("Tililläsi ei ole katetta %1€ nostamiseen!").arg(this->amountWithdrawn),
+                     tr("Tililläsi ei ole katetta %1€ %2!").arg(
+                         QString::number(this->amountWithdrawn, 'f', 2),
+                         this->useCredit ? "lainaamiseen" : "nostamiseen"
+                     ),
                      PromptEnum::warning,
                      0
                 );
