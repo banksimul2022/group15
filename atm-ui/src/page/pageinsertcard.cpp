@@ -3,6 +3,7 @@
 #include "page/pageloading.h"
 #include "page/pagemainaccountview.h"
 #include "page/util/pagewidgetwrapper.h"
+#include "utility.h"
 
 #include <resterrorcode.h>
 #include <pininterface.h>
@@ -28,6 +29,12 @@ PageInsertCard::~PageInsertCard() {
     delete ui;
 }
 
+void PageInsertCard::onShown() {
+    PageBase::onShown();
+    Utility::switchLanguage("fi");
+    this->pageManager->retranslate();
+}
+
 QVariant PageInsertCard::onNaviagte(const QMetaObject *oldPage, bool closed, QVariant *result) {
     Q_UNUSED(oldPage) Q_UNUSED(closed) Q_UNUSED(result)
 
@@ -41,6 +48,10 @@ QVariant PageInsertCard::onNaviagte(const QMetaObject *oldPage, bool closed, QVa
     }
 
     return QVariant::fromValue(PageManager::Stay);
+}
+
+void PageInsertCard::retranslate() {
+    this->ui->retranslateUi(this);
 }
 
 void PageInsertCard::onCardRead(QString number) {
@@ -91,3 +102,15 @@ PageBase::RestDataAction PageInsertCard::onRestData(RestReturnData *data) {
 
     return RestDataAction::Delete;
 }
+
+void PageInsertCard::on_btnFi_clicked() {
+    Utility::switchLanguage("fi");
+    this->pageManager->retranslate();
+}
+
+
+void PageInsertCard::on_btnEn_clicked() {
+    Utility::switchLanguage("en-GB");
+    this->pageManager->retranslate();
+}
+

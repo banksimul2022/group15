@@ -16,7 +16,11 @@ class PageInsertCard : public PageBase {
         explicit PageInsertCard(PageManager *pageManager, QWidget *parent = nullptr);
         ~PageInsertCard();
 
+        void onShown() override;
+
         QVariant onNaviagte(const QMetaObject *oldPage, bool closed, QVariant *result) override;
+
+        void retranslate() override;
 
     private slots:
         void onCardRead(QString number);
@@ -25,6 +29,9 @@ class PageInsertCard : public PageBase {
         void onPinCancel();
 
         PageBase::RestDataAction onRestData(RestReturnData *data) override;
+
+        void on_btnFi_clicked();
+        void on_btnEn_clicked();
 
     private:
         QString number;
