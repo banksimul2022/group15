@@ -7,5 +7,10 @@
         <file>files/icons/error.svg</file>
         <file>files/icons/card.svg</file>
         <file>files/icons/icon.ico</file>
+
+        <file>files/flags/fi.png</file>
+        <file>files/flags/en-GB.png</file>
+
+        <file>lang/atm-ui_en-GB.qm</file>
     </qresource>
 </RCC>

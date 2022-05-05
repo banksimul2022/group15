@@ -32,6 +32,8 @@ class ATMWindow : public QMainWindow, public PageManager {
         bool leaveCurrentPage(QVariant result) override;
         void leaveAllPages(QVariant result) override;
 
+        void retranslate() override;
+
     private:
         // Returns true to end processing
         bool processPageReturnAction(PageReturnAction action, PageBase **newPage);

@@ -3,6 +3,9 @@
 #include <resterrorcode.h>
 #include <QVariant>
 #include <QStyle>
+#include <QCoreApplication>
+
+QTranslator Utility::translator;
 
 void Utility::retainSizeWhenHidden(QWidget *widget) {
     QSizePolicy sizePolicy = widget->sizePolicy();
@@ -46,4 +49,14 @@ QString Utility::restErrorToText(uint errorCode) {
     }
 
     return QStringLiteral("Virhekoodia ei tunnistettu");
+}
+
+void Utility::switchLanguage(const char *lang) {
+    if(!Utility::translator.isEmpty()) {
+        QCoreApplication::removeTranslator(&translator);
+    }
+
+    Utility::translator.load(QStringLiteral(":/lang/atm-ui_%1").arg(lang));
+
+    QCoreApplication::installTranslator(&translator);
 }

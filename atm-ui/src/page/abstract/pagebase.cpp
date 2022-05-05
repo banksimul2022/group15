@@ -27,6 +27,8 @@ void PageBase::onShown() {
 
 PageBase::RestDataAction PageBase::onRestData(RestReturnData *data) { Q_UNUSED(data) return RestDataAction::Skip; }
 
+void PageBase::retranslate() { }
+
 bool PageBase::handleRestError(RestReturnData *data, QString action, bool leave) {
     if(data->error() == -1) return false;
 
